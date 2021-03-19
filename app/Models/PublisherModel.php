@@ -10,8 +10,7 @@ class PublisherModel extends Model
     use HasFactory;
     protected $table = "publisher";
     protected $primaryKey = "pub_id";
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'modiffed';
+    const UPDATED_AT = 'modiffed_at';
     public $timestamps = false;
     protected $keyType = 'string';
       /**
@@ -31,21 +30,12 @@ class PublisherModel extends Model
      * @var array
      */
     protected $casts = [
-        'modiffed' => 'datetime',
-        'created'  => 'datetime',
+        'modiffed_at' => 'datetime',
+        'created_at'  => 'datetime',
     ];
     public function book()
     {
-        return $this->hasMany('App\Models\Book','pub_id','pub_id');
+        return $this->hasMany(ProductModel::class,'pub_id');
 
-    }
-    public function Destination($local, $options)
-    {
-        $result = null;
-
-        return PublisherModel::orderByDesc(
-            PublisherModel::select('arrived_at')
-
-        )->get();
     }
 }

@@ -1,5 +1,4 @@
 ﻿@extends('master')
-
 @section('content')
 @include('public.slide.slide_header')
 <!-- Start main Content -->
@@ -12,30 +11,32 @@
 						<div class="col-lg-6 col-12">
 							<div class="wn__fotorama__wrapper">
 								<div class="fotorama wn__fotorama__action" data-nav="thumbs">
-									@foreach($thumb as $value)			
-										@if($get_singel_product ==null)
-											<a href="1.jpg"><img src="{{asset('images/product/Hello_World.PNG')}}" alt=""></a>
-											@break
+											
+										@if($thumb == null)
+											@for($i=1;$i<9;$i++)	
+												<a href="1.jpg"><img src="{{asset('/images/books/'.$i.'jpg')}}" alt=""></a>
+											@endfor
 										@else
-											<a href="{{$value}}"><img src="{{asset('images/books/thumb/'.$get_singel_product->book_name.'/'.$value)}}"
-											alt="Book-{{$value->book_name}}"></a>
-										@endif
-									@endforeach
+										@foreach ( $thumb as $book)
+										<a href="{{$book}}"><img src="{{asset('images/books/'.$item->book_id.'/'.$book)}}"
+											alt="Book Thumbnail"></a>
+										@endforeach
+									@endif
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-6 col-12">
 							<div class="product__info__main">
-								<h1 id="single_book_name">{{$get_singel_product->book_name}} </h1>
+								<h1 id="single_book_name">{{$item->book_name}} </h1>
 								<div class="product-info-stock-sku d-flex">
 									<p>Availability:<span>
-											@if($get_singel_product->book_total >0 && $get_singel_product->book_total != null)
+											@if($item->book_total >0 && $item->book_total != null)
 												<b> IN STOCK ({{$total_items}})</b>
 											@else
 												<b class="warning">OUT STOCK!!</b>
 											@endif
 										</span></p>
-									<p>Serial code:<span id="single_book_id"> {{$get_singel_product->book_id}}</span></p>
+									<p>Serial code:<span id="single_book_id"> {{$item->book_id}}</span></p>
 								</div>
 								<div class="product-reviews-summary d-flex">
 									<ul class="rating-summary d-flex">
@@ -50,9 +51,17 @@
 										<a href="#">Add Your Review</a>
 									</div>
 								</div>
+								@if ($item->promotion_price !=null)	
 								<div class="price-box">
-									<span>{{$get_singel_product->price."$"}}</span>
-								</div>
+									<span>{{number_format(($item->promotion_price),2) ." $"}}</span>
+								</div>	
+								<div class="discount-item">{{number_format(($item->price),2) ." $"}}</div>
+								@else
+									<div class="prize-box">
+										<span> {{number_format(($item->promotion_price),2) ." $"}}</span>
+									</div>							
+								@endif
+								
 								<div class="product-color-label">
 									<span>Color</span>
 									<div class="color__attribute d-flex">
@@ -80,7 +89,7 @@
 									<a class="email" href="#"></a>
 								</div>
 								<div id="product__overview" class="product__overview">
-									{{Str::limit($get_singel_product->description, $limit = 500, $end = '...')}}
+									{!!Str::limit($item->description, $limit = 500, $end = '...')!!}
 								</div>
 							</div>
 
@@ -98,7 +107,7 @@
 						<!-- Start Single Tab Content -->
 						<div class="pro__tab_label tab-pane fade show active" id="nav-details" role="tabpanel">
 							<div class="description__attribute">
-								{{$get_singel_product->description}}
+								{!!$item->description!!}
 							</div>
 						</div>
 						<!-- End Single Tab Content -->
@@ -726,7 +735,7 @@
 						<h3 class="wedget__title">Product Categories</h3>
 						<ul>
 							@foreach ($list_category as $cat_name)
-							<li><a href="{{route('category_view',$cat_name->cat_id)}}"
+							<li><a href="{{route('category',$cat_name->cat_id)}}"
 									value={{$cat_name->cat_name}}>{{$cat_name->cat_name}}
 									<span>({{$cat_name->total}})</span></a></li>
 							@endforeach

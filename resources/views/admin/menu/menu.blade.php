@@ -338,12 +338,21 @@
                   </div>
                </li>
                <li class="line-height pt-3">
+                  @if(Auth::user()->user_detail->img != null)
                   <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                     <img src="{{asset('images/user/1.jpg')}}" class="img-fluid rounded-circle mr-3" alt="user">
+                     <img src="{{asset('images/user_profile/'.Auth::user()->user_detail->img)}}" class="img-fluid rounded-circle mr-3" alt="user">
                      <div class="caption">
                         <h6 class="mb-1 line-height">{{Auth::user()->user_name}}</h6>
                      </div>
                   </a>
+                  @else
+                  <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
+                     <img src="{{asset('/images/users/user_default.svg')}}" class="img-fluid rounded-circle mr-3" alt="user">
+                     <div class="caption">
+                        <h6 class="mb-1 line-height">{{Auth::user()->user_name}}</h6>
+                     </div>
+                  </a>
+                  @endif
                   <div class="iq-sub-dropdown iq-user-dropdown">
                      <div class="iq-card shadow-none m-0">
                         <div class="iq-card-body p-0 ">

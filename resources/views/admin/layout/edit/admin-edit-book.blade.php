@@ -97,7 +97,7 @@
                      <div class="form-group">
                         <label>Book Description:</label>
                         <textarea class="form-control" rows="4" name="content"
-                           id="editor">{{$book->description}}</textarea>
+                           id="editor" >{{$book->description}}</textarea>
                      </div>
                      <button type="submit" class="btn btn-primary">Submit</button>
                      <button type="reset" class="btn btn-danger"

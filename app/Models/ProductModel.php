@@ -12,14 +12,13 @@ class ProductModel extends Model
     //DEFINED DATABASE TABLE
     protected $table = "book";
     protected $primaryKey = "book_id";
-
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'modiffed';
+    const UPDATED_AT = 'modiffed_at';
     //DINH NGHIA KHOA TRONG TABBLE NAY KHONG PHAI LA KHOA TU TANG VA KIEU KHOA LA STRING 
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
+        'book_id',
         'book_name',
         'description',
         'price',
@@ -27,8 +26,8 @@ class ProductModel extends Model
         'pub_id',
         'cat_id',
         'promotion_price',
-        'created',
-        'modiffed',
+        'modiffed_by',
+        'created_by'
     ];
     /**
      * The attributes that should be cast to native types.
@@ -36,16 +35,19 @@ class ProductModel extends Model
      * @var array
      */
     protected $casts = [
-        'modiffed' => 'datetime',
-        'created'  => 'datetime',
+        'modiffed_at' => 'datetime',
+        'created_at'  => 'datetime',
     ];
     public function category()
     {
-        return $this->belongsTo("App\Models\CategoryModel", "cat_id", "cat_id");
+        return $this->belongsTo(CategoryModel::class, "cat_id");
     }
     public function publisher()
     {
-        return $this->belongsTo("App\Models\Publisher", "pub_id", "pub_id");
+        return $this->belongsTo(PublisherModel::class, "pub_id");
+    }
+    public function thumb(){
+        return $this->hasMany(BookThumbnailModel::class,'book_id');
     }
     public function all_list_items($params, $options, $stament = null, $number_stament = null)
     {

@@ -185,10 +185,8 @@ Route::group(['prefix' => $controllerName], function () {
 
 $controllerName = 'product';
 Route::group(['prefix' => $controllerName], function () {
-    $controller = ProductController::class;
-    Route::get('/', [HomeController::class, 'Shop']);
     //LAY ID VA CAT_ID SAN PHAM KHI DUOC TRUYEN GIA TRI VAO TRA VE TRANG PRODUCT DETAIL
-    Route::get('/book_id={id} && cat_id={cat_id?}', [HomeController::class, 'get_items'])->name("product");
+    Route::get('/book_id={id}', [ProductController::class, 'index'])->name("product");
 });
 $controllerName = 'my-account';
 //====================================== - ACCOUNT PROFILE ========================================================//
@@ -254,7 +252,7 @@ Route::group(['prefix' => 'admin'], function () {
         //Book edit view
         Route::get('/book-edit-view/{book_id}', [HomeController::class, 'book_edit_view'])->name('admin.books.edit.view');
         //Book edit
-        Route::get('/book-edit', [ProductController::class, 'book_edit'])->name('admin.books.edit');
+        Route::post('/book-edit', [ProductController::class, 'book_edit'])->name('admin.books.edit');
         //Book delete 
         Route::get('/book-delete/book_id={book_id}', [ProductController::class, 'book_delete'])->name('admin.books.delete');
 

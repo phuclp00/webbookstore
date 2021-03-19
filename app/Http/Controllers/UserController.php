@@ -56,7 +56,10 @@ class UserController extends Controller
             $userId=Auth::user()->user_id;
             $data = UserModel::find($userId)->load('user_detail');
             $data->user_detail->img = $file->getClientOriginalName();
+            $data->modiffed_by=Auth::user()->user_name;
+            $data->user_detail->modiffed_by=Auth::user()->user_name;
             $data->user_detail->save();
+            $data->save();
             $path = $file->storeAs('user_profile', $file->getClientOriginalName(), 'images');
             $data->refresh();
             session()->flash('infor_success', 'Your image has been successfully updated !');

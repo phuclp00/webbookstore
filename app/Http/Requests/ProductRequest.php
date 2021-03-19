@@ -30,7 +30,7 @@ class ProductRequest extends FormRequest
             'pub_id' => 'required',
             'img' => ['mimes:jpg,bmp,png'],
             'thumb' => ['required','image','mimes:jpg,bmp,png','max:10240'],
-            'thumb'=>['array','size:7'],
+            'thumb'=>['array','size:8'],
             'price' => 'required|numeric|gt:promotion',
             'promotion' => ['numeric'],
             'content' => 'required|string',

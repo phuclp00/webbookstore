@@ -21,7 +21,21 @@ use Illuminate\Validation\Rule;
 session_start();
 class ProductController extends Controller
 {
-
+    public function index(Request $request )
+    {   
+        $id = $request->id;
+        $result = ProductModel::find($id)->with('thumb')->first();
+        $thumb=$result->thumb->first();
+        $arr_thumb = array();
+        if ($thumb != null) {
+            $i = 1;
+            while ($i < 9) {
+                $arr_thumb[] = $thumb["thumbnail_$i"] == null ? null : $thumb["thumbnail_$i"];
+                $i++;
+            }
+        }
+        return view('public.page.single-product', ["item" => $result,'thumb' =>$arr_thumb]);
+    }
     public function add_to_cart(Request $request)
     {
 
@@ -108,6 +122,7 @@ class ProductController extends Controller
             $data->pub_id = $request->pub_id;
             $data->price = $request->price;
             $data->promotion_price = $request->promotion;
+            $data->description=$request->content;
             $file_name = $request->img;
             $data->img = $file_name != null ? $data->book_id . "_" . $data->book_name . "." . $file_name->clientExtension() : null;
             //Thumb insert
@@ -115,7 +130,7 @@ class ProductController extends Controller
             $ext_thumb = $request->thumb;
             if ($ext_thumb != null) {
                 $i = 0;
-                while ($i < 7) {
+                while ($i < 8) {
                     $tmp = $i + 1;
                     $thumb["thumbnail_" . $tmp] =  $data->book_id . "_thumb_$tmp" . "." . $ext_thumb[$i]->clientExtension();
                     $i++;
@@ -132,7 +147,7 @@ class ProductController extends Controller
                 //Thumb image upload
                 if ($ext_thumb != null) {
                     $tmp = 0;
-                    while ($tmp < 7) {
+                    while ($tmp < 8) {
                         $i = $tmp + 1;
                         $file->store($request->thumb["$tmp"], "books/$data->book_id", $data->book_id . "_thumb_$i");
                         $tmp++;
@@ -158,6 +173,8 @@ class ProductController extends Controller
             $data->pub_id = $request->pub_id;
             $data->price = $request->price;
             $data->promotion_price = $request->promotion;
+            $data->description=$request->content;
+
             $file_name = $request->img != null ? $request->img : null;
             //Thumb check request
             $ext_thumb = $request->thumb != null ? $request->thumb : null;
@@ -167,7 +184,7 @@ class ProductController extends Controller
                 $data->img =  $data->book_id . "_" . $data->book_name . "." . $file_name->clientExtension();
                 $i = 0;
                 //Update DB Thumb
-                while ($i < 7) {
+                while ($i < 8) {
                     $tmp = $i + 1;
                     $thumb["thumbnail_" . $tmp] =  $data->book_id . "_thumb_$tmp" . "." . $ext_thumb[$i]->clientExtension();
                     $i++;
@@ -180,7 +197,7 @@ class ProductController extends Controller
                 $file->destroy(null, null, "books/$data->book_id/$data->img");
             } elseif ($ext_thumb != null) {
                 $i = 0;
-                while ($i < 7) {
+                while ($i < 8) {
                     $tmp = $i + 1;
                     //Old thumb destroy 
                     $file->destroy(null, null, "images/books/$data->book_id/" . $thumb['thumbnail_' . $tmp]);
@@ -199,7 +216,7 @@ class ProductController extends Controller
                 //Thumbnail  update
                 if ($ext_thumb != null) {
                     $tmp = 0;
-                    while ($tmp < 7) {
+                    while ($tmp < 8) {
                         $i = $tmp + 1;
                         $file->store($request->thumb["$tmp"], "books/$data->book_id", $data->book_id . "_thumb_$i");
                         $tmp++;
@@ -207,7 +224,7 @@ class ProductController extends Controller
                 }
             }
             $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->book_name . ' Successfully !! </div>');
-            return \redirect()->route('admin.book_list_view');
+            return \redirect()->route('admin.books');
         } catch (QueryException $e) {
             $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->book_name . 'Fail,Try Again !! </div>');
             return \redirect()->back();

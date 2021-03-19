@@ -5823,7 +5823,7 @@ h3.widget-title-modal {
 }
 
 .product__info__main .box-tocart .addtocart__actions .tocart {
-    background: #2e2e2e url("../images/icons/cart4.png") no-repeat scroll -30px center;
+    background: #2e2e2e url("../frontend/images/icons/cart4.png") no-repeat scroll -30px center;
     border: 0 none;
     border-radius: 25px;
     color: #fff;
@@ -5855,15 +5855,15 @@ h3.widget-title-modal {
 }
 
 .product__info__main .product-addto-links a.wishlist {
-    background: #ffffff url("../images/icons/product-info.png") no-repeat scroll 0 0;
+    background: #ffffff url("../frontend/images/icons/product-info.png") no-repeat scroll 0 0;
 }
 
 .product__info__main .product-addto-links a.compare {
-    background: #ffffff url("../images/icons/button-compare.png") no-repeat scroll 0 0;
+    background: #ffffff url("../frontend/images/icons/button-compare.png") no-repeat scroll 0 0;
 }
 
 .product__info__main .product-addto-links a.email {
-    background: #ffffff url("../images/icons/button-email.png") no-repeat scroll 0 0;
+    background: #ffffff url("../frontend/images/icons/button-email.png") no-repeat scroll 0 0;
 }
 
 .product__info__main .product-addto-links a:hover {

@@ -104,22 +104,7 @@ class HomeController extends Controller
 
         return view($this->pathViewController . $this->subpatchViewController  . '.shop', ["get_cat_items" => $items]);
     }
-    public function get_items(Request $request)
-    {
-        $id = $request->id;
-        $cat_id = $request->cat_id;
-        $result = Book_list_view::where('book_id', $id)->first();
-        $arr_thumb = array();
-        $i = 1;
-        while ($i < 8) {
-            $arr_thumb[] = $result["thumb$i"] == null ? null : $result["thumb$i"];
-            $i++;
-        }
-        return view('public.page.single-product', [
-            "get_singel_product" => $result,
-            "thumb" => $arr_thumb,
-        ]);
-    }
+
     public function product_view()
     {
         return view($this->pathViewController . $this->subpatchViewController  . '.single-product');
@@ -197,7 +182,7 @@ class HomeController extends Controller
     //Book
     public function book_list_view()
     {
-        $result = Book_list_view::paginate(5);
+        $result = ProductModel::with('thumb')->with('publisher')->with('category')->paginate(5);
         return view('admin.layout.admin-books', ['book' => $result]);
     }
     public function book_list_add_view(Request $request)
@@ -215,7 +200,7 @@ class HomeController extends Controller
         $old_thumb = null;
         if ($thumb != null) {
             $i = 1;
-            while ($i <= 7) {
+            while ($i <= 8) {
                 $old_thumb[] = $thumb["thumbnail_$i"] == null ? null : $thumb["thumbnail_$i"];
                 $i++;
             }

@@ -19,7 +19,7 @@
                      <table class="data-tables table table-striped table-bordered" style="width:100%">
                         <thead>
                            <tr>
-                              <th style="width: 6%;">Book Id</th>
+                              <th style="width: 6%;">STT</th>
                               <th style="width: 12%;">Book Image</th>
                               <th style="width: 20%;">Book Name</th>
                               <th style="width: 7%;">Category</th>
@@ -43,8 +43,8 @@
                                     src="{{asset('images/books/8k.jpg')}}" alt=""></td>
                               @endif
                               <td>{{$item->book_name}}</td>
-                              <td>{{$item->cat_name}}</td>
-                              <td>{{$item ->pub_name}}</td>
+                              <td>{{$item->category->cat_name}}</td>
+                              <td>{{$item ->publisher->pub_name}}</td>
                               <td style="color:red">{{number_format($item->promotion_price,2)."$"}}</td>
                               <td>{{number_format($item->price,2)."$"}}</td>
                               <td>{{$item->total}}</td>

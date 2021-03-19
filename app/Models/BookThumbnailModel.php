@@ -11,8 +11,7 @@ class BookThumbnailModel extends Model
     //DEFINED DATABASE TABLE
     protected $table = "book_thumbnail";
     protected $primaryKey = "book_id";
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'modiffed';
+    const UPDATED_AT = 'modiffed_at';
     //DINH NGHIA KHOA TRONG TABBLE NAY KHONG PHAI LA KHOA TU TANG VA KIEU KHOA LA STRING 
     public $incrementing = false;
     protected $keyType = 'string';
@@ -42,5 +41,7 @@ class BookThumbnailModel extends Model
         'modiffed' => 'datetime',
         'created'  => 'datetime',
     ];
-
+    public function book(){
+        return $this->belongsTo(ProductModel::class,'book_id');
+    }
 }
