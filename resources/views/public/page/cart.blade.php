@@ -29,7 +29,7 @@
                             <tr>
 
                                 <td class="product-thumbnail"><a href="#"><img
-                                            src="{{asset('images/product/sm-3/'.$item->options->image)}}"
+                                            src="{{asset('images/books/'.$item->id.'/'.$item->options->image)}}"
                                             alt="product img"></a></td>
                                 <td class="product-name"><a href="#">{{$item->name}}</a></td>
                                 <td class="product-price"><span
@@ -47,7 +47,7 @@
                                             style="padding: 0px;border:1px solid black"></td>
                                 </form>
                             </tr>
-                        @endforeach
+                            @endforeach
                         </tbody>
 
                     </table>
@@ -58,7 +58,7 @@
                         <li><a href="#">Coupon Code</a></li>
                         <li><a href="#">Apply Code</a></li>
                         <li><a href="#">Update Cart</a></button></li>
-                        <li><a href="{{route('checkout_view')}}">Check Out</a></li>
+                        <li><a href="{{route('checkout')}}">Check Out</a></li>
                     </ul>
                 </div>
             </div>
