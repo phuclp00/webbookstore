@@ -18,7 +18,7 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()==null){
+        if(Auth::check()==null || Auth::user()->getLevel()!="admin"){
             return response()->view('errors.404', [], 404);
         }
         elseif(Auth::user()->getLevel()=="admin"){

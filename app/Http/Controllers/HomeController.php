@@ -115,7 +115,7 @@ class HomeController extends Controller
             $arr_thumb[] = $result["thumb$i"] == null ? null : $result["thumb$i"];
             $i++;
         }
-        return view($this->pathViewController . $this->subpatchViewController . '.single-product', [
+        return view('public.page.single-product', [
             "get_singel_product" => $result,
             "thumb" => $arr_thumb,
         ]);

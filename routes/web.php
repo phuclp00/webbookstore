@@ -73,7 +73,7 @@ Route::get('/test', function () {
 
 //===================================LOG-IN ========================================================================//
 $controllerName = 'login';
-Route::group(['prefix' => $controllerName], function () {
+Route::group(['prefix' => $controllerName,'middleware'=>['login']], function () {
     $controller = LoginController::class;
     Route::get('/', [$controller, 'show_login'])->name("show_login");
     Route::post('/sign-in', [$controller, 'Login'])->name("login_signin");
@@ -192,11 +192,11 @@ Route::group(['prefix' => $controllerName], function () {
 });
 $controllerName = 'my-account';
 //====================================== - ACCOUNT PROFILE ========================================================//
-Route::group(['prefix' => $controllerName], function () {
+Route::group(['prefix' => $controllerName,'middleware'=>['user']], function () {
     $controller = UserController::class;
-    Route::POST('/img_change/{user_id}', [$controller, 'update_img'])->name("update_img");
-    Route::get('/account_view/{user_name}', [$controller, 'account_view'])->name("account");
-    Route::post('/account-update/{user_id}', [$controller, 'account_update'])->name("account_update");
+    Route::POST('/img_change', [$controller, 'update_img'])->name("user.image.update");
+    Route::get('/account_view', [$controller, 'account_view'])->name("user.account.view");
+    Route::post('/account-update', [$controller, 'account_update'])->name("user.account.update");
 });
 //====================================== - SHOP ========================================================//
 

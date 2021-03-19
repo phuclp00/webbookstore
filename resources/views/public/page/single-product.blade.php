@@ -12,8 +12,7 @@
 						<div class="col-lg-6 col-12">
 							<div class="wn__fotorama__wrapper">
 								<div class="fotorama wn__fotorama__action" data-nav="thumbs">
-									dd($arr)
-									@foreach($arr_thumb->$key as $value)			
+									@foreach($thumb as $value)			
 										@if($get_singel_product ==null)
 											<a href="1.jpg"><img src="{{asset('images/product/Hello_World.PNG')}}" alt=""></a>
 											@break

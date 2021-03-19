@@ -3,7 +3,7 @@
 
 @include('public.slide.slide_header')
 
-
+{{session()->get('info_warning')}}
 <!-- Start My Account Area -->
 <section class="my_account_area pt--80 pb--55 bg--white">
 	<div class="container">
@@ -15,8 +15,8 @@
 						{{ csrf_field() }}
 						<div class="account__form">
 							<div class="input__box">
-								<label>Username or email address <span>*</span></label>
-								<input type="text" name="username">
+								<label> Email address <span>*</span></label>
+								<input type="text" name="email" autocomplete="on">
 							</div>
 							<div class="input__box">
 								<label>Password<span>*</span></label>
@@ -26,7 +26,7 @@
 								<button>Login</button>
 								<input type="hidden" name="Submit" value="Login">
 								<label class="label-for-checkbox">
-									<input id="rememberme" class="input-checkbox" name="rememberme" value="forever"
+									<input id="remember" class="input-checkbox" name="remember" value="forever"
 										type="checkbox">
 									<span>Remember me</span>
 								</label>

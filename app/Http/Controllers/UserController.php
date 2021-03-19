@@ -18,6 +18,7 @@ use DB;
 use Illuminate\Cache\Repository;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -28,19 +29,17 @@ class UserController extends Controller
     }   
     public function account_view(Request $request)
     {
-        if (session()->has('user_info')) {
-            $key_find = $request->user_name;
-            $data = UserModel::with('user_detail')->where('user_name', $key_find)->first();
-            if ($data->street != null || $data->phone != null) {
-                session()->flash('account_info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;">
-                Xin chào  ' . $data->user_name . '</div>');
+        if(Auth::check()){
+            $key_find = Auth::user()->user_id;
+            $data = UserModel::find($key_find)->load('user_detail')->first();
+            if ($data->user_detail->street != null || $data->user_detail->phone != null) {
+                session()->flash('info_success', "Have a good day " . $data->user_name . "! We're glad you're here !");
             } else {
-                session()->flash('account_info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"">
-                    Hãy cập nhật thông tin của bạn để dễ dàng thanh toán hơn </div>');
+                session()->flash('account_info_warning', "Looks like you haven't updated your payment information yet! Please update for easier payment!");
             }
-            return view('public.page.account-info')->with('data', $data);
+            return view('public.page.account-info',['data'=>$data]);
         } else {
-            return \redirect('/');
+            return redirect()->route('home');
         }
     }
     public function notifications()
@@ -54,30 +53,25 @@ class UserController extends Controller
         ]);
         try {
             $file = $request->upload_file;
-            $data = UserDetail::find($request->user_id);
-            $data->img = $file->getClientOriginalName();
-            $data->save();
+            $userId=Auth::user()->user_id;
+            $data = UserModel::find($userId)->load('user_detail');
+            $data->user_detail->img = $file->getClientOriginalName();
+            $data->user_detail->save();
             $path = $file->storeAs('user_profile', $file->getClientOriginalName(), 'images');
-            //Update lai thong tin nguoi dung 
-            \session()->forget('user_info');
-            $show_info =UserModel::with('user_detail')->find($data->user_id)->first();
-            \session()->push('user_info', $show_info);
             $data->refresh();
-            return \redirect()->back();
+            session()->flash('infor_success', 'Your image has been successfully updated !');
+            return \route('user.account.view');
         } catch (Exception $e) {
-            session()->flash('account_info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"">
-                  Cập nhật ảnh thất bại </div>');
+            session()->flash('infor_warning', '');
         }
     }
     public function account_update(Request $request)
     {
         
         $key_find = $request->user_id;
-        dd($key_find);
-        $data_user = UserModel::find($key_find)->first();
         $data_account =  UserModel::with('user_detail')->find($key_find)->first();
         try {
-            if ($request->email_register != $data_user->email && $request->email_register != "") {
+            if ($request->email_register != $data_account->email && $request->email_register != "") {
                 $data_account->email = $request->email_register;
 
                 $data_account->save();
@@ -91,22 +85,23 @@ class UserController extends Controller
                     $data_account->save();
                     $data_account->refresh();
                     $request->session()->flash('update_info', '<div class="alert alert-success">"Cập nhật mật khẩu thành công !!!"</div>');
-                    return \redirect()->route('account_view', [$data_account->user_name]);
+                    return \redirect()->route('account', [$data_account->user_name]);
                 }
             }
-            $data_account->full_name = $request->fullname;
-            $data_account->phone = $request->phone;
-            $data_account->street = $request->street;
-            $data_account->district = $request->district;
-            $data_account->city = $request->city;
+            $data_account->user_detail->full_name = $request->fullname;
+            $data_account->user_detail->phone = $request->phone;
+            $data_account->user_detail->street = $request->street;
+            $data_account->user_detail->district = $request->district;
+            $data_account->user_detail->city = $request->city;
+            $data_account->user_detail->save();
             $data_account->save();
 
             $request->session()->flash('update_info', '<div class="alert alert-success">"Cập nhật khoản thành công , tiếp tục mua sắm nào !!"</div>');
-            return \redirect()->route('account_view', [$data_account->user_name]);
+            return \redirect()->route('account', [$data_account->user_name]);
         } catch (Exception $e) {
 
             $request->session()->flash('update_info', '<div class="alert alert-danger">"Cập nhật tài khoản thất bại, vui lòng thử lại!!"</div>');
-            return \redirect()->route('account_view', [$data_account->user_name]);
+            return \redirect()->route('account', [$data_account->user_name]);
         }
     }
     public function delete_user(Request $request)

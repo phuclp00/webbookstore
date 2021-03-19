@@ -5,14 +5,14 @@
             <div class="col-md-6 col-sm-6 col-6 col-lg-2">
                 <div class="logo">
                     <a href="{{route('home')}}">
-                        <img src="{{asset('images/logo/logo.png')}}" alt="logo images">
+                        <img src="{{asset('asset/frontend/images/logo/logo.png')}}" alt="logo images">
                     </a>
                 </div>
             </div>
             <div class="col-lg-8 d-none d-lg-block">
                 <nav class="mainmenu__nav">
                     <ul class="meninmenu d-flex justify-content-start">
-                        <li class="drop with--one--item"><a href="/">Home</a>
+                        <li class="drop with--one--item"><a href="{{route('home')}}">Home</a>
                         </li>
                         <li class="drop"><a href="{{route('shop_view')}}">Shop</a>
 
@@ -68,9 +68,9 @@
                                 <ul class="item item01">
                                     <li><a href="{{route('about')}}">About Page</a></li>
                                     @if(session()->has('user_info'))
-                                        @foreach (session()->get("user_info") as $user)
-                                            <li><a href="{{route('account',[$user->user_name])}}">My Account</a></li>
-                                        @endforeach
+                                    @foreach (session()->get("user_info") as $user)
+                                    <li><a href="{{route('account',[$user->user_name])}}">My Account</a></li>
+                                    @endforeach
                                     @endif
                                     <li><a href="{{route('cart')}}">Cart Page</a></li>
                                     <li><a href="{{route('checkout')}}">Checkout Page</a></li>
@@ -145,16 +145,19 @@
                         <div class="searchbar__content setting__block">
                             <div class="content-inner">
                                 <div class="switcher__account">
-                                    @if(session()->has("user_info"))
-                                    @foreach (session()->get("user_info") as $user)
-                                   
-                                    @if($user->img !=null)
-                                        <img src="{{asset('images/user_profile/'.$user->img)}}" class="avatar"style="margin:0px auto;vertical-align: middle; width: 100px;height: 100px;border-radius:50%;" alt="avatar">
+                                    @if(Auth::check())
+                                    @if(Auth::user()->user_detail->img !=null)
+                                    <img src="{{asset('images/user_profile/'.Auth::user()->user_detail->img)}}"
+                                        class="avatar"
+                                        style="margin:0px auto;vertical-align: middle; width: 100px;height: 100px;border-radius:50%;"
+                                        alt="avatar">
                                     @else
-					                    <img src="{{asset('images/users/user_default.svg')}}" class="avatar"style="margin:0px auto;vertical-align: middle; width: 50px;height: 50px;border-radius:50%;" alt="avatar">
+                                    <img src="{{asset('images/users/user_default.svg')}}" class="avatar"
+                                        style="margin:0px auto;vertical-align: middle; width: 50px;height: 50px;border-radius:50%;"
+                                        alt="avatar">
                                     @endif
                                     <h3 class="account__title">Xin chào</h3>
-                                    <h5>{{$user->user_name==null?$user->email:$user->user_name}}</h5>
+                                    <h5>{{Auth::user()->user_name==null?Auth::user()->email:Auth::user()->user_name}}</h5>
                                     <div class="switcher-currency">
                                         <strong class="label switcher-label">
                                             <span>My Account</span>
@@ -163,15 +166,13 @@
                                             <div class="switcher-currency-trigger">
                                                 <div class="setting__menu">
 
-                                                    <span><a href="{{route('account',[$user->user_name])}}">My
-                                                            Account</a></span>
+                                                    <span><a href="{{route('user.account.view')}}">My Account</a></span>
                                                     <span><a href="#">My Wishlist</a></span>
                                                     <span><a href="{{route('log_out')}}">Logout</a></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    @endforeach
                                     @else
                                     <ul>
                                         <li><a href="{{route('show_login')}}">Sign In</a></li>
@@ -224,12 +225,12 @@
                         </li>
                         <li><a href="{{route('about')}}">Pages</a>
                             <ul>
-                              
+
                                 <li><a href="{{route('about')}}">About Page</a></li>
                                 @if(session()->has('user_info'))
-                                    @foreach (session()->get("user_info") as $user)
-                                    <li><a href="{{route('account',[$user->user_name])}}">My Account</a></li>
-                                    @endforeach
+                                @foreach (session()->get("user_info") as $user)
+                                <li><a href="{{route('account',[$user->user_name])}}">My Account</a></li>
+                                @endforeach
                                 @endif
                                 <li><a href="{{route('checkout')}}">Checkout Page</a></li>
                                 <li><a href="{{route('wishlist')}}">Wishlist Page</a></li>
@@ -262,7 +263,10 @@
         <div class="field__search">
             {{ csrf_field() }}
             <input type="text" placeholder="Search entire store here..." name="key_word">
-            <button class="minicart-content-wrapper" type="submit"><h3><i class="fa fa-search" aria-hidden="true"> Có thể search theo tên sách,từ khoá có trong mô tả của sách,mã sách,....</i></h3></button>
+            <button class="minicart-content-wrapper" type="submit">
+                <h3><i class="fa fa-search" aria-hidden="true"> Có thể search theo tên sách,từ khoá có trong mô
+                        tả của sách,mã sách,....</i></h3>
+            </button>
         </div>
     </form>
     <div class="close__wrap">

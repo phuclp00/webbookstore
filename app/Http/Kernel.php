@@ -50,6 +50,12 @@ class Kernel extends HttpKernel
         'admin' => [
             \App\Http\Middleware\Admin::class,
         ],
+        'login' => [
+            \App\Http\Middleware\LoginRequest::class,
+        ],
+        'user'=>[
+            \App\Http\Middleware\UserProfileRequest::class,
+        ]
     ];
 
     /**

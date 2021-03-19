@@ -136,7 +136,7 @@
 						</table>
 					</div>
 					<div class="tab-pane" id="edit">
-						<form action="{{route('account_update',$data->user_name)}}" method="POST" role="form">
+						<form action="{{route('user.account.update')}}" method="POST" role="form">
 							{{ csrf_field() }}
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label form-control-label">Full Name</label>
@@ -206,17 +206,16 @@
 			</div>
 
 			<div class="col-lg-4 order-lg-1 text-center">
-				@if($data->img!==null)
-				<img src="{{asset('images/user_profile/'.$data->img)}}" class="avatar" style="max-height:450px"
+				@if($data->user_detail->img != null)
+				<img src="{{asset('images/user_profile/'.$data->user_detail->img)}}" class="avatar" style="max-height:450px"
 					alt="avatar">
 				@else
-				<img src="source_project/images/users/user_default.svg" class="avatar"
+				<img src="{{asset('/images/users/user_default.svg')}}" class="avatar"
 					style="vertical-align: middle; width: 100px;height: 100px;border-radius:50%;" alt="avatar">
 				@endif
 				<h6 class="mt-2">Upload a different photo</h6>
 				<label class="custom-file">
-
-					<form action="{{route('update_img',$data->user_name)}}" method="POST" enctype="multipart/form-data">
+					<form action="{{route('user.image.update')}}" method="POST" enctype="multipart/form-data">
 						{{ csrf_field() }}
 						<div class="input">
 							<label for="file" value="Choose Picture"></label>

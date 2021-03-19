@@ -31,32 +31,21 @@ class LoginController extends Controller
 
     public function show_login()
     {
-        if (\session()->has('user_info')) {
-            return view('public.index');
-        }
         return view('public.page.my-account');
     }
     public function Login(Request $request)
     {
-        if (session()->has('user_info')) {
-            return view('public.index');
-        }
-        $request_data = $request->only('username', 'password');
-        try {
-            $check_user = UserModel::where('user_name', $request_data['username'])->orWhere('email',$request_data['username'])->first();
-            if (Hash::check($request_data['password'], $check_user->password)) {
-                $show_info = $check_user;
-                $request->session()->push('user_info', $show_info);
-                return \redirect('/');
-            } else {
-                $request->session()->flash('login_status', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Đăng nhập thất bại, vui lòng thử lại </div>');
-                return \redirect()->back();
-            }
-        } catch (Exception $e) {
-            $request->session()->flash('login_status', '<div class="alert alert-danger"style="text-align: center;font-size: x-large;font-family: fangsong;">
-                    '.$e->getMessage().'Đăng nhập thất bại, vui lòng thử lại !!!!!
-            </div>');
-            return \redirect()->back();
+        $result = $request->only('email', 'password');
+        $option = $request->remember == "on" ? true : false;
+        if (Auth::attempt([
+            'email' => $result['email'],
+            'password' => $result['password'],
+        ], $remember = $option)) {
+            $request->session()->regenerate();
+            $request->session()->flash('info_success','Login Success  ! Wellcome to Bookstore !');
+            return redirect()->route('home');
+        } else {
+            $request->session()->flash('info_warning','Login Failed  ! Please Try Again !');
         }
     }
     public function log_out()
@@ -88,9 +77,9 @@ class LoginController extends Controller
                 'email' => $data_request['email_register'],
                 'created_by' => $data_request['username_register']
             ]);
-            event( new UserRegisted($user));
+            event(new UserRegisted($user));
             $request->session()->flash('logout_status', '<div class="alert alert-success">"Tạo tài khoản thành công , tiếp tục mua sắm nào !!"</div>');
-           
+
             return redirect()->back();
         } catch (Exception $e) {
             $request->session()->flash('logout_status', '<div class="alert alert-danger">Tạo tài khoản thát bại' . $e->getMessage() . ' vui lòng thử lại</div>');
