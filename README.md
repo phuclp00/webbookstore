@@ -27,13 +27,16 @@ git clone : https://github.com/phuclp00/test
 git checkout user_profile
 
 create database : dbbookstore 
-composer install 
+
+composer install
+
 npm install 
 
 costume : .env
 
-
 composer update 
+
+
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
