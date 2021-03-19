@@ -40,8 +40,7 @@ class ProductController extends Controller
     {
 
         $id_item = $request->id;
-        $item = ProductModel::find($id_item);
-        $items_qty = CategoryModel::select('total')->where("cat_id", $item->cat_id)->first();
+        $item = ProductModel::find($id_item)->with('user_detail')->first();
         $data['id'] = $item->book_id;
         $data['qty'] = 1;
         $data['name'] = $item->book_name;

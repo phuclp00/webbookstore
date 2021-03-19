@@ -2,61 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductModel;
+use App\Models\UserModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
     private $pathViewController = 'public.page.checkout';
 
-    public function login_checkout()
-    {
-        return \route('login_view');
-    }
+
     public function checkout_view()
     {
-        return view($this->pathViewController);
+        if(Auth::check()){
+            $user=UserModel::find(Auth::user()->user_id)->with('user_detail')->first();
+            return view($this->pathViewController,['user'=>$user]);
+        }
     }
     public function register_address(Request $request)
     {
-        $id_item = $request->id;
-        $item = ProductModel::find($id_item);
-
-        $items_qty = CategoryModel::select('total')->where("cat_id", $item->cat_id)->first();
-        $data['id'] = $item->book_id;
-        $data['qty'] = 1;
-        $data['name'] = $item->book_name;
-        $data['price'] = $item->price;
-        $data['options']['image'] = $item->img;
-        $data['id'] = $item->book_id;
-        $data['weight'] = 25;
-        Cart::add($data);
-        return \redirect()->back();
-
-
-    }
-
-    //DESTROY 
-    //UPDATE 
-    public function update_cart(Request $request)
-    {
        
-        $rowId = $request->cart_rowId;
-        $qty   = $request->cart_quantity;
-        if (isset($request->remove_cart)) {
-            Cart::update($rowId, 0);
-            return redirect()->back();
-        }
-        else 
-      
-        Cart::update($rowId, $qty);
-        return redirect()->back();
 
-        
     }
-    public function cart_view()
+    public function add_order_detail(Request $var = null)
     {
-        return view('public.page.cart');
-
+        # code...
     }
-    
+    public function add_order_cart(Request $var = null)
+    {
+        # code...
+    }
 }

@@ -81,7 +81,6 @@
 										<button id="tocart" class="tocart" type="submit" title="Add to Cart">Add to
 											Cart</button>
 									</div>
-
 								</div>
 								<div class="product-addto-links clearfix">
 									<a class="wishlist" href="#"></a>

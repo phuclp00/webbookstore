@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Events\NotificationEvent;
 use App\Events\UserRegisted;
+use App\Http\Controllers\CheckoutController;
 use App\Models\Notifications;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Notification;
@@ -151,11 +152,11 @@ Route::group(['prefix' => $controllerName], function () {
 
 $controllerName = 'checkout';
 Route::group(['prefix' => $controllerName], function () {
-    $controller = HomeController::class;
+    $controller = CheckoutController::class;
     Route::get('/check-out-product', [$controller, 'checkout_view'])->name("checkout");
     Route::get('/check-out-order', [$controller, 'add_order_cart'])->name("add_order_cart");
     Route::get('/check-out-order-detail', [$controller, 'add_order_detail'])->name("add_order_detail");
-    Route::get('/check-out-register-address', [LoginController::class, 'register_address'])->name("register_address");
+    Route::get('/check-out-register-address', [$controller, 'register_address'])->name("register_address");
 });
 //======================================HOME - CART ====================================//
 

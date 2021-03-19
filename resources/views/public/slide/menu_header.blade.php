@@ -112,11 +112,10 @@
                                 <div class="single__items">
                                     <div class="miniproduct">
                                         @foreach ($content as $item)
-
                                         <div class="item01 d-flex">
                                             <div class="thumb">
-                                                <a href="product-details.html"><img
-                                                        src="{{asset('images/product/sm-img/'.$item->options->image)}}"
+                                                <a href="{{route('product',['id'=>$item->id])}}"><img
+                                                        src="{{asset('images/books/'.$item->id.'/'.$item->options->image)}}"
                                                         alt="product images"></a>
                                             </div>
                                             <div class="content">

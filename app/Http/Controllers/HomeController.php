@@ -125,14 +125,7 @@ class HomeController extends Controller
     {
         return view($this->pathViewController . $this->subpatchViewController  . '.wishlist');
     }
-    public function checkout_view()
-    {
-        if (session()->has('user_info')) {
-            return view($this->pathViewController . $this->subpatchViewController  . '.checkout');
-        } else {
-            return view('public.page.my-account');
-        }
-    }
+   
 
     public function blog_view()
     {
