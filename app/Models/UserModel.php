@@ -13,6 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Events\UserRegisted;
 use Illuminate\Database\Eloquent\Model;
 use Prophecy\Doubler\Generator\Node\ReturnTypeNode;
+use Laravel\Scout\Searchable;
 
 class UserModel extends Authenticatable
 {
@@ -21,6 +22,7 @@ class UserModel extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use Searchable;
 
     //DEFINED DATABASE TABLE
     protected $table = "user_account";
@@ -77,7 +79,27 @@ class UserModel extends Authenticatable
         'delete' => UserDeleted::class,
         'ban'=>UserBan::class,
     ];
-   
+    public function getRouteKeyName()
+    {
+        return 'user_id';
+    }
+    public function isPublished()
+    {
+        return $this->created_at !== null;
+    }
+    public function shouldBeSearchable()
+    {
+        return $this->isPublished();
+    }
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+        return $array;
+    }
+    protected function makeAllSearchableUsing($query)
+    {
+        return $query->with('user_detail');
+    }
     public function user_detail()
     {
         return $this->hasOne(UserDetail::class,'user_id');

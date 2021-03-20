@@ -4,21 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\BookThumbnailModel;
-use App\Models\CategoryModel;
 use Illuminate\Http\Request;
 use App\Models\ProductModel;
-use Gloudemans\ShoppingCart\CartItem;
-use Illuminate\Support\Facades\Session as FacadesSession;
-use Session;
-use Category;
 use Cart;
 use Exception;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-
-session_start();
+use  Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     public function index(Request $request )
@@ -40,7 +31,7 @@ class ProductController extends Controller
     {
 
         $id_item = $request->id;
-        $item = ProductModel::find($id_item)->with('user_detail')->first();
+        $item = ProductModel::find($id_item);
         $data['id'] = $item->book_id;
         $data['qty'] = 1;
         $data['name'] = $item->book_name;
@@ -93,8 +84,8 @@ class ProductController extends Controller
     public function find_product(Request $request)
     {
         $key_find = $request->key_word;
-        $list_search = ProductModel::Where('book_id', '=', $key_find)
-            ->orwhere('book_name', 'like', '%' . $key_find . '%')
+        $list_search = ProductModel::with('category')->with('publisher')->where('book_name', '=', $key_find)
+            ->orwhere('cate', 'like', '%' . $key_find . '%')
             ->orWhere('description', 'like', '%' . $key_find . '%')
             ->paginate(6);
 
@@ -108,7 +99,7 @@ class ProductController extends Controller
             return view('errors.error404');
         }
     }
-    public function book_add(ProductRequest  $request)
+    public function add(ProductRequest  $request)
     {
         try {
             $data = new ProductModel();
@@ -160,7 +151,7 @@ class ProductController extends Controller
             return \redirect()->back();
         }
     }
-    public function book_edit(ProductRequest $request)
+    public function update(ProductRequest $request)
     {
         try {
             $data = ProductModel::find($request->book_id);
@@ -189,11 +180,11 @@ class ProductController extends Controller
                     $i++;
                 }
                 //destroy folder
-                $file->destroy("images", "books/" . $data->book_id);
+                $file->destroy("images", "books/$data->book_id",null);
             } elseif ($file_name != null) {
                 $data->img =  $data->book_id . "_" . $data->book_name . "." . $file_name->clientExtension();
                 //Book image destroy
-                $file->destroy(null, null, "books/$data->book_id/$data->img");
+                $file->destroy("images", "books","$data->book_id/$data->img");
             } elseif ($ext_thumb != null) {
                 $i = 0;
                 while ($i < 8) {
@@ -222,20 +213,24 @@ class ProductController extends Controller
                     }
                 }
             }
-            $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->book_name . ' Successfully !! </div>');
+            $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Update ' . $request->book_name . ' Successfully !! </div>');
             return \redirect()->route('admin.books');
         } catch (QueryException $e) {
-            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->book_name . 'Fail,Try Again !! </div>');
+            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Update ' . $request->book_name . 'Fail,Try Again !! </div>');
             return \redirect()->back();
         }
     }
-    public function book_delete(Request $request)
+    public function remove(Request $request)
     {
+        $file = new FileuploadController();
         try {
             $result = ProductModel::destroy($request->book_id);
-            $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->book_name . ' Successfully !! </div>');
+            if($result){
+                $file->destroy("images", "books/$request->book_id",null);
+                $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Remove ' . $request->book_name . ' Successfully !! </div>');
+            }
         } catch (\Throwable $th) {
-            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->book_name . 'Fail,Try Again !! </div>');
+            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Remove ' . $request->book_name . 'Fail,Try Again !! </div>');
         } finally {
             return redirect()->back();
         }

@@ -24,7 +24,7 @@ class PublisherRequest extends FormRequest
     public function rules()
     {
         return [
-            'pub_id' => 'required|string|size:5',
+            'pub_id' => 'required|string',
             'pub_name' => 'required|string',
             'img'=>'image',
             'content'=>'required',

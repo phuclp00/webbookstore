@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 19, 2021 lúc 03:24 PM
+-- Thời gian đã tạo: Th3 20, 2021 lúc 08:19 PM
 -- Phiên bản máy phục vụ: 10.4.17-MariaDB
 -- Phiên bản PHP: 7.4.13
 
@@ -47,21 +47,10 @@ CREATE TABLE `book` (
 --
 
 INSERT INTO `book` (`book_id`, `book_name`, `description`, `price`, `img`, `pub_id`, `cat_id`, `promotion_price`, `created_at`, `created_by`, `modiffed_at`, `modiffed_by`) VALUES
-('23', 'GOGO', '<p><i><strong>adadadadadadadadad</strong></i></p>', 1000, '23_GOGO.jpg', 'pn', 'kt', 11, '2021-02-27 17:30:44', NULL, '2021-03-19 19:23:11', NULL),
-('a', 'a', 'a', 0, 'a', 'aadsd', 'adada', 0, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('aax', 'xxx', 'xxx', 0, 'adada', 'vhtt', 'nn', NULL, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('adad', 'adada', 'adadad', 1313, 'adad', 'gd', 'nn', 1131, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('adsss', 'ssss', 'ssss', 123, 'sdsada', 'vhtt', 'nn', NULL, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('asda', 'asdsasda', NULL, 2, 'asda_asdsasda.png', 'gd', 'Ls', 11, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('loc', 'do', NULL, 111, 'Csapture.PNG', 'gd', 'gk', 1111, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('PP01', 'POJ', NULL, 1111, 'PP01_POJ.jpg', 'gd', 'adada', 11, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('sa', 'sa', NULL, 1, 'sp_android_2160_1920.jpg', 'aadsd', 'khkt', 1, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('sd', 'sd', NULL, 1, 'sd_sd.png', 'aadsd', 'khkt', 3, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('td01', 'Từ Điển mẫu câu tiếng Nhật', 'Tập hợp tất cả các mẫu câu tiếng Nhật. Phong phú, đầu đủ nhất. ', 450000, 'td01.jpg', 'gd', 'td', 2235, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('td02', 'Từ Điển Kinh Doanh Và Tiếp Thị Hiện Đại', 'Quyển sách “Từ điển Kinh doanh – Tiếp thị Hiện đại” (Modern Business & Marketing Dictionary) của tác giả Cung Kim Tiến (Bút danh Anh Tuấn) trình bày các thuật ngữ đang sử dụng thịnh hành trong giao dịch kinh doanh và tiếp thị trong nước và quốc tế. Đặc điểm của quyển sách là các thuật ngữ được đặt trong các bối cảnh khác nhau, bằng cách dẫn các đoạn văn xuất hiện trong thực tiễn kinh doanh quốc tế, giúp bạn đọc hiểu rõ được ý nghĩa và cách sử dụng trong thực tiễn của các thuật ngữ chuyên biệt này, với các nội dung thú vị khác nhau.\r\n Tác giả đã chọn lọc một cách công phu các đoạn văn đa dạng và phong phú, xuất hiện trên các ấn phẩm quốc tế khác nhau, giúp độc giả có cơ hội thuận lợi trong giao tiếp, soạn thảo, hoặc tham gia các buổi họp liên quan đến kinh doanh, đảm nhiệm các nhiệm vụ về kinh doanh, quản lý và tiếp thị trong các doanh nghiệp.\r\nQuyển sách này được kỳ vọng sẽ trợ giúp hiệu quả để bạn đọc tiếp cận một lĩnh vực tri thức kinh doanh bằng Anh ngữ, là bạn đồng hành trên con đường sự nghiệp trong thời kỳ quốc tế hóa.', 195000, 'td02.gif', 'vhtt', 'td', 9885, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('td03', 'Đại Từ Điển Tiếng Việt (Bản mới 2010)', 'Thêm yêu tiếng Việt\r\n\r\n \r\n\r\nTừ lâu chúng ta đã có nhiều công trình nghiên cứu về kho tàng tiếng Việt, thế nhưng “Đại từ điển tiếng Việt” (NXB Đại học Quốc gia TPHCM - Nguyễn Như Ý chủ biên) vừa ra mắt bạn đọc là công trình đầy đặn và đồ sộ nhất. Cuốn sách đã bắt nhịp cầu cho những ai yêu tiếng mẹ…\r\n\r\n \r\n\r\nCầm trên tay cuốn Đại từ điển dày gần 2.000 trang mới cảm nhận hết tâm huyết của những người làm sách. Cuốn từ điển này được in lần đầu tiên vào năm 1999, đến nay, đáp ứng nhu cầu của bạn đọc, các tác giả đã tiến hành nghiên cứu, bổ sung.\r\n\r\n \r\n\r\nTrong lần tái bản này, ban biên soạn đã chọn và đưa vào sách những từ ngữ mới xuất hiện và đã được dùng rộng rãi trong đời sống và trên các phương tiện thông tin đại chúng nhằm làm tăng tính mới mẻ và tiện ích cho người sử dụng.\r\n\r\n \r\n\r\nMột trong những ý tưởng chinh phục người đọc là tính đa dạng của Đại từ điển tiếng Việt. Bởi nó không chỉ đơn thuần là sự tra cứu nghĩa các từ mà mở ra chân trời kiến thức mới. Việc đan xen những kiến thức cơ bản về văn hóa, văn minh Việt Nam và thế giới, giới thiệu tổng quan và hệ thống các hiện vật văn hóa như: Đơn vị đo lường của Việt Nam và thế giới, đồng bạc Việt xưa và nay, các loại trống đồng hiện có ở Việt Nam, quốc kỳ các nước trên thế giới… Đây là những thông tin bổ ích đáp ứng nhu cầu bổ sung kiến thức cơ bản của học sinh - sinh viên và các bạn trẻ Việt Nam.\r\n\r\n\r\n', 450000, 'td03.jpg', 'hcm', 'td', 2621, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('td04', 'từ điển y học sức khỏe bệnh lý Anh Anh Việt', 'Từ điển y học - sức khỏe bệnh lý Anh Anh Việt này được biên soạn để đáp ứng nhu cầu tìm hiểu, tra cướu và dịch thuật các tư liệu y khoa bằng tiếng anh, cũng như tăng cường kiến thức về các bệnh thường gặp của các thành phần độc giả trong xã hội. ', 380000, 'td04.jpg', 'tn', 'td', 3350, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('td05', 'Từ Điển Anh Việt - 75000 Từ', 'Từ điển mới ...', 50000, 'td05.jpg', 'hcm', 'td', 8789, '2021-02-27 17:30:44', NULL, NULL, NULL),
+('td01', 'Từ Điển mẫu câu tiếng Nhật', '<p>Tập hợp tất cả các mẫu câu tiếng Nhật. Phong phú, đầu đủ nhất.</p>', 450000, 'td01_Từ Điển mẫu câu tiếng Nhật.jpg', 'gd', 'td', 2235, '2021-02-27 17:30:44', NULL, '2021-03-20 22:44:23', NULL),
+('td02', 'Từ Điển Kinh Doanh Và Tiếp Thị Hiện Đại', '<p>Quyển sách “Từ điển Kinh doanh – Tiếp thị Hiện đại” (Modern Business &amp; Marketing Dictionary) của tác giả Cung Kim Tiến (Bút danh Anh Tuấn) trình bày các thuật ngữ đang sử dụng thịnh hành trong giao dịch kinh doanh và tiếp thị trong nước và quốc tế. Đặc điểm của quyển sách là các thuật ngữ được đặt trong các bối cảnh khác nhau, bằng cách dẫn các đoạn văn xuất hiện trong thực tiễn kinh doanh quốc tế, giúp bạn đọc hiểu rõ được ý nghĩa và cách sử dụng trong thực tiễn của các thuật ngữ chuyên biệt này, với các nội dung thú vị khác nhau. Tác giả đã chọn lọc một cách công phu các đoạn văn đa dạng và phong phú, xuất hiện trên các ấn phẩm quốc tế khác nhau, giúp độc giả có cơ hội thuận lợi trong giao tiếp, soạn thảo, hoặc tham gia các buổi họp liên quan đến kinh doanh, đảm nhiệm các nhiệm vụ về kinh doanh, quản lý và tiếp thị trong các doanh nghiệp. Quyển sách này được kỳ vọng sẽ trợ giúp hiệu quả để bạn đọc tiếp cận một lĩnh vực tri thức kinh doanh bằng Anh ngữ, là bạn đồng hành trên con đường sự nghiệp trong thời kỳ quốc tế hóa.</p>', 195000, 'td02_Từ Điển Kinh Doanh Và Tiếp Thị Hiện Đại.jpg', 'vhtt', 'td', 9885, '2021-02-27 17:30:44', NULL, '2021-03-20 22:45:29', NULL),
+('td03', 'Đại Từ Điển Tiếng Việt (Bản mới 2010)', '<p><i><strong>Thêm yêu tiếng Việt Từ lâu chúng ta đã có nhiều công trình nghiên cứu về kho tàng tiếng Việt, thế nhưng “Đại từ điển tiếng Việt” (NXB Đại học Quốc gia TPHCM - Nguyễn Như Ý chủ biên) vừa ra mắt bạn đọc là công trình đầy đặn và đồ sộ nhất. Cuốn sách đã bắt nhịp cầu cho những ai yêu tiếng mẹ… Cầm trên tay cuốn Đại từ điển dày gần 2.000 trang mới cảm nhận hết tâm huyết của những người làm sách. Cuốn từ điển này được in lần đầu tiên vào năm 1999, đến nay, đáp ứng nhu cầu của bạn đọc, các tác giả đã tiến hành nghiên cứu, bổ sung. Trong lần tái bản này, ban biên soạn đã chọn và đưa vào sách những từ ngữ mới xuất hiện và đã được dùng rộng rãi trong đời sống và trên các phương tiện thông tin đại chúng nhằm làm tăng tính mới mẻ và tiện ích cho người sử dụng. Một trong những ý tưởng chinh phục người đọc là tính đa dạng của Đại từ điển tiếng Việt. Bởi nó không chỉ đơn thuần là sự tra cứu nghĩa các từ mà mở ra chân trời kiến thức mới. Việc đan xen những kiến thức cơ bản về văn hóa, văn minh Việt Nam và thế giới, giới thiệu tổng quan và hệ thống các hiện vật văn hóa như: Đơn vị đo lường của Việt Nam và thế giới, đồng bạc Việt xưa và nay, các loại trống đồng hiện có ở Việt Nam, quốc kỳ các nước trên thế giới… Đây là những thông tin bổ ích đáp ứng nhu cầu bổ sung kiến thức cơ bản của học sinh - sinh viên và các bạn trẻ Việt Nam.</strong></i></p>', 450000, 'td03_Đại Từ Điển Tiếng Việt (Bản mới 2010).jpg', 'hcm', 'td', 2621, '2021-02-27 17:30:44', NULL, '2021-03-20 22:46:00', NULL),
+('td05', 'Từ Điển Anh Việt - 75000 Từ', '<p>Từ điển mới ...</p>', 50000, 'td05_Từ Điển Anh Việt - 75000 Từ.jpg', 'hcm', 'td', 8789, '2021-02-27 17:30:44', NULL, '2021-03-20 22:53:08', NULL),
 ('td06', 'Từ điển địa danh hành chính Nam Bộ', 'Từ điển địa danh hành chính Nam Bộ do tác giả Nguyễn Đình Tư biên soạn hết sức công phu, tổng hợp được nhiều tư liệu quý, là công cụ giúp bạn đọc tra cứu một cách khoa học về địa danh hành chính. Đây là cuốn sách có giá trị không chỉ bởi nó cung cấp một lượng mục từ khá đồ sộ, mà còn bởi tác giả đã dành rất nhiều công sức và tâm huyết để sưu tầm, xử lý tư liệu về vùng đất có bề dày truyền thống lịch sử, nhưng cũng có sự thay đổi nhiều và phức tạp nhất về địa danh hành chính', 265000, 'td06.jpg', 'hcm', 'td', 3793, '2021-02-27 17:30:44', NULL, NULL, NULL),
 ('th01', '100 thủ thuật với Excel 2010', '100 thủ thuật ứng với 100 bài tập thực hành được hướng dẫn, giải thích theo bố cục chặt chẽ, cách trình bày rõ ràng, dễ sử dụng, bạn đọc có thể tự mình xử lý những vấn đề nảy sinh trong quá trình thực hành đồng thời giúp các bạn thao tác nhanh trên bảng tính.\r\n', 54000, 'th01.gif', 'hcm', 'th', 2498, '2021-02-27 17:30:44', NULL, NULL, NULL),
 ('th02', 'Lập trình web bằng PHP 5.3 và cơ sở dữ liệu', 'Tiếp theo tập 1, tập 2 của cuốn sách \"Lập trình Web bằng PHP 5.3 và cơ sở dữ liệu MySQL 5.1\" bao gồm 10 chương và ứng dụng đính kèm lần lượt giới thiệu cùng bạn đọc các kiến thức liên quan đến Session, Cookie, giỏ hàng trực tuyến, tìm kiếm và phân trang dữ liệu, lập trình hướng đối tượng và sử dụng Zend Framework.\r\n\r\nChương 8 trình bày kiến thức cơ bản của kịch bản trình chủ PHP và cơ sở dữ liệu MySQL.\r\n\r\nSang chương 9, bạn tiếp tục tìm hiểu cách thiết kế trang Web cho phép người sử dụng tìm kiếm và phân trang dữ liệu trình bày với nhiều hình thức khác nhau.\r\n\r\nĐể xây dựng ứng dụng thương mại điện tử hoàn chỉnh và mang tính chuyên nghiệp cao, bạn tiếp tục tìm hiểu cách sử dụng hàm Session và Cookie trong chương 10 để lưu trữ thông tin của người sử dụng nhằm vào mục đích quản lý tài nguyên của Website.\r\n\r\nMọi ứng dụng thương mại điện tử đều cung cấp chương giỏ hàng trực tuyến, bạn cũng được tìm hiểu cách xây dựng giỏ hàng bằng cách sử dụng Session lẫn Cookie trong chương 11.\r\n\r\nKhi có nhu cầu trình bày hình ảnh, đồ thị và âm thanh lẫn phim ảnh, bạn tìm hiểu cách sử dụng mã PHP trong chương 12.\r\n\r\nTiếp theo, bạn có thể tìm hiểu cú pháp của kịch bản PHP trong chương 13 và học cách lập trình hướng đối tượng và sử dụng lớp này vào ứng dụng trong chương 14.\r\n\r\nChương 15 giúp bạn sử dụng kịch bản trình khách Java Script để thay đổi góc nhìn và ứng xử của thẻ HTML trong trang Web.\r\n\r\nSang chương 16, bạn khám phá thư viện mã nguồn mở Zend viết bằng PHP dùng cho các loại cơ sở dữ liệu và học cách sử dụng các lớp trong thư viện này vào ứng dụng bán hàng trực tuyến trong chương 17.', 76000, 'th02.jpg', 'hcm', 'th', 1013, '2021-02-27 17:30:44', NULL, NULL, NULL),
@@ -82,17 +71,7 @@ INSERT INTO `book` (`book_id`, `book_name`, `description`, `price`, `img`, `pub_
 ('th17', 'Thiết Kế Web Với CSS', '\r\nTừ khi được giới thiệu năm 1996, bảng kiểu xếp tầng (CSS) đã làm thay đổi đáng kể thiết kế Web. Hiện nay, phần lớn trang Web đều sử dụng CSS và nhiều nhà thiết kế đã xây dựng các bố cục trang hoàn toàn dựa trên CSS. Để thực hiện điều này một cách thành công, đòi hỏi chúng ta phải hiểu biết kỹ về nội dung hoạt động của CSS. Sách Thiết Kế Web Với CSS cung cấp cho bạn những vấn đề cần thiết để sử dụng CSS. ', 82000, 'th17.jpg', 'gd', 'th', 6803, '2021-02-27 17:30:44', NULL, NULL, NULL),
 ('th18', 'Thiết Kế Web Với JavaScript Và Dom', 'Nội dung cuốn sách \"Thiết Kế Web Với JavaScript Và Dom\" giới thiệu về ngôn ngữ lập trình, nhưng nó không chỉ dành riêng cho các lập trình viên, mà còn rất có ích cho các nhà thiết kế Web.', 79000, 'th18.jpg', 'gd', 'th', 7418, '2021-02-27 17:30:44', NULL, NULL, NULL),
 ('th88', 'sach giao khoa lop 10', '?', 30000, 'th18.jpg', 'gd', 'gk', 6583, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('xf', 'faada', NULL, 1, 'xf_faada.png', 'aadsd', 'nn', 11, '2021-02-27 17:30:44', NULL, NULL, NULL),
-('xxx', '1', NULL, 1111, '107979597_1766893596784264_2979431564435528757_n.j', 'aadsd', 'gk', 111, '2021-02-27 17:30:44', NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Cấu trúc đóng vai cho view `book_list_view`
--- (See below for the actual view)
---
-CREATE TABLE `book_list_view` (
-);
+('thcs', 'Trung Hoc Co SO', '<p>&lt;tbody&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;tr&gt;<br>&nbsp; &nbsp;&lt;th class=\"table-label\"&gt;Mã hàng&lt;/th&gt;<br>&nbsp; &nbsp;&lt;td class=\"data\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;9786040189066 &nbsp; &nbsp;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;&lt;th class=\"table-label\"&gt;Tên Nhà Cung Cấp&lt;/th&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;&lt;td class=\"data\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Nhà xuất bản Giáo Dục &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/td&gt;<br>&nbsp; &nbsp;&lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;tr&gt;<br>&nbsp; &nbsp;&lt;th class=\"table-label\"&gt;Tác giả&lt;/th&gt;<br>&nbsp; &nbsp;&lt;td class=\"data\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bộ Giáo Dục Và Đào Tạo &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;tr&gt;<br>&nbsp; &nbsp;&lt;th class=\"table-label\"&gt;NXB&lt;/th&gt;<br>&nbsp; &nbsp;&lt;td class=\"data\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;NXB Giáo Dục Việt Nam &nbsp; &nbsp;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;tr&gt;<br>&nbsp; &nbsp;&lt;th class=\"table-label\"&gt;Năm XB&lt;/th&gt;<br>&nbsp; &nbsp;&lt;td class=\"data\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;2020 &nbsp; &nbsp;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;tr&gt;<br>&nbsp; &nbsp;&lt;th class=\"table-label\"&gt;Trọng lượng (gr)&lt;/th&gt;<br>&nbsp; &nbsp;&lt;td class=\"data\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;140 &nbsp; &nbsp;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;tr&gt;<br>&nbsp; &nbsp;&lt;th class=\"table-label\"&gt;Kích Thước Bao Bì&lt;/th&gt;<br>&nbsp; &nbsp;&lt;td class=\"data\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;24 x 17 cm &nbsp; &nbsp;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;tr&gt;<br>&nbsp; &nbsp;&lt;th class=\"table-label\"&gt;Số trang&lt;/th&gt;<br>&nbsp; &nbsp;&lt;td class=\"data\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;136 &nbsp; &nbsp;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;tr&gt;<br>&nbsp; &nbsp;&lt;th class=\"table-label\"&gt;Hình thức&lt;/th&gt;<br>&nbsp; &nbsp;&lt;td class=\"data\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;Bìa Mềm &nbsp; &nbsp;&lt;/td&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;tr&gt;<br>&nbsp; &nbsp; &nbsp; &lt;th style=\"vertical-align: middle;\" class=\"table-label\"&gt;Sản phẩm hiển thị trong&lt;/th&gt;<br>&nbsp; &nbsp; &nbsp; &lt;td&gt;<br>&nbsp; &nbsp;&lt;ul class=\"fhs_product_link\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;a style=\"font-size: 14px; color: #F39801\" href=\"ong-trum-truong-hoc?fhs_campaign=INTERNAL_LINKING\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; Ông Trùm Trường Học&lt;/a&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;&lt;/li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;a style=\"font-size: 14px; color: #F39801\" href=\"sach-giao-khoa?fhs_campaign=INTERNAL_LINKING\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; Sách Giáo Khoa - &nbsp;Tham Khảo Các Cấp&lt;/a&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;&lt;/li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;a style=\"font-size: 14px; color: #F39801\" href=\"sach-giao-khoa-cap-3?fhs_campaign=INTERNAL_LINKING\"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; Sách Giáo Khoa Cấp 3&lt;/a&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;&lt;/li&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;&lt;/ul&gt;<br>&nbsp; &nbsp; &nbsp; &lt;/td&gt;<br>&nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;tr&gt;<br>&nbsp; &nbsp; &nbsp; &lt;th style=\"vertical-align: middle;\" class=\"table-label\"&gt;Sản phẩm bán chạy nhất&lt;/th&gt;<br>&nbsp; &nbsp; &nbsp; &lt;td&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;&lt;a style=\"font-size: 14px; color: #F39801;\" href=\"https://www.fahasa.com/sach-trong-nuoc/giao-khoa-tham-khao/sach-giao-khoa/giao-khoa-lop-12/sach-bai-hoc-lop-12/sort-by/num_orders_month/sort-direction/asc.html\"&gt;Top 100 sản phẩm Sách Giáo Khoa bán chạy của tháng&lt;/a&gt;</p><p>&nbsp; &nbsp; &nbsp; &lt;/td&gt;<br>&nbsp; &lt;/tr&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp;&lt;/tbody&gt;</p>', 100000, 'thcs_Trung Hoc Co SO.jpg', 'gd', 'gk', 0, '2021-03-20 21:57:10', NULL, '2021-03-20 21:57:10', NULL);
 
 -- --------------------------------------------------------
 
@@ -121,21 +100,10 @@ CREATE TABLE `book_thumbnail` (
 --
 
 INSERT INTO `book_thumbnail` (`book_id`, `thumbnail_1`, `thumbnail_2`, `thumbnail_3`, `thumbnail_4`, `thumbnail_5`, `thumbnail_6`, `thumbnail_7`, `thumbnail_8`, `created_at`, `created_by`, `modiffed_at`, `modiffed_by`) VALUES
-('23', '23_thumb_1.jpg', '23_thumb_2.jpg', '23_thumb_3.jpg', '23_thumb_4.jpg', '23_thumb_5.jpg', '23_thumb_6.jpg', '23_thumb_7.jpg', '23_thumb_8.jpg', '2021-02-27 17:30:23', NULL, '2021-03-19 19:13:39', NULL),
-('a', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('aax', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('adad', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('adsss', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('asda', 'asda_thumb_1.png', 'asda_thumb_2.png', 'asda_thumb_3.png', 'asda_thumb_4.png', 'asda_thumb_5.png', 'asda_thumb_6.png', 'asda_thumb_7.png', '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('loc', 'Capture3.PNG', 'Capture4.PNG', 'Capture5.PNG', 'Cazzpture.PNG', 'Csapture.PNG', 'EQkrccSUEAAQv3d.jfif', 'EU1cOiLVAAAAJFg.jfif', '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('PP01', 'PP01_thumb_1.jpg', 'PP01_thumb_2.jpg', 'PP01_thumb_3.jpg', 'PP01_thumb_4.jpg', 'PP01_thumb_5.jpg', 'PP01_thumb_6.jpg', 'PP01_thumb_7.png', '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('sa', 'EQkrccSUEAAQv3d.jfif', 'EU1cOiLVAAAAJFg.jfif', 'EU1ljaLUEAAPV63.jfif', 'EVFudEIVAAAbXWK.jfif', 'sp_android_2160_1920.jpg', 'ss_04faef38d701308b089a7dda41a32be5a80974ff.600x338.jpg', 'tim-hieu-ve-mysql__600x219.jpg', '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('sd', 'sd_thumb_1.png', 'sd_thumb_2.png', 'sd_thumb_3.png', 'sd_thumb_4.png', 'sd_thumb_5.png', 'sd_thumb_6.png', 'sd_thumb_7.png', '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('td01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('td02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('td03', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('td04', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('td05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
+('td01', 'td01_thumb_1.jpg', 'td01_thumb_2.jpg', 'td01_thumb_3.jpg', 'td01_thumb_4.jpg', 'td01_thumb_5.jpg', 'td01_thumb_6.jpg', 'td01_thumb_7.jpg', 'td01_thumb_8.jpg', '2021-02-27 17:30:23', NULL, '2021-03-20 22:44:23', NULL),
+('td02', 'td02_thumb_1.jpg', 'td02_thumb_2.jpg', 'td02_thumb_3.jpg', 'td02_thumb_4.jpg', 'td02_thumb_5.jpg', 'td02_thumb_6.jpg', 'td02_thumb_7.jpg', 'td02_thumb_8.jpg', '2021-02-27 17:30:23', NULL, '2021-03-20 22:45:30', NULL),
+('td03', 'td03_thumb_1.jpg', 'td03_thumb_2.jpg', 'td03_thumb_3.jpg', 'td03_thumb_4.jpg', 'td03_thumb_5.jpg', 'td03_thumb_6.jpg', 'td03_thumb_7.jpg', 'td03_thumb_8.jpg', '2021-02-27 17:30:23', NULL, '2021-03-20 22:46:01', NULL),
+('td05', 'td05_thumb_1.jpg', 'td05_thumb_2.jpg', 'td05_thumb_3.jpg', 'td05_thumb_4.jpg', 'td05_thumb_5.jpg', 'td05_thumb_6.jpg', 'td05_thumb_7.jpg', 'td05_thumb_8.jpg', '2021-02-27 17:30:23', NULL, '2021-03-20 22:53:08', NULL),
 ('td06', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
 ('th01', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
 ('th02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
@@ -156,8 +124,7 @@ INSERT INTO `book_thumbnail` (`book_id`, `thumbnail_1`, `thumbnail_2`, `thumbnai
 ('th17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
 ('th18', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
 ('th88', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('xf', 'xf_thumb_1.png', 'xf_thumb_2.png', 'xf_thumb_3.png', 'xf_thumb_4.png', 'xf_thumb_5.png', 'xf_thumb_6.png', 'xf_thumb_7.png', '', '2021-02-27 17:30:23', NULL, NULL, NULL),
-('xxx', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '2021-02-27 17:30:23', NULL, NULL, NULL);
+('thcs', 'thcs_thumb_1.jpg', 'thcs_thumb_2.jpg', 'thcs_thumb_3.jpg', 'thcs_thumb_4.jpg', 'thcs_thumb_5.jpg', 'thcs_thumb_6.jpg', 'thcs_thumb_7.jpg', 'thcs_thumb_8.jpg', '2021-03-20 21:57:10', NULL, '2021-03-20 21:57:10', NULL);
 
 -- --------------------------------------------------------
 
@@ -182,9 +149,9 @@ CREATE TABLE `category` (
   `cat_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `total` int(11) NOT NULL DEFAULT 0,
   `description` varchar(255) DEFAULT NULL,
-  `created` datetime DEFAULT current_timestamp(),
+  `created_at` datetime DEFAULT current_timestamp(),
   `created_by` varchar(45) DEFAULT 'admin',
-  `modiffed` datetime DEFAULT NULL,
+  `modiffed_at` datetime DEFAULT NULL,
   `modiffed_by` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -192,8 +159,7 @@ CREATE TABLE `category` (
 -- Đang đổ dữ liệu cho bảng `category`
 --
 
-INSERT INTO `category` (`cat_id`, `cat_name`, `total`, `description`, `created`, `created_by`, `modiffed`, `modiffed_by`) VALUES
-('adada', 'sss', 3, '<p>adadadadad</p>', '2020-12-26 23:56:31', 'admin', '2020-12-27 00:40:05', NULL),
+INSERT INTO `category` (`cat_id`, `cat_name`, `total`, `description`, `created_at`, `created_by`, `modiffed_at`, `modiffed_by`) VALUES
 ('gk', 'Giáo Khoa', 39, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet', '2020-11-29 19:32:13', NULL, NULL, NULL),
 ('khkt', 'Ky Thuat', 37, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet', '2020-11-29 19:32:13', NULL, NULL, NULL),
 ('kt', 'Kinh Tế', 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet', '2020-11-29 19:32:13', NULL, NULL, NULL),
@@ -214,9 +180,9 @@ INSERT INTO `category` (`cat_id`, `cat_name`, `total`, `description`, `created`,
 --
 
 CREATE TABLE `comments` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `post_id` int(10) UNSIGNED NOT NULL,
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
   `body` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -249,6 +215,42 @@ CREATE TABLE `fileuploads` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `guest`
+--
+
+CREATE TABLE `guest` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `street` varchar(255) NOT NULL,
+  `district` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `votes` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `created_by` varchar(45) DEFAULT NULL,
+  `modiffed_at` datetime DEFAULT NULL,
+  `modiffed_by` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Đang đổ dữ liệu cho bảng `guest`
+--
+
+INSERT INTO `guest` (`id`, `name`, `street`, `district`, `city`, `phone`, `votes`, `created_at`, `created_by`, `modiffed_at`, `modiffed_by`) VALUES
+(40, 'loc', '29 218 Cao Lỗ, phường 4', 'quận 8', 'Hồ Chí Minh', '+84 374407507', NULL, '2021-03-17 11:35:31', NULL, '2021-03-19 16:57:05', NULL),
+(58, '1', '1', '1', '1', '1', '1', '2021-03-06 15:11:03', NULL, NULL, NULL),
+(60, '1', '1', '1', '1', '1', '1', '2021-03-06 15:15:15', NULL, NULL, NULL),
+(61, '1', '1', '1', '1', '1', '1', '2021-03-06 15:15:47', NULL, NULL, NULL),
+(63, '1', '1', '1', '1', '1', '1', '2021-03-06 15:16:08', NULL, NULL, NULL),
+(65, '1', '1', '1', '1', '', '1', '2021-03-06 15:45:18', NULL, NULL, NULL),
+(67, '1', '1', '1', '', '1', '1', '2021-03-06 15:46:29', NULL, NULL, NULL),
+(68, '1', '1', '1', '1', '1', '1', '2021-03-06 15:56:10', NULL, NULL, NULL),
+(69, '1', '1', '1', '1', '1', '1', '2021-03-17 10:13:41', NULL, NULL, NULL),
+(70, '', '', '', '', '', NULL, '2021-03-19 11:30:01', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -477,8 +479,8 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 CREATE TABLE `posts` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `content` text NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT 0,
@@ -509,14 +511,14 @@ CREATE TABLE `publisher` (
 --
 
 INSERT INTO `publisher` (`pub_id`, `pub_name`, `pub_img`, `total`, `description`, `created_at`, `created_by`, `modiffed_at`, `modiffed_by`) VALUES
-('aadsd', 'adadad', 'Cazzpture.PNG', 6, '<p>adadadad</p>', '2021-02-27 17:29:45', NULL, NULL, NULL),
-('gd', 'Giáo dục', NULL, 18, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet', '2021-02-27 17:29:45', NULL, NULL, NULL),
-('hcm', 'Tổng Hợp Hồ Chí Minh', NULL, 10, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet', '2021-02-27 17:29:45', NULL, NULL, NULL),
-('hnv', 'Hội Nhà Văn', NULL, 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet', '2021-02-27 17:29:45', NULL, NULL, NULL),
-('pn', 'Phụ Nữ', NULL, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet', '2021-02-27 17:29:45', NULL, NULL, NULL),
-('tn', 'Thanh Niên', NULL, 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet', '2021-02-27 17:29:45', NULL, NULL, NULL),
-('vh', 'Văn Học', NULL, 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet', '2021-02-27 17:29:45', NULL, NULL, NULL),
-('vhtt', 'Văn Hóa Thông Tin', NULL, 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet', '2021-02-27 17:29:45', NULL, NULL, NULL);
+('gd', 'Giáo dục 1', 'gd_Giáo dục 1.jpg', 18, '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet</p>', '2021-02-27 17:29:45', NULL, NULL, NULL),
+('hcm', 'Tổng Hợp Hồ Chí Minh', 'hcm_Tổng Hợp Hồ Chí Minh.jpg', 10, '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet</p>', '2021-02-27 17:29:45', NULL, NULL, NULL),
+('hnv', 'Hội Nhà Văn', 'hnv_Hội Nhà Văn.jpg', 0, '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet</p>', '2021-02-27 17:29:45', NULL, NULL, NULL),
+('kd', 'Nhà Xuất Bản Kim Đồng 1', 'annelies-geneyn-bhBONc07WsI-unsplash.jpg', NULL, '<p>Nhà Xuất Bản Kim Đồng</p>', '2021-03-20 22:03:28', NULL, NULL, NULL),
+('pn', 'Phụ Nữ', 'pn_Phụ Nữ.jpg', 1, '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet</p>', '2021-02-27 17:29:45', NULL, NULL, NULL),
+('tn', 'Thanh Niên', 'tn_Thanh Niên.jpg', 4, '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet</p>', '2021-02-27 17:29:45', NULL, NULL, NULL),
+('vh', 'Văn Học', 'vh_Văn Học.jpg', 0, '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet</p>', '2021-02-27 17:29:45', NULL, NULL, NULL),
+('vhtt', 'Văn Hóa Thông Tin', 'vhtt_Văn Hóa Thông Tin.jpg', 4, '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus non elit a scelerisque. Etiam feugiat luctus est, vel commodo odio rhoncus sit amet</p>', '2021-02-27 17:29:45', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -558,7 +560,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('vNejsgP5fqsnPGgcklmTkHQKYG9htUjCLOtTzQlk', 40, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiSkVvZFBrVDFuZWEwczZDcmg5NHdlelJtWmVwZEI5Q3dqNTRFRnlnSCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly9sb2NhbGhvc3Q6ODEvd2ViYm9va3N0b3JlL3B1YmxpYyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjQwO3M6MTc6InBhc3N3b3JkX2hhc2hfd2ViIjtzOjYwOiIkMnkkMTAkU3lJeXoxZWVXRHlsL1JaSlVSZHpvT0hPVkxONlY1cFpOR0k2Q2RmeTZiTG0wQVpOenB1UnUiO3M6NDoiY2FydCI7YToxOntzOjc6ImRlZmF1bHQiO086Mjk6IklsbHVtaW5hdGVcU3VwcG9ydFxDb2xsZWN0aW9uIjoxOntzOjg6IgAqAGl0ZW1zIjthOjE6e3M6MzI6IjkzZTVlZmRjOWQxZTQ5MzNlOWU2YTQyMmQ1OTkwODRlIjtPOjMyOiJHbG91ZGVtYW5zXFNob3BwaW5nY2FydFxDYXJ0SXRlbSI6MTA6e3M6NToicm93SWQiO3M6MzI6IjkzZTVlZmRjOWQxZTQ5MzNlOWU2YTQyMmQ1OTkwODRlIjtzOjI6ImlkIjtzOjI6IjIzIjtzOjM6InF0eSI7czoxOiIxIjtzOjQ6Im5hbWUiO3M6NDoiR09HTyI7czo1OiJwcmljZSI7ZDoxMDAwO3M6Njoid2VpZ2h0IjtkOjI1O3M6Nzoib3B0aW9ucyI7TzozOToiR2xvdWRlbWFuc1xTaG9wcGluZ2NhcnRcQ2FydEl0ZW1PcHRpb25zIjoxOntzOjg6IgAqAGl0ZW1zIjthOjE6e3M6NToiaW1hZ2UiO3M6MTE6IjIzX0dPR08uanBnIjt9fXM6NzoidGF4UmF0ZSI7aToyMTtzOjQ5OiIAR2xvdWRlbWFuc1xTaG9wcGluZ2NhcnRcQ2FydEl0ZW0AYXNzb2NpYXRlZE1vZGVsIjtOO3M6NDY6IgBHbG91ZGVtYW5zXFNob3BwaW5nY2FydFxDYXJ0SXRlbQBkaXNjb3VudFJhdGUiO2k6MDt9fX19fQ==', 1616163751);
+('c7Ifx2eXOrrhXngupCR1Nr5M3TwjAh6IV3FhlOX5', 40, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoieGtoaDZ5dzNYSkVFVFJmaHVWUmFMekJPSmZGZkdwdDFEd3FZZTRhQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly9sb2NhbGhvc3Q6ODEvd2ViYm9va3N0b3JlL3B1YmxpYyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NDoiY2FydCI7YToxOntzOjc6ImRlZmF1bHQiO086Mjk6IklsbHVtaW5hdGVcU3VwcG9ydFxDb2xsZWN0aW9uIjoxOntzOjg6IgAqAGl0ZW1zIjthOjI6e3M6MzI6IjBjNjYxNzI4MjIxZWZmZTI4MTE5MTE1ZTYzMmY1OTg0IjtPOjMyOiJHbG91ZGVtYW5zXFNob3BwaW5nY2FydFxDYXJ0SXRlbSI6MTA6e3M6NToicm93SWQiO3M6MzI6IjBjNjYxNzI4MjIxZWZmZTI4MTE5MTE1ZTYzMmY1OTg0IjtzOjI6ImlkIjtzOjQ6InRkMDEiO3M6MzoicXR5IjtpOjM7czo0OiJuYW1lIjtzOjM4OiJU4burIMSQaeG7g24gbeG6q3UgY8OidSB0aeG6v25nIE5o4bqtdCI7czo1OiJwcmljZSI7ZDo0NTAwMDA7czo2OiJ3ZWlnaHQiO2Q6MjU7czo3OiJvcHRpb25zIjtPOjM5OiJHbG91ZGVtYW5zXFNob3BwaW5nY2FydFxDYXJ0SXRlbU9wdGlvbnMiOjE6e3M6ODoiACoAaXRlbXMiO2E6MTp7czo1OiJpbWFnZSI7czo4OiJ0ZDAxLmpwZyI7fX1zOjc6InRheFJhdGUiO2k6MjE7czo0OToiAEdsb3VkZW1hbnNcU2hvcHBpbmdjYXJ0XENhcnRJdGVtAGFzc29jaWF0ZWRNb2RlbCI7TjtzOjQ2OiIAR2xvdWRlbWFuc1xTaG9wcGluZ2NhcnRcQ2FydEl0ZW0AZGlzY291bnRSYXRlIjtpOjA7fXM6MzI6IjliZDRkNGZiYjhmNjk2NjA5MGQ2OTQ0ZGNhMjFkMjZmIjtPOjMyOiJHbG91ZGVtYW5zXFNob3BwaW5nY2FydFxDYXJ0SXRlbSI6MTA6e3M6NToicm93SWQiO3M6MzI6IjliZDRkNGZiYjhmNjk2NjA5MGQ2OTQ0ZGNhMjFkMjZmIjtzOjI6ImlkIjtzOjQ6InRkMDMiO3M6MzoicXR5IjtpOjE7czo0OiJuYW1lIjtzOjUzOiLEkOG6oWkgVOG7qyDEkGnhu4NuIFRp4bq/bmcgVmnhu4d0IChC4bqjbiBt4bubaSAyMDEwKSI7czo1OiJwcmljZSI7ZDo0NTAwMDA7czo2OiJ3ZWlnaHQiO2Q6MjU7czo3OiJvcHRpb25zIjtPOjM5OiJHbG91ZGVtYW5zXFNob3BwaW5nY2FydFxDYXJ0SXRlbU9wdGlvbnMiOjE6e3M6ODoiACoAaXRlbXMiO2E6MTp7czo1OiJpbWFnZSI7czo4OiJ0ZDAzLmpwZyI7fX1zOjc6InRheFJhdGUiO2k6MjE7czo0OToiAEdsb3VkZW1hbnNcU2hvcHBpbmdjYXJ0XENhcnRJdGVtAGFzc29jaWF0ZWRNb2RlbCI7TjtzOjQ2OiIAR2xvdWRlbWFuc1xTaG9wcGluZ2NhcnRcQ2FydEl0ZW0AZGlzY291bnRSYXRlIjtpOjA7fX19fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjQwO3M6MTc6InBhc3N3b3JkX2hhc2hfd2ViIjtzOjYwOiIkMnkkMTAkU3lJeXoxZWVXRHlsL1JaSlVSZHpvT0hPVkxONlY1cFpOR0k2Q2RmeTZiTG0wQVpOenB1UnUiO30=', 1616267477);
 
 -- --------------------------------------------------------
 
@@ -636,15 +638,7 @@ CREATE TABLE `user_account` (
 
 INSERT INTO `user_account` (`user_id`, `user_name`, `password`, `remember_token`, `email`, `email_verified_at`, `level`, `status`, `modiffed_at`, `modiffed_by`, `created_at`, `created_by`) VALUES
 (40, 'loc1', '$2y$10$SyIyz1eeWDyl/RZJURdzoOHOVLN6V5pZNGI6Cdfy6bLm0AZNzpuRu', '4iPDDXTi0vAtdlph1LZOKy4JPbiGSir0CDf2NHfq5BdqU9lFSFEC7aO0iV6W', 'loc1@1', NULL, 'admin', 'active', NULL, NULL, '2020-12-24 09:43:29', NULL),
-(58, 'locdo255@gmail.com', '$2y$10$6mnkSO5aDMdp5eAPbI55uOdE/mFnH1xT8uWOwNMGQM.6Ugt1uzuSa', NULL, 'locdo255@gmail.com', NULL, 'user', 'active', '2021-03-06 15:11:03', NULL, '2021-03-06 15:11:03', 'locdo255@gmail.com'),
-(60, 'lclc', '$2y$10$cAoSI9xUGO2ijpUJYelSL.y7.bU/FEH71576KarHvPinPGTSuyNZ.', NULL, 'lclc1@1', NULL, 'user', 'active', '2021-03-06 15:15:15', NULL, '2021-03-06 15:15:15', 'lclc'),
-(61, 'locdo2551@gmail.co1', '$2y$10$o2bboKr94XUrog348yrH/e6zsp8NdWGBnGOcqnoERcJFzOpcT6WCy', NULL, 'locdo25511@gmail.com', NULL, 'user', 'active', '2021-03-06 15:15:47', NULL, '2021-03-06 15:15:47', 'locdo2551@gmail.co1'),
-(63, 'loc1@1123', '$2y$10$O4xeBrFwa6Lhqezh4hw.KOwyf5QROjqd4aJti0nWUrXpXWNpo2eui', NULL, 'loc1@123', NULL, 'user', 'active', '2021-03-06 15:16:08', NULL, '2021-03-06 15:16:08', 'loc1@1123'),
-(65, 'th', '$2y$10$L/MQl1fZA3ssUYzVakWDC.Xw6nEkq0Rccd2KTmpPiLP6fr.HSNAyq', NULL, 'th1@1', NULL, '', NULL, '2021-03-06 15:45:18', NULL, '2021-03-06 15:45:18', NULL),
-(67, 'th1', '$2y$10$FfjluBdXfcOpn.aPOVzmBeJnMkDqH0w8Ed4SS3TEsy9ttTraEsMzy', NULL, 'th1@123', NULL, '', NULL, '2021-03-06 15:46:29', NULL, '2021-03-06 15:46:29', NULL),
-(68, 'th1@2', '$2y$10$ZMjE46CIRYZQD0O50arS8eTjHuHikA8o.jWObbt6K4YCKnqCQ/Jea', NULL, 'th1@2', NULL, '', NULL, '2021-03-06 15:56:10', NULL, '2021-03-06 15:56:10', NULL),
-(69, 'loc2@2', '123', NULL, 'loc2@2', NULL, '', NULL, '2021-03-17 10:13:41', NULL, '2021-03-17 10:13:41', NULL),
-(70, 'loc1@1', '123', NULL, 'loc1@1', NULL, '', NULL, '2021-03-19 11:30:01', NULL, '2021-03-19 11:30:01', NULL);
+(58, 'locdo255@gmail.com', '$2y$10$6mnkSO5aDMdp5eAPbI55uOdE/mFnH1xT8uWOwNMGQM.6Ugt1uzuSa', NULL, 'locdo255@gmail.com', NULL, 'user', 'active', '2021-03-06 15:11:03', NULL, '2021-03-06 15:11:03', 'locdo255@gmail.com');
 
 --
 -- Bẫy `user_account`
@@ -653,15 +647,6 @@ DELIMITER $$
 CREATE TRIGGER `insert_userdetail` AFTER INSERT ON `user_account` FOR EACH ROW INSERT INTO user_detail(user_id) VALUES(NEW.user_id)
 $$
 DELIMITER ;
-
--- --------------------------------------------------------
-
---
--- Cấu trúc đóng vai cho view `user_account_info`
--- (See below for the actual view)
---
-CREATE TABLE `user_account_info` (
-);
 
 -- --------------------------------------------------------
 
@@ -691,15 +676,7 @@ CREATE TABLE `user_detail` (
 
 INSERT INTO `user_detail` (`user_id`, `full_name`, `street`, `district`, `city`, `phone`, `list_favorite`, `img`, `votes`, `created_at`, `created_by`, `modiffed_at`, `modiffed_by`) VALUES
 (40, 'loc', '29 218 Cao Lỗ, phường 4', 'quận 8', 'Hồ Chí Minh', '+84 374407507', NULL, '1.jpg', NULL, '2021-03-17 11:35:31', NULL, '2021-03-19 16:57:05', NULL),
-(58, '1', '1', '1', '1', '1', '1', '1', '1', '2021-03-06 15:11:03', NULL, NULL, NULL),
-(60, '1', '1', '1', '1', '1', '1', '1', '1', '2021-03-06 15:15:15', NULL, NULL, NULL),
-(61, '1', '1', '1', '1', '1', '1', '1', '1', '2021-03-06 15:15:47', NULL, NULL, NULL),
-(63, '1', '1', '1', '1', '1', '1', '1', '1', '2021-03-06 15:16:08', NULL, NULL, NULL),
-(65, '1', '1', '1', '1', '', '1', '1', '1', '2021-03-06 15:45:18', NULL, NULL, NULL),
-(67, '1', '1', '1', NULL, '1', '1', '1', '1', '2021-03-06 15:46:29', NULL, NULL, NULL),
-(68, '1', '1', '1', '1', '1', '1', '1', '1', '2021-03-06 15:56:10', NULL, NULL, NULL),
-(69, '1', '1', '1', '1', '1', '1', '1', '1', '2021-03-17 10:13:41', NULL, NULL, NULL),
-(70, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2021-03-19 11:30:01', NULL, NULL, NULL);
+(58, '1', '1', '1', '1', '1', '1', '1', '1', '2021-03-06 15:11:03', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -716,24 +693,6 @@ CREATE TABLE `websockets_statistics_entries` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Cấu trúc cho view `book_list_view`
---
-DROP TABLE IF EXISTS `book_list_view`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `book_list_view`  AS SELECT `book`.`book_id` AS `book_id`, `book`.`book_name` AS `book_name`, `book`.`description` AS `description`, `book`.`price` AS `price`, `book`.`img` AS `img`, `book`.`promotion_price` AS `promotion_price`, `book`.`created_at` AS `created`, `category`.`modiffed` AS `modiffed`, `book`.`date_released` AS `date_released`, `book`.`totall_sell` AS `totall_sell`, `publisher`.`pub_name` AS `pub_name`, (select count(`book`.`pub_id`) from `book` where `book`.`pub_id` = `publisher`.`pub_id`) AS `Name_exp_12`, `book_thumbnail`.`thumbnail_1` AS `thumb1`, `book_thumbnail`.`thumbnail_2` AS `thumb2`, `book_thumbnail`.`thumbnail_3` AS `thumb3`, `book_thumbnail`.`thumbnail_4` AS `thumb4`, `book_thumbnail`.`thumbnail_5` AS `thumb5`, `book_thumbnail`.`thumbnail_6` AS `thumb6`, `book_thumbnail`.`thumbnail_7` AS `thumb7`, `book`.`total` AS `book_total`, `publisher`.`total` AS `pub_total` FROM (((`book` left join `category` on(`book`.`cat_id` = `category`.`cat_id`)) left join `publisher` on(`book`.`pub_id` = `publisher`.`pub_id`)) left join `book_thumbnail` on(`book`.`book_id` = `book_thumbnail`.`book_id`)) WHERE `book`.`cat_id` = `category`.`cat_id` AND `book`.`pub_id` = `publisher`.`pub_id` GROUP BY `book`.`book_id` ;
-
--- --------------------------------------------------------
-
---
--- Cấu trúc cho view `user_account_info`
---
-DROP TABLE IF EXISTS `user_account_info`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_account_info`  AS SELECT DISTINCT `user_account`.`user_name` AS `user_name`, `user_detail`.`full_name` AS `full_name`, `user_account`.`password` AS `password`, `user_account`.`email` AS `email`, `user_detail`.`phone` AS `phone`, `user_detail`.`list_favorite` AS `list_favorite`, `user_detail`.`street` AS `street`, `user_detail`.`district` AS `district`, `user_detail`.`city` AS `city`, `user_detail`.`img` AS `img`, `user_account`.`level` AS `level`, `user_account`.`status` AS `status`, `user_account`.`user_id` AS `user_id`, `user_account`.`modiffed_at` AS `modiffed_at`, `user_account`.`modiffed_by` AS `modiffed_by`, `user_account`.`created_at` AS `created_at`, `user_account`.`created_by` AS `created_by` FROM (`user_account` left join `user_detail` on(`user_account`.`user_name` = `user_detail`.`user_name`)) ;
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -770,7 +729,9 @@ ALTER TABLE `category`
 -- Chỉ mục cho bảng `comments`
 --
 ALTER TABLE `comments`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_cmt_account` (`user_id`),
+  ADD KEY `fk_cmt_post` (`post_id`);
 
 --
 -- Chỉ mục cho bảng `failed_jobs`
@@ -783,6 +744,13 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `fileuploads`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `guest`
+--
+ALTER TABLE `guest`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `user_name` (`id`,`name`);
 
 --
 -- Chỉ mục cho bảng `migrations`
@@ -843,7 +811,8 @@ ALTER TABLE `personal_access_tokens`
 -- Chỉ mục cho bảng `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Chỉ mục cho bảng `publisher`
@@ -880,7 +849,8 @@ ALTER TABLE `status`
 --
 ALTER TABLE `user_account`
   ADD PRIMARY KEY (`user_id`) USING BTREE,
-  ADD UNIQUE KEY `user_name` (`user_name`);
+  ADD UNIQUE KEY `user_name` (`user_name`),
+  ADD UNIQUE KEY `email` (`email`) USING BTREE;
 
 --
 -- Chỉ mục cho bảng `user_detail`
@@ -903,7 +873,7 @@ ALTER TABLE `websockets_statistics_entries`
 -- AUTO_INCREMENT cho bảng `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `failed_jobs`
@@ -916,6 +886,12 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `fileuploads`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `guest`
+--
+ALTER TABLE `guest`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT cho bảng `migrations`
@@ -945,7 +921,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT cho bảng `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `role`
@@ -995,6 +971,13 @@ ALTER TABLE `book_thumbnail`
   ADD CONSTRAINT `fk_book_thumb` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Các ràng buộc cho bảng `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `fk_cmt_account` FOREIGN KEY (`user_id`) REFERENCES `user_account` (`user_id`),
+  ADD CONSTRAINT `fk_cmt_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`);
+
+--
 -- Các ràng buộc cho bảng `notifications`
 --
 ALTER TABLE `notifications`
@@ -1012,6 +995,12 @@ ALTER TABLE `order`
 ALTER TABLE `order_detail`
   ADD CONSTRAINT `fk_book_order` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`),
   ADD CONSTRAINT `fk_order_orderdetail` FOREIGN KEY (`order_id`) REFERENCES `order` (`order_id`);
+
+--
+-- Các ràng buộc cho bảng `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `fk_post_account` FOREIGN KEY (`user_id`) REFERENCES `user_account` (`user_id`);
 
 --
 -- Các ràng buộc cho bảng `user_detail`

@@ -76,7 +76,6 @@ class PublisherController extends Controller
             $data_file->store($request->img, 'publisher');
             $data->save();
             $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->pub_name . ' Successfully !! </div>');
-
             return \redirect()->route('admin.publisher');
         } catch (\Throwable $th) {
             $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->pub_name . 'Fail,Try Again !! </div>');

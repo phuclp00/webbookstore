@@ -8432,7 +8432,7 @@ a.checkout__title {
 }
 
 .list__view .content .cart__action li.wishlist a {
-    background: white url("../images/icons/wishlist.png") no-repeat scroll -6% 0;
+    background: white url("../frontend/images/icons/wishlist.png") no-repeat scroll -6% 0;
 }
 
 .list__view .content .cart__action li.wishlist a:hover {
@@ -8442,7 +8442,7 @@ a.checkout__title {
 }
 
 .list__view .content .cart__action li.compare a {
-    background: white url("../images/icons/compare.png") no-repeat scroll -6% 0;
+    background: white url("../frontend/images/icons/compare.png") no-repeat scroll -6% 0;
 }
 
 .list__view .content .cart__action li.compare a:hover {

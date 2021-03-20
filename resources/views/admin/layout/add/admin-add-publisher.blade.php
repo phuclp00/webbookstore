@@ -13,7 +13,7 @@
                </div>
                @include('post.create')
                <div class="iq-card-body">
-                  <form id="edit_form" action="{{route('admin.publisher.add')}}" method="POST"
+                  <form id="edit_form" action="{{route('admin.publisher.add')}}" method="post"
                      enctype="multipart/form-data">
                      {{ csrf_field() }}
                      <div class="form-group">

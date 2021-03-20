@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Models\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class ProductModel extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
     //DEFINED DATABASE TABLE
     protected $table = "book";
     protected $primaryKey = "book_id";
@@ -16,7 +17,6 @@ class ProductModel extends Model
     //DINH NGHIA KHOA TRONG TABBLE NAY KHONG PHAI LA KHOA TU TANG VA KIEU KHOA LA STRING 
     public $incrementing = false;
     protected $keyType = 'string';
-
     protected $fillable = [
         'book_id',
         'book_name',
@@ -38,6 +38,27 @@ class ProductModel extends Model
         'modiffed_at' => 'datetime',
         'created_at'  => 'datetime',
     ];
+    public function getRouteKeyName()
+    {
+        return 'book_id';
+    }
+    public function isPublished()
+    {
+        return $this->created_at !== null;
+    }
+    public function shouldBeSearchable()
+    {
+        return $this->isPublished();
+    }
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+        return $array;
+    }
+    protected function makeAllSearchableUsing($query)
+    {
+        return $query->with('category','publisher');
+    }
     public function category()
     {
         return $this->belongsTo(CategoryModel::class, "cat_id");
@@ -46,8 +67,9 @@ class ProductModel extends Model
     {
         return $this->belongsTo(PublisherModel::class, "pub_id");
     }
-    public function thumb(){
-        return $this->hasMany(BookThumbnailModel::class,'book_id');
+    public function thumb()
+    {
+        return $this->hasMany(BookThumbnailModel::class, 'book_id');
     }
     public function all_list_items($params, $options, $stament = null, $number_stament = null)
     {
