@@ -24,14 +24,7 @@
 </head>
 
 <body>
-    @if(session()->has('info_warning'))
-    <script>
-        $.dialog({
-         title: '<text style="color:red;margin:0px auto">Messenger To You !</text>',
-         content: '{!!session()->get('info_warning')!!}',
-      });
-    </script>
-    @endif
+   
     <!-- loader Start -->
     <div id="loading">
         <div id="loading-center">
@@ -85,11 +78,10 @@
 
     <!-- Optional JavaScript -->
     <script src={{asset("/js/app.js")}}></script>
-
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->    
     <script src="{{asset('asset/backend/js/jquery.min.js')}}"></script>
     <script src="{{asset('asset/backend/js/jquery-confirm.min.js')}}"></script>
     <script src="{{asset('asset/backend/js/admin_ajax.js')}}"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
     <script src="{{asset('asset/backend/js/popper.min.js')}}"></script>
     <script src="{{asset('asset/backend/js/bootstrap.min.js')}}"></script>
@@ -144,6 +136,14 @@
     <script src="{{asset('asset/backend/js/custom.js')}}"></script>
     <script src="{{asset('asset/backend/js/ls.js')}}" type="text/javascript"></script>
     <!-- Appear JavaScript -->
+    @if(session()->has('info_warning'))
+    <script>
+        $.dialog({
+            title: '<text style="color:red;margin:0px auto">Messenger To You !</text>',
+            content: '{!!session()->get('info_warning')!!}',
+            });
+    </script>
+    @endif
 </body>
 
 <!-- Mirrored from iqonic.design/themes/booksto/html/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 01 Aug 2020 14:10:36 GMT -->

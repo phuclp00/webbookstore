@@ -49,7 +49,7 @@
                         <h3 class="wedget__title">Product Tags</h3>
                         <ul>
                             @foreach ($list_category as $cat_name) 
-                            <li><a href="{{route('shop_view')}}" value={{$cat_name->cat_name}}>{{$cat_name->cat_name}} <span>({{$cat_name->total}})</span></a></li>
+                            <li><a href="{{route('shop')}}" value={{$cat_name->cat_name}}>{{$cat_name->cat_name}} <span>({{$cat_name->total}})</span></a></li>
                                 @endforeach
                         </ul>
                     </aside>

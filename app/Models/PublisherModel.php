@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class PublisherModel extends Model
 {
-    use HasFactory;
+    use HasFactory,Searchable;
     protected $table = "publisher";
     protected $primaryKey = "pub_id";
     const UPDATED_AT = 'modiffed_at';
@@ -33,9 +34,33 @@ class PublisherModel extends Model
         'modiffed_at' => 'datetime',
         'created_at'  => 'datetime',
     ];
+    public function getRouteKeyName()
+    {
+        return 'pub_id';
+    }
+    public function isPublished()
+    {
+        return $this->created_at !== null;
+    }
+    public function shouldBeSearchable()
+    {
+        return $this->isPublished();
+    }
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+        return $array;
+    }
+    protected function makeAllSearchableUsing($query)
+    {
+        return $query->with('book');
+    }
+    public function getname()
+    {
+        return $this->pub_name;
+    }
     public function book()
     {
         return $this->hasMany(ProductModel::class,'pub_id');
-
     }
 }

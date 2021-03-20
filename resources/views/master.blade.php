@@ -43,23 +43,6 @@
 	<![endif]-->
 		@yield('content')
 		<!-- Main wrapper -->
-		<div id="myModal" class="modal">
-			<!-- Modal content -->
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2 class=" close title__be--2">CLOSE</h2>
-				</div>
-				<div class="modal-body">
-					<div class="section__title text-center">
-						<h2 class="title__be--1" style="font-family: 'Times New Roman', Times, serif">Bạn vừa đặt hàng
-							thành công</h2>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<h3 class="title__be--1">Click any where to close this pop-up</h3>
-				</div>
-			</div>
-		</div>
 		<!-- Footer Area -->
 		<footer id="wn__footer" class="footer__area bg__cat--8 brown--color">
 			<div class="footer-static-top">
@@ -71,8 +54,7 @@
 									<a href="#">
 										<img src="{{asset('asset/frontend/images/logo/3.png')}}" alt="logo">
 									</a>
-									<p>There are many variations of passages of Lorem Ipsum available, but the majority
-										have suffered duskam alteration variations of passages</p>
+									<p>See you late ! Follow us at link bellow ! </p>
 								</div>
 								<div class="footer__content">
 									<ul class="social__net social__net--2 d-flex justify-content-center">
@@ -121,35 +103,6 @@
 	</div>
 
 	<!-- JS Files -->
-	<script>
-		var modal = document.getElementById("myModal");
-
-		// Get the button that opens the modal
-		var btn = document.getElementById("myBtn");
-
-		// Get the <span> element that closes the modal
-		var span = document.getElementsByClassName("close")[0];
-
-		// When the user clicks the button, open the modal 
-		
-
-		// When the user clicks on <span> (x), close the modal
-			
-		span.onclick = function() {
-			modal.style.display = "none";
-			location.reload();
-		}
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function(event) {
-		if (event.target == modal) {
-			modal.style.display = "none";
-			location.reload();
-			}
-		}
-
-    
-	</script>
 	<script src="{{asset('asset/frontend/js/popper.min.js')}}"></script>
 	<script src="{{asset('asset/frontend/js/bootstrap.min.js')}}"></script>
 	<script src="{{asset('asset/frontend/js/plugins.js')}}"></script>

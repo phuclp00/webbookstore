@@ -24,9 +24,9 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'cat_id' => 'required|string|size:5',
+            'cat_id' => 'required|string',
             'cat_name' => 'required|string',
-            'content'=>'required|string|',
+            'content'=>'required|string',
         ];
     }
     public function messages()

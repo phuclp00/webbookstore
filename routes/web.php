@@ -34,6 +34,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\UserRegistedNotification;
 use App\Http\Controllers\CommentController;
+use  Illuminate\Support\Facades\Storage;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -57,8 +59,8 @@ use App\Http\Controllers\CommentController;
 //=========================================================//KHU VUC TESTING =========================================================//
 
 
-Route::get('/cache', function() {
-    dd(auth()->user()->notifications()->get());
+Route::get('/cache', function() {   
+    dd (Storage::deleteDirectory("images/books/td00"));
 });
 Route::get('/users-list',[UserController::class,'index']);
 Route::get('/change-status-user/{userid}/{status}',[UserController::class,'update_status']);
@@ -164,7 +166,7 @@ $controllerName = 'cart';
 Route::group(['prefix' => $controllerName], function () {
     $controller = ProductController::class;
     Route::get('/add-to-cart/{id}', [$controller, 'add_to_cart'])->name("add_to_cart");
-    Route::post('/add-to-cart-special', [$controller, 'add_cart_ajax'])->name("add_to_cart_ajax");
+    Route::post('/add-to-cart-ajax', [$controller, 'add_cart_ajax'])->name("add_to_cart_ajax");
     Route::get('/update-cart', [$controller, 'update_cart'])->name("update_cart");
     Route::get('/show-cart', [$controller, 'cart_view'])->name("cart");
 });
@@ -173,7 +175,7 @@ Route::group(['prefix' => $controllerName], function () {
 $controllerName = 'blog';
 Route::group(['prefix' => $controllerName], function () {
     $controller = HomeController::class;
-    Route::get('/', [$controller, 'blog'])->name("blog");
+    Route::get('/', [$controller, 'blog_view'])->name("blog");
 });
 //======================================HOME - BLOG DETAIL ====================================//
 
@@ -202,10 +204,10 @@ Route::group(['prefix' => $controllerName,'middleware'=>['user']], function () {
 $controllerName = 'shop';
 Route::group(['prefix' => $controllerName], function () {
     $controller = CategoryController::class;
-    Route::get('/', [HomeController::class, 'shop_view'])->name("shop_view", ["get_cat_items" => $get_cat_items = null]);
+    Route::get('/', [HomeController::class, 'shop_view'])->name("shop", ["get_cat_items" => $get_cat_items = null]);
     //LAY ID CATEGORY KHI DUOC TRUYEN GIA TRI VAO TRA VE LIST THEO ID CATEGORY
     Route::get('/cat_id={cat_id}', [HomeController::class, 'get_category'])->name("category");
-    Route::get('/search_product}', [ProductController::class, 'find_product'])->name("find_product");
+    Route::post('/search_product', [ProductController::class, 'find_product'])->name("search");
 });
 //====================================== - ACCOUNT ========================================================//
 Route::get('/notify', [UserController::class,'get_list_notify']);
@@ -236,11 +238,11 @@ Route::group(['prefix' => 'admin'], function () {
         //Category add view 
         Route::get('/category-view-add', [HomeController::class, 'category_add_view'])->name('admin.category.add.view');
         //Category add 
-        Route::get('/category-add', [CategoryController::class, 'add_category'])->name('admin.category.add');
+        Route::post('/category-add', [CategoryController::class, 'add_category'])->name('admin.category.add');
         //Category edit view
         Route::get('/category-edit-view/{cat_id}', [HomeController::class, 'category_edit_view'])->name('admin.category.edit.view');
         //Category edit 
-        Route::get('/category-edit/{cat_id}', [CategoryController::class, 'category_edit'])->name('admin.category.edit');
+        Route::post('/category-edit/{cat_id}', [CategoryController::class, 'category_edit'])->name('admin.category.edit');
         //Category delete 
         Route::get('/category-delete/{cat_id}', [CategoryController::class, 'category_delete'])->name('admin.category.delete');
 
@@ -249,13 +251,13 @@ Route::group(['prefix' => 'admin'], function () {
         //Book add view
         Route::get('/book-add-view', [HomeController::class, 'book_list_add_view'])->name('admin.books.add.view');
         //Book add
-        Route::post('/book-add', [ProductController::class, 'book_add'])->name('admin.books.add');
+        Route::post('/book-add', [ProductController::class, 'add'])->name('admin.books.add');
         //Book edit view
         Route::get('/book-edit-view/{book_id}', [HomeController::class, 'book_edit_view'])->name('admin.books.edit.view');
         //Book edit
-        Route::post('/book-edit', [ProductController::class, 'book_edit'])->name('admin.books.edit');
+        Route::post('/book-edit', [ProductController::class, 'update'])->name('admin.books.edit');
         //Book delete 
-        Route::get('/book-delete/book_id={book_id}', [ProductController::class, 'book_delete'])->name('admin.books.delete');
+        Route::get('/book-delete/book_id={book_id}', [ProductController::class, 'remove'])->name('admin.books.delete');
 
         //==========================================Publisher=============================================================
         Route::get('/publisher', [HomeController::class, 'publisher_view'])->name('admin.publisher');
@@ -266,7 +268,7 @@ Route::group(['prefix' => 'admin'], function () {
         //Publisher-edit view
         Route::get('publisher-edit-view/{pub_id}', [HomeController::class, 'edit_publisher_view'])->name('admin.publisher.edit.view');
         //Publisher edit
-        Route::get('publisher-edit/{pub_id}', [PublisherController::class, 'edit_publisher'])->name('admin.publisher.edit');
+        Route::post('publisher-edit/{pub_id}', [PublisherController::class, 'edit_publisher'])->name('admin.publisher.edit');
         //Publisher delete
         Route::get('publisher-delete/{pub_id}', [PublisherController::class, 'delete_publisher'])->name('admin.publisher.delete');
 

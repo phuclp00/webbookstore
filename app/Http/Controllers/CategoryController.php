@@ -8,6 +8,7 @@ use App\Models\CategoryModel as MainModel;
 use App\Models\CategoryModel;
 use App\Models\ProductModel;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -34,6 +35,7 @@ class CategoryController extends Controller
             $data->cat_id=$request->cat_id;
             $data->cat_name=$request->cat_name;
             $data->description=$request->content;
+            $data->modiffed_by=Auth::user()->user_name;
             $data->save();
             $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Add ' . $request->cat_name . ' Successfully !! </div>');
             return \redirect()->back();

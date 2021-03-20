@@ -13,12 +13,12 @@
         					<!-- Start Single Post -->
         					<article class="blog__post d-flex flex-wrap">
         						<div class="thumb">
-        							<a href="blog-details.html">
+        							<a href="{{route('Blog Detail')}}">
         								<img src="{{asset('images/blog/blog-3/1.jpg')}}" alt="blog images">
         							</a>
         						</div>
         						<div class="content">
-        							<h4><a href="blog-details.html">Blog image post</a></h4>
+        							<h4><a href="{{route('Blog Detail')}}">Blog image post</a></h4>
         							<ul class="post__meta">
         								<li>Posts by : <a href="#">road theme</a></li>
         								<li class="post_separator">/</li>
@@ -26,7 +26,7 @@
         							</ul>
         							<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Crastoup pretium arcu ex. Aenean posuere libero eu augue rhoncus. Praesent ornare tortor</p>
         							<div class="blog__btn">
-        								<a class="shopbtn" href="blog-details.html">read more</a>
+        								<a class="shopbtn" href="{{route('Blog Detail')}}">read more</a>
         							</div>
         						</div>
         					</article>
@@ -34,12 +34,12 @@
         					<!-- Start Single Post -->
         					<article class="blog__post d-flex flex-wrap">
         						<div class="thumb">
-        							<a href="blog-details.html">
+        							<a href="{{route('Blog Detail')}}">
         								<img src="{{asset('images/blog/blog-3/2.jpg')}}" alt="blog images">
         							</a>
         						</div>
         						<div class="content">
-        							<h4><a href="blog-details.html">Post with Gallery</a></h4>
+        							<h4><a href="{{route('Blog Detail')}}">Post with Gallery</a></h4>
         							<ul class="post__meta">
         								<li>Posts by : <a href="#">road theme</a></li>
         								<li class="post_separator">/</li>
@@ -47,7 +47,7 @@
         							</ul>
         							<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Crastoup pretium arcu ex. Aenean posuere libero eu augue rhoncus. Praesent ornare tortor</p>
         							<div class="blog__btn">
-        								<a class="shopbtn" href="blog-details.html">read more</a>
+        								<a class="shopbtn" href="{{route('Blog Detail')}}">read more</a>
         							</div>
         						</div>
         					</article>
@@ -55,12 +55,12 @@
         					<!-- Start Single Post -->
         					<article class="blog__post d-flex flex-wrap">
         						<div class="thumb">
-        							<a href="blog-details.html">
+        							<a href="{{route('Blog Detail')}}">
         								<img src="{{asset('images/blog/blog-3/3.jpg')}}" alt="blog images">
         							</a>
         						</div>
         						<div class="content">
-        							<h4><a href="blog-details.html">Post with Gallery</a></h4>
+        							<h4><a href="{{route('Blog Detail')}}">Post with Gallery</a></h4>
         							<ul class="post__meta">
         								<li>Posts by : <a href="#">road theme</a></li>
         								<li class="post_separator">/</li>
@@ -68,7 +68,7 @@
         							</ul>
         							<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Crastoup pretium arcu ex. Aenean posuere libero eu augue rhoncus. Praesent ornare tortor</p>
         							<div class="blog__btn">
-        								<a class="shopbtn" href="blog-details.html">read more</a>
+        								<a class="shopbtn" href="{{route('Blog Detail')}}">read more</a>
         							</div>
         						</div>
         					</article>
@@ -76,12 +76,12 @@
         					<!-- Start Single Post -->
         					<article class="blog__post d-flex flex-wrap">
         						<div class="thumb">
-        							<a href="blog-details.html">
+        							<a href="{{route('Blog Detail')}}">
         								<img src="{{asset('images/blog/blog-3/4.jpg')}}" alt="blog images">
         							</a>
         						</div>
         						<div class="content">
-        							<h4><a href="blog-details.html">Blog image post</a></h4>
+        							<h4><a href="{{route('Blog Detail')}}">Blog image post</a></h4>
         							<ul class="post__meta">
         								<li>Posts by : <a href="#">road theme</a></li>
         								<li class="post_separator">/</li>
@@ -89,7 +89,7 @@
         							</ul>
         							<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Crastoup pretium arcu ex. Aenean posuere libero eu augue rhoncus. Praesent ornare tortor</p>
         							<div class="blog__btn">
-        								<a class="shopbtn" href="blog-details.html">read more</a>
+        								<a class="shopbtn" href="{{route('Blog Detail')}}">read more</a>
         							</div>
         						</div>
         					</article>
@@ -97,12 +97,12 @@
         					<!-- Start Single Post -->
         					<article class="blog__post d-flex flex-wrap">
         						<div class="thumb">
-        							<a href="blog-details.html">
+        							<a href="{{route('Blog Detail')}}">
         								<img src="{{asset('images/blog/blog-3/5.jpg')}}" alt="blog images">
         							</a>
         						</div>
         						<div class="content">
-        							<h4><a href="blog-details.html">Blog image post</a></h4>
+        							<h4><a href="{{route('Blog Detail')}}">Blog image post</a></h4>
         							<ul class="post__meta">
         								<li>Posts by : <a href="#">road theme</a></li>
         								<li class="post_separator">/</li>
@@ -110,7 +110,7 @@
         							</ul>
         							<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Crastoup pretium arcu ex. Aenean posuere libero eu augue rhoncus. Praesent ornare tortor</p>
         							<div class="blog__btn">
-        								<a class="shopbtn" href="blog-details.html">read more</a>
+        								<a class="shopbtn" href="{{route('Blog Detail')}}">read more</a>
         							</div>
         						</div>
         					</article>
@@ -118,7 +118,7 @@
         					<!-- Start Single Post -->
         					<article class="blog__post text--post">
         						<div class="content">
-        							<h4><a href="blog-details.html">Blog image post</a></h4>
+        							<h4><a href="{{route('Blog Detail')}}">Blog image post</a></h4>
         							<ul class="post__meta">
         								<li>Posts by : <a href="#">road theme</a></li>
         								<li class="post_separator">/</li>
@@ -126,7 +126,7 @@
         							</ul>
         							<p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Crastoup pretium arcu ex. Aenean posuere libero eu augue rhoncus. Praesent ornare tortor</p>
         							<div class="blog__btn">
-        								<a class="shopbtn" href="blog-details.html">read more</a>
+        								<a class="shopbtn" href="{{route('Blog Detail')}}">read more</a>
         							</div>
         						</div>
         					</article>
@@ -161,10 +161,10 @@
         								<li>
         									<div class="post-wrapper d-flex">
         										<div class="thumb">
-        											<a href="blog-details.html"><img src="{{asset('images/blog/sm-img/1.jpg')}}" alt="blog images"></a>
+        											<a href="{{route('Blog Detail')}}"><img src="{{asset('images/blog/sm-img/1.jpg')}}" alt="blog images"></a>
         										</div>
         										<div class="content">
-        											<h4><a href="blog-details.html">Blog image post</a></h4>
+        											<h4><a href="{{route('Blog Detail')}}">Blog image post</a></h4>
         											<p>	March 10, 2015</p>
         										</div>
         									</div>
@@ -172,10 +172,10 @@
         								<li>
         									<div class="post-wrapper d-flex">
         										<div class="thumb">
-        											<a href="blog-details.html"><img src="{{asset('images/blog/sm-img/2.jpg')}}" alt="blog images"></a>
+        											<a href="{{route('Blog Detail')}}"><img src="{{asset('images/blog/sm-img/2.jpg')}}" alt="blog images"></a>
         										</div>
         										<div class="content">
-        											<h4><a href="blog-details.html">Post with Gallery</a></h4>
+        											<h4><a href="{{route('Blog Detail')}}">Post with Gallery</a></h4>
         											<p>	March 10, 2015</p>
         										</div>
         									</div>
@@ -183,10 +183,10 @@
         								<li>
         									<div class="post-wrapper d-flex">
         										<div class="thumb">
-        											<a href="blog-details.html"><img src="{{asset('images/blog/sm-img/3.jpg')}}" alt="blog images"></a>
+        											<a href="{{route('Blog Detail')}}"><img src="{{asset('images/blog/sm-img/3.jpg')}}" alt="blog images"></a>
         										</div>
         										<div class="content">
-        											<h4><a href="blog-details.html">Post with Video</a></h4>
+        											<h4><a href="{{route('Blog Detail')}}">Post with Video</a></h4>
         											<p>	March 10, 2015</p>
         										</div>
         									</div>
@@ -194,10 +194,10 @@
         								<li>
         									<div class="post-wrapper d-flex">
         										<div class="thumb">
-        											<a href="blog-details.html"><img src="{{asset('images/blog/sm-img/4.jpg')}}" alt="blog images"></a>
+        											<a href="{{route('Blog Detail')}}"><img src="{{asset('images/blog/sm-img/4.jpg')}}" alt="blog images"></a>
         										</div>
         										<div class="content">
-        											<h4><a href="blog-details.html">Maecenas ultricies</a></h4>
+        											<h4><a href="{{route('Blog Detail')}}">Maecenas ultricies</a></h4>
         											<p>	March 10, 2015</p>
         										</div>
         									</div>
@@ -205,10 +205,10 @@
         								<li>
         									<div class="post-wrapper d-flex">
         										<div class="thumb">
-        											<a href="blog-details.html"><img src="{{asset('images/blog/sm-img/5.jpg')}}" alt="blog images"></a>
+        											<a href="{{route('Blog Detail')}}"><img src="{{asset('images/blog/sm-img/5.jpg')}}" alt="blog images"></a>
         										</div>
         										<div class="content">
-        											<h4><a href="blog-details.html">Blog image post</a></h4>
+        											<h4><a href="{{route('Blog Detail')}}">Blog image post</a></h4>
         											<p>	March 10, 2015</p>
         										</div>
         									</div>

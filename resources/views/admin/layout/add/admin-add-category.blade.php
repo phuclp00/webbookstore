@@ -13,7 +13,8 @@
                </div>
                @include('post.create')
                <div class="iq-card-body">
-                  <form action="{{route('admin.category.add')}}">
+                  <form action="{{route('admin.category.add')}}" method="POST">
+                     @csrf
                      <div class="form-group">
                         <label>Category ID:</label>
                         <input type="text" name="cat_id" class="form-control" value="{{ old('cat_id') }}">

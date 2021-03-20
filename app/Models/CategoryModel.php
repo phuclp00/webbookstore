@@ -4,17 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class CategoryModel extends Model
 {
-    use HasFactory;
-    //DEFINED DATABASE TABLE
+    use HasFactory,Searchable;
     protected $table = "category";
     protected $primaryKey = "cat_id";
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'modiffed';
-    //DINH NGHIA KHOA TRONG TABBLE NAY KHONG PHAI LA KHOA TU TANG VA KIEU KHOA LA STRING 
-    public $incrementing = false;
+    const UPDATED_AT = 'modiffed_at';
+    public $timestamps = false;
     protected $keyType = 'string';
       /**
      * The attributes that are mass assignable.
@@ -25,6 +23,8 @@ class CategoryModel extends Model
         'cat_id',
         'cat_name',
         'description',
+        'created_by',
+        'modiffed_by'
     ];
     /**
      * The attributes that should be cast to native types.
@@ -32,15 +32,38 @@ class CategoryModel extends Model
      * @var array
      */
     protected $casts = [
-        'modiffed' => 'datetime',
-        'created'  => 'datetime',
+        'modiffed_at' => 'datetime',
+        'created_at'  => 'datetime',
     ];
+    public function getRouteKeyName()
+    {
+        return 'cat_id';
+    }
+    public function isPublished()
+    {
+        return $this->created_at !== null;
+    }
+    public function shouldBeSearchable()
+    {
+        return $this->isPublished();
+    }
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+        return $array;
+    }
+    protected function makeAllSearchableUsing($query)
+    {
+        return $query->with('book');
+    }
+    public function getname()
+    {
+        return $this->pub_name;
+    }
     public function book()
     {
-        return $this->hasMany("App\Models\ProductModel", "cat_id", "cat_id");
+        return $this->hasMany(ProductModel::class,'cat_id');
     }
-   
-
     public function listItems($params, $options,$stament=null,$number_stament=null)
     {
         //Tat debugbar
@@ -65,14 +88,5 @@ class CategoryModel extends Model
                 ->get();
                 return $result ;
         }
-    }
-    public function Destination($local, $options)
-    {
-        $result = null;
-
-        return CategoryModel::orderByDesc(
-            CategoryModel::select('arrived_at')
-
-        )->get();
     }
 }

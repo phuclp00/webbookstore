@@ -13,7 +13,7 @@
                </div>
                @include('post.create')
                <div class="iq-card-body">
-                  <form action="{{route('admin.category.edit',[$category->cat_id])}}" method="POST">
+                  <form action="{{route('admin.category.edit',[$category->cat_id])}}" method="post">
                      <div class="form-group">
                         <label>Category Name:</label>
                         <input type="text"  class="form-control" value="{{$category->cat_id}}" disabled>

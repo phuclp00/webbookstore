@@ -851,36 +851,5 @@
 		</div>
 	</div>
 </div>
-
-<script>
-
-
-	jQuery(document).ready(function(){
-            jQuery('#tocart').click(function(e){
-               e.preventDefault();
-               $.ajaxSetup({
-                  headers: {
-                      'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                  }
-              });
-				jQuery.ajax({
-					url: "{{ route('add_to_cart_ajax') }}",
-					method: 'post',
-					data: {
-						"_token": "{{ csrf_token() }}",
-						book_id: $('#single_book_id').text(),
-						qty: $('#single_book_qty').val()
-					},
-					success: function(result){
-						modal.style.display = "block";
-					},
-					error:function(error){
-						console.error();
-					},
-				});
-			});
-		});
-
-</script>
 <!-- End Brand Area -->
 @endsection

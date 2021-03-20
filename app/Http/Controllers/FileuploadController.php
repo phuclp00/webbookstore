@@ -60,7 +60,6 @@ class FileuploadController extends Controller
      */
     public function show(Fileupload $fileupload)
     {
-        //
     }
 
     /**
@@ -100,10 +99,19 @@ class FileuploadController extends Controller
     {
         try {
             if ($option == null) {
-                Storage::deleteDirectory($public_path."/".$folder);
+                if (Storage::has($folder . "/" . $public_path)) {
+                    Storage::deleteDirectory($folder . "/" . $public_path);
+                    return true;
+                } else
+                    return false;
             } else {
-                Storage::delete([$option]);
+                if (Storage::has($option)) {
+                    Storage::delete($option);
+                    return true;
+                } else
+                    return false;
             }
+            return false;
         } catch (\Throwable $th) {
             throw new Exception("Error Processing Request", $th->__toString());
         }

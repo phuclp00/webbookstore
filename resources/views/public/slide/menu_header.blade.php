@@ -12,12 +12,9 @@
             <div class="col-lg-8 d-none d-lg-block">
                 <nav class="mainmenu__nav">
                     <ul class="meninmenu d-flex justify-content-start">
-                        <li class="drop with--one--item"><a href="{{route('home')}}">Home</a>
-                        </li>
-                        <li class="drop"><a href="{{route('shop_view')}}">Shop</a>
-
-                        </li>
-                        <li class="drop"><a href="{{route('shop_view')}}">Books</a>
+                        <li class="drop with--one--item"><a href="{{route('home')}}">Home</a></li>
+                        <li class="drop"><a href="{{route('shop')}}">Shop</a></li>
+                        <li class="drop"><a href="{{route('shop')}}">Books</a>
                             <div class="megamenu mega03">
                                 <ul class="item item03">
                                     <li class="title">Categories</li>
@@ -43,47 +40,9 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="drop"><a href="{{route('shop_view')}}">Kids</a>
-                            <div class="megamenu mega02">
-                                <ul class="item item02">
-                                    <li class="title">Top Collections</li>
-                                    <li><a href="shop-grid.html">American Girl</a></li>
-                                    <li><a href="shop-grid.html">Diary Wimpy Kid</a></li>
-                                    <li><a href="shop-grid.html">Finding Dory</a></li>
-                                    <li><a href="shop-grid.html">Harry Potter</a></li>
-                                    <li><a href="shop-grid.html">Land of Stories</a></li>
-                                </ul>
-                                <ul class="item item02">
-                                    <li class="title">More For Kids</li>
-                                    <li><a href="shop-grid.html">B&N Educators</a></li>
-                                    <li><a href="shop-grid.html">B&N Kids' Club</a></li>
-                                    <li><a href="shop-grid.html">Kids' Music</a></li>
-                                    <li><a href="shop-grid.html">Toys & Games</a></li>
-                                    <li><a href="shop-grid.html">Hoodies</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="drop"><a href="{{route('about')}}">Pages</a>
-                            <div class="megamenu dropdown">
-                                <ul class="item item01">
-                                    <li><a href="{{route('about')}}">About Page</a></li>
-                                    @if(session()->has('user_info'))
-                                    @foreach (session()->get("user_info") as $user)
-                                    <li><a href="{{route('account',[$user->user_name])}}">My Account</a></li>
-                                    @endforeach
-                                    @endif
-                                    <li><a href="{{route('cart')}}">Cart Page</a></li>
-                                    <li><a href="{{route('checkout')}}">Checkout Page</a></li>
-                                    <li><a href="{{route('error')}}">404 Page</a></li>
-                                    <li><a href="{{route('faq')}}">Faq Page</a></li>
-                                    <li><a href="{{route('team')}}">Team Page</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="drop"><a href="{{route('blog')}}">Blog</a>
-
-                        </li>
+                        <li class="drop"><a href="{{route('blog')}}">Blog</a></li>
                         <li><a href="{{route('contact')}}">Contact</a></li>
+                        <li><a href="{{route('about')}}">About Page</a></li>
                     </ul>
                 </nav>
             </div>
@@ -156,7 +115,8 @@
                                         alt="avatar">
                                     @endif
                                     <h3 class="account__title">Xin chào</h3>
-                                    <h5>{{Auth::user()->user_name==null?Auth::user()->email:Auth::user()->user_name}}</h5>
+                                    <h5>{{Auth::user()->user_name==null?Auth::user()->email:Auth::user()->user_name}}
+                                    </h5>
                                     <div class="switcher-currency">
                                         <strong class="label switcher-label">
                                             <span>My Account</span>
@@ -179,7 +139,7 @@
                                     </ul>
                                     @endif
                                 </div>
-                                <div class="switcher-currency">
+                                {{-- <div class="switcher-currency">
                                     <strong class="label switcher-label">
                                         <span>Currency</span>
                                     </strong>
@@ -208,7 +168,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </li>
@@ -238,7 +198,7 @@
                                 <li><a href="{{route('team')}}">Team Page</a></li>
                             </ul>
                         </li>
-                        <li><a href="{{route('shop_view')}}">Shop</a>
+                        <li><a href="{{route('shop')}}">Shop</a>
 
                         </li>
                         <li><a href="{{route('blog')}}">Blog</a>
@@ -258,17 +218,33 @@
 <!-- //Header -->
 <!-- Start Search Popup -->
 <div class="box-search-content search_active block-bg close__top">
-    <form id="search_mini_form" class="minisearch" action="{{route('find_product')}}" method="GET">
+    <form id="search_mini_form" class="minisearch" action="{{route('search')}}" method="POST">
         <div class="field__search">
-            {{ csrf_field() }}
-            <input type="text" placeholder="Search entire store here..." name="key_word">
-            <button class="minicart-content-wrapper" type="submit">
-                <h3><i class="fa fa-search" aria-hidden="true"> Có thể search theo tên sách,từ khoá có trong mô
-                        tả của sách,mã sách,....</i></h3>
-            </button>
+            <input type="text" placeholder="Search for book title or publisher name, book category...">
+            <div class="action">
+                <a><i class="zmdi zmdi-search"></i></a>
+            </div>
+            {{$post[]=""}}
+            @if ($post !="")
+            <div class="minicart-content-wrapper bg--white">
+                <table>
+                    <tr>
+                        <th>
+                            <h3>RESULT</h3>
+                        </th>
+                    </tr>
+                    <tr>
+                        @foreach ($post as $result)
+                        <td><a href="#">HEELO</a></td>
+                        @endforeach
+                    </tr>
+                </table>
+            </div>
+            @endif 
         </div>
     </form>
     <div class="close__wrap">
         <span>close</span>
     </div>
 </div>
+<!-- END Search Popup -->
