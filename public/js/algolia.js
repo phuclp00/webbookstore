@@ -19,6 +19,33 @@
                 return algoliaClient.search(requests);
             },
         };
+        // const infiniteHits = instantsearch.connectors.connectInfiniteHits(
+        //     (renderArgs, isFirstRender) => {
+        //         const { hits, showMore, widgetParams } = renderArgs;
+        //         const { container } = widgetParams;
+
+        //         if (isFirstRender) {
+        //             container.appendChild(document.createElement('ul'));
+
+        //             return;
+        //         }
+
+        //         container.querySelector('ul').innerHTML = hits
+        //             .map(
+        //                 hit =>
+        //                 `<li>
+        //               <div class="ais-Hits-item">
+        //                 <header class="hit-name">
+        //                   ${instantsearch.highlight({ attribute: 'book_name', hit })}
+        //                 </header>
+        //                 <img src="../public/images/books/${hit.book_id}/${hit.img}" align="left" alt="{{img}}" class="img__boxsearch" />
+        //                 <p class="hit-price">$${hit.price}</p>
+        //               </div>
+        //             </li>`
+        //             )
+        //             .join('');
+        //     }
+        // );
         const search = instantsearch({
             indexName: 'book',
             searchClient,
@@ -36,7 +63,7 @@
                         }
                     },
                     instantsearch.widgets.hits({
-                        container: '#hit',
+                        container: '#hits',
                         templates: {
                             empty: "No results.",
                             item: `
@@ -48,6 +75,9 @@
                      `,
                         },
                     }),
+                    // infiniteHits({
+                    //     container: document.querySelector('#hits'),
+                    // }),
                     instantsearch.widgets.stats({
                             container: "#stats",
                             templates: {

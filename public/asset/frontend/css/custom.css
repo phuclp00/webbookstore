@@ -7,9 +7,6 @@
 
 **********************************************************************************/
     /*Loading*/
-    /* * {
-        font-family: 'Arial,Helvetica,sans-serif,sans-serif';
-    } */
     
     #loading {
         background: var(--white) url(../images/loader.gif) no-repeat scroll center center;
@@ -70,15 +67,14 @@
         margin: 0px auto;
     }
     
-    #hit {
-        overflow-y: scroll;
-        height: auto;
-        background: white;
-        width: 390px;
+    #hits {
+        overflow: auto;
+        height: 650px;
         padding: 25px 20px;
         box-shadow: 0 3px 3px rgb(0 0 0 / 15%);
         margin: 4px 0 0;
         min-width: 100%;
         top: 100%;
         z-index: 100;
+        font-family: initial;
     }
