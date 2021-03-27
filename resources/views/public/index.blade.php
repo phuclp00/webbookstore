@@ -45,11 +45,11 @@
                     <div class="product__thumb">
                         <a class="first__img"
                             href="{{route('product',['id'=>$product->book_id,'cat_id'=>$product->cat_id])}}"><img
-                                src="{{asset('images/books/test_img/'.$product->img)}}" alt="product image"
+                                src="{{asset('images/books/'.$product->book_id.'/'.$product->img)}}" alt="product image"
                                 style="width: 270px;height: 340px;"></a>
                         <a class="second__img animation1"
                             href="{{route('product',['id'=>$product->book_id,'cat_id'=>$product->cat_id])}}"><img
-                                src="{{asset('images/books/8k.jpg')}}" alt="product image"
+                            src="{{asset('images/books/'.$product->book_id.'/'.$product->img)}}" 
                                 style="width: 270px;height: 340px;"></a>
                         {{-- This comment will not be present in the rendered HTML 
                                 // Danh sach cac san pham moi voi ngay ra mat khong qua 30 ngay 
@@ -136,11 +136,11 @@
                     <div class="product__thumb">
                         <a class="first__img"
                             href="{{route('product',['id'=>$product->book_id,'cat_id'=>$product->cat_id])}}"><img
-                                src="{{asset('images/books/test_img/'.$product->img)}}" alt="product image"
+                            src="{{asset('images/books/'.$product->book_id.'/'.$product->img)}}" alt="product image"
                                 style="width: 270px;height: 340px;"></a>
                         <a class="second__img animation1"
                             href="{{route('product',['id'=>$product->book_id,'cat_id'=>$product->cat_id])}}"><img
-                                src="{{asset('images/books/8k.jpg')}}" alt="product image"
+                            src="{{asset('images/books/'.$product->book_id.'/'.$product->img)}}"
                                 style="width: 270px;height: 340px;"></a>
                         {{-- This comment will not be present in the rendered HTML 
                                 // Danh sach cac san pham moi voi ngay ra mat khong qua 30 ngay 
@@ -371,28 +371,4 @@
     </div>
 </div>
 <!-- END QUICKVIEW PRODUCT -->
-
-<!-- Start NEwsletter Area -->
-<section class="wn__newsletter__area bg-image--9">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-7 offset-lg-5 col-md-12 col-12 ptb--150">
-                <div class="section__title text-center">
-                    <h2>Stay With Us</h2>
-                </div>
-                <div class="newsletter__block text-center">
-                    <form action="#" method="POST">
-                        {{ csrf_field() }}
-                        <div class="newsletter__box">
-                            <input type="email" placeholder="Enter your e-mail">
-                            <button>Subscribe</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- End NEwsletter Area -->
-
 @endsection

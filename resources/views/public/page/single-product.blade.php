@@ -227,7 +227,7 @@
 							<div class="col-lg-4 col-md-4 col-sm-6 col-12">
 								<div class="product">
 									<div class="product__thumb">
-										<a class="first__img" href="{{route('shop_view')}}"><img
+										<a class="first__img" href="{{route('shop')}}"><img
 												src="{{asset('images/product/1.jpg')}}" alt="product image"></a>
 										<a class="second__img animation1" href="single-product.html"><img
 												src="{{asset('images/product/2.jpg')}}" alt="product image"></a>
@@ -774,7 +774,7 @@
 						<ul>
 							<ul>
 								@foreach ($list_category as $cat_name)
-								<li><a href="{{route('shop_view')}}"
+								<li><a href="{{route('shop')}}"
 										value={{$cat_name->cat_name}}>{{$cat_name->cat_name}}
 										<span>({{$cat_name->total}})</span></a></li>
 								@endforeach
@@ -795,61 +795,4 @@
 	</div>
 </div>
 <!-- End main Content -->
-<!-- Start Search Popup -->
-<div class="box-search-content search_active block-bg close__top">
-	<form id="search_mini_form--2" class="minisearch" action="#">
-		<div class="field__search">
-			<input type="text" placeholder="Search entire store here...">
-			<div class="action">
-				<a href="#"><i class="zmdi zmdi-search"></i></a>
-			</div>
-		</div>
-	</form>
-	<div class="close__wrap">
-		<span>close</span>
-	</div>
-</div>
-<!-- End Search Popup -->
-<!-- Start NEwsletter Area -->
-<section class="wn__newsletter__area bg-image--2">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-7 offset-lg-5 col-md-12 col-12 ptb--150">
-				<div class="section__title text-center">
-					<h2>Stay With Us</h2>
-				</div>
-				<div class="newsletter__block text-center">
-					<p>Subscribe to our newsletters now and stay up-to-date with new collections, the latest lookbooks
-						and exclusive offers.</p>
-					<form action="#">
-						<div class="newsletter__box">
-							<input type="email" placeholder="Enter your e-mail">
-							<button>Subscribe</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<!-- End NEwsletter Area -->
-<!-- Start Brand Area -->
-<div class="wn__brand__area bg__cat--1 ptb--80">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12">
-				<ul class="brand__activation arrows_style owl-carousel owl-theme">
-					<li><a href="#"><img src="{{asset('images/brand/1.png')}}" alt="brand images"></a></li>
-					<li><a href="#"><img src="{{asset('images/brand/2.png')}}" alt="brand images"></a></li>
-					<li><a href="#"><img src="{{asset('images/brand/3.png')}}" alt="brand images"></a></li>
-					<li><a href="#"><img src="{{asset('images/brand/4.png')}}" alt="brand images"></a></li>
-					<li><a href="#"><img src="{{asset('images/brand/5.png')}}" alt="brand images"></a></li>
-					<li><a href="#"><img src="{{asset('images/brand/6.png')}}" alt="brand images"></a></li>
-					<li><a href="#"><img src="{{asset('images/brand/7.png')}}" alt="brand images"></a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- End Brand Area -->
 @endsection

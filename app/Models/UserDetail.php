@@ -41,7 +41,6 @@ class UserDetail extends Model
      * @var array
      */
     protected $hidden = [];
-
     /**
      * The attributes that should be cast to native types.
      *
@@ -55,4 +54,5 @@ class UserDetail extends Model
     {
         return $this->belongsTo(UserModel::class,'user_id');
     }
+
 }

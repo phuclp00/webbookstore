@@ -22,22 +22,22 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $users = UserModel::with('user_detail')->get();
         return $users;
-    }   
+    }
     public function account_view(Request $request)
-    {
-        if(Auth::check()){
-            $key_find = Auth::user()->user_id;
-            $data = UserModel::find($key_find)->load('user_detail')->first();
+    {   
+        $key_find = Auth::user()->user_id;
+        if (Auth::check()) {
+            $data = UserModel::find($key_find)->load('user_detail');
             if ($data->user_detail->street != null || $data->user_detail->phone != null) {
                 session()->flash('info_success', "Have a good day " . $data->user_name . "! We're glad you're here !");
             } else {
-                session()->flash('account_info_warning', "Looks like you haven't updated your payment information yet! Please update for easier payment!");
+                session()->flash('infor_warning', "Looks like you haven't updated your payment information yet! Please update for easier payment!");
             }
-            return view('public.page.account-info',['data'=>$data]);
+            return view('public.page.account-info', ['data' => $data]);
         } else {
             return redirect()->route('home');
         }
@@ -53,32 +53,30 @@ class UserController extends Controller
         ]);
         try {
             $file = $request->upload_file;
-            $userId=Auth::user()->user_id;
+            $userId = Auth::user()->user_id;
             $data = UserModel::find($userId)->load('user_detail');
             $data->user_detail->img = $file->getClientOriginalName();
-            $data->modiffed_by=Auth::user()->user_name;
-            $data->user_detail->modiffed_by=Auth::user()->user_name;
+            $data->modiffed_by = Auth::user()->user_name;
+            $data->user_detail->modiffed_by = Auth::user()->user_name;
             $data->user_detail->save();
             $data->save();
             $path = $file->storeAs('user_profile', $file->getClientOriginalName(), 'images');
             $data->refresh();
             session()->flash('infor_success', 'Your image has been successfully updated !');
-            return \route('user.account.view');
+            return \redirect()->back();
         } catch (Exception $e) {
-            session()->flash('infor_warning', '');
+            session()->flash('infor_warning', $e->getMessage());
+            return \redirect()->back();
         }
     }
     public function account_update(Request $request)
     {
-        
-        $key_find = $request->user_id;
-        $data_account =  UserModel::with('user_detail')->find($key_find)->first();
+        $key_find = Auth::user()->user_id;
+        $data_account =  UserModel::find($key_find)->load('user_detail')->first();
         try {
             if ($request->email_register != $data_account->email && $request->email_register != "") {
                 $data_account->email = $request->email_register;
-
                 $data_account->save();
-
                 $data_account->refresh();
             }
             if ($request->password_register != "11111122333") {
@@ -87,8 +85,8 @@ class UserController extends Controller
                     $data_account->password = $new_pass;
                     $data_account->save();
                     $data_account->refresh();
-                    $request->session()->flash('update_info', '<div class="alert alert-success">"Cập nhật mật khẩu thành công !!!"</div>');
-                    return \redirect()->route('account', [$data_account->user_name]);
+                    $request->session()->flash('infor_success', "Your password has been successfully updated!");
+                    return \redirect()->back();
                 }
             }
             $data_account->user_detail->full_name = $request->fullname;
@@ -99,21 +97,22 @@ class UserController extends Controller
             $data_account->user_detail->save();
             $data_account->save();
 
-            $request->session()->flash('update_info', '<div class="alert alert-success">"Cập nhật khoản thành công , tiếp tục mua sắm nào !!"</div>');
-            return \redirect()->route('account', [$data_account->user_name]);
+            $request->session()->flash('infor_success', "Your account has been successfully updated!");
+            return \redirect()->back();
         } catch (Exception $e) {
-
-            $request->session()->flash('update_info', '<div class="alert alert-danger">"Cập nhật tài khoản thất bại, vui lòng thử lại!!"</div>');
-            return \redirect()->route('account', [$data_account->user_name]);
+            $request->session()->flash('infor_warning', '<div class="alert alert-danger">"Your account update failed! Please try again !"</div>');
+            return \redirect()->back();
         }
     }
     public function delete_user(Request $request)
     {
         try {
-            UserModel::where('user_name', $request->user_name)->delete();
-            $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Delete' . $request->user_id . ' Successfully !! </div>');
+            $file = new FileuploadController();
+            $user = UserModel::where('user_name', $request->user_name)->delete();
+            $file->destroy("images", "user_profile", "$user->img");
+            $request->session()->flash('infor_success', 'Delete user' . $request->user_id . ' Successfully !');
         } catch (Exception $e) {
-            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Delete ' . $request->user_id . ' Fail,Try Again !!</div>');
+            $request->session()->flash('infor_warning', "Delete ' . $request->user_id . ' Fail,Try Again !");
         }
         return \redirect()->back();
     }
@@ -183,10 +182,17 @@ class UserController extends Controller
     }
     public function update_status(Request $request)
     {
-            $user_id=$request->userid;
-            $status=$request->status;
-            $result = UserModel::find($user_id)->update('status', ($status=="active"?"ban":"active"))->with('user_detail');
-        return \response($result);
+        try {
+            $user_id = $request->userid;
+            $status = $request->status;
+            $result = UserModel::find($user_id);
+            $result->status=($status == 1 ? 0 : 1);
+            $result->save();
+            $data=UserModel::with('user_detail')->get();
+            return \response($data);
+        } catch (Exception $e) {
+            \report($e);
+        }
     }
     public function get_list_notify()
     {

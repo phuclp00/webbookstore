@@ -6,6 +6,9 @@
       <div class="row">
          <div class="col-sm-12">
             <div class="iq-card">
+               <form action="{{route('back',['page'=>$page,'route'=>$route])}}" method="get">
+                  <button type="submit" class="btn btn-info btn-fixed">Return back</button>
+               </form>
                <div>
                   <img src="{{asset('images/publisher/'.$publisher->pub_img)}}" alt="Publisher"
                      style="margin-top: 20px;padding: 20px;width:300px ;height:200px ;">

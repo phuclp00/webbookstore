@@ -27,62 +27,61 @@ class LoginController extends Controller
     use  HasFactory;
     use Notifiable;
     private $pathViewController = 'public.page.my-account';
-
-
     public function show_login()
     {
         return view('public.page.my-account');
     }
     public function Login(Request $request)
     {
-        $result = $request->only('email', 'password');
-        $option = $request->remember == "on" ? true : false;
-        if (Auth::attempt([
-            'email' => $result['email'],
-            'password' => $result['password'],
-        ], $remember = $option)) {
-            $request->session()->regenerate();
-            $request->session()->flash('info_success','Login Success  ! Wellcome to Bookstore !');
-            return redirect()->route('home');
-        } else {
-            $request->session()->flash('info_warning','Login Failed  ! Please Try Again !');
+        try {
+            $result = $request->only('email', 'password');
+            $option = $request->remember == "on" ? true : false;
+            if (Auth::guard('web')->attempt(
+                [
+                    'email' => $result['email'],
+                    'password' => $result['password'],
+                    "level" => "user"
+                ],
+                $remember = $option
+            )) {
+                $request->session()->regenerate();
+                $request->session()->flash('infor_success', 'Login Success  ! Wellcome to Bookstore !');
+                return redirect()->route('home');
+            } else {
+                $request->session()->flash('infor_warning', 'Login Failed  ! Please Try Again !');
+                return redirect()->back();
+            }
+        } catch (Exception $e) {
+            $request->session()->flash('infor_warning', 'Login Failed  ! Please Try Again !' . $e->getMessage());
+            return redirect()->back();
         }
     }
-    public function log_out()
+    public function log_out(Request $request)
     {
-        session()->flush();
-        return \redirect()->back();
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->back();
     }
     public function Register(Request $request)
     {
         $data = new UserModel();
         $data_request = $request->only('username_register', 'password_register', 'email_register');
         try {
-            // $data->user_name = $request->username_register;
-            // $data->password = $request->password_register;
-            // $data->email = $request->email_register;
-            // $data->level = "user";
-            // $data->status = "active";
-            // $data->created_by=$data->user_name;
-            // $data->save();
-            //event(new UserRegisted($data));
-            //$user->save();
-            //Send notify to database 
-            // $data->notify( new UserRegisted($data));
-            //Send notify to admin 
-            // event( new UserTracker($data));
             $user = UserModel::create([
                 'user_name' => $data_request['username_register'],
                 'password' => $data_request['password_register'],
                 'email' => $data_request['email_register'],
+                'level' =>'user',
+                'status' =>1,
                 'created_by' => $data_request['username_register']
             ]);
             event(new UserRegisted($user));
-            $request->session()->flash('logout_status', '<div class="alert alert-success">"Tạo tài khoản thành công , tiếp tục mua sắm nào !!"</div>');
+            $request->session()->flash('infor_success', "Your account has been created successfully !");
 
             return redirect()->back();
         } catch (Exception $e) {
-            $request->session()->flash('logout_status', '<div class="alert alert-danger">Tạo tài khoản thát bại' . $e->getMessage() . ' vui lòng thử lại</div>');
+            $request->session()->flash('infor_warning', "Can't create an account, Please try again !");
             return \redirect()->back();
         }
     }
@@ -117,7 +116,7 @@ class LoginController extends Controller
     {
         $result = $loginRequest->only('email', 'password');
         $option = $loginRequest->remember == "on" ? true : false;
-        if (Auth::attempt([
+        if (Auth::guard("web")->attempt([
             'email' => $result['email'],
             'password' => $result['password'],
             'level' => "admin"

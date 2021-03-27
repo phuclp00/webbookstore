@@ -78,11 +78,12 @@ Route::get('/test', function () {
 $controllerName = 'login';
 Route::group(['prefix' => $controllerName,'middleware'=>['login']], function () {
     $controller = LoginController::class;
-    Route::get('/', [$controller, 'show_login'])->name("show_login");
+    Route::get('/', [$controller, 'show_login'])->name("login");
     Route::post('/sign-in', [$controller, 'Login'])->name("login_signin");
     Route::post('/sign-up', [$controller, 'Register'])->name("login_signup");
-    Route::get('/log-out', [$controller, 'log_out'])->name("log_out");
 });
+Route::get('/log-out', [LoginController::class, 'log_out'])->name('log_out');
+
 //===================================HOME - PAGE ====================================================================//
 Route::get('/', [HomeController::class,'home'])->name('home');
 
@@ -231,7 +232,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['admin']], function () {
 
         //Dash board
-  
+
         Route::get('/dashboard', [HomeController::class, 'dash_view'])->name('admin.dashboard');
         //==========================================Category==============================================================
         Route::get('/category', [HomeController::class, 'category_view'])->name('admin.category');
@@ -240,7 +241,7 @@ Route::group(['prefix' => 'admin'], function () {
         //Category add 
         Route::post('/category-add', [CategoryController::class, 'add_category'])->name('admin.category.add');
         //Category edit view
-        Route::get('/category-edit-view/{cat_id}', [HomeController::class, 'category_edit_view'])->name('admin.category.edit.view');
+        Route::get('/category-edit-view/{cat_id}-{page}--{route}', [HomeController::class, 'category_edit_view'])->name('admin.category.edit.view');
         //Category edit 
         Route::post('/category-edit/{cat_id}', [CategoryController::class, 'category_edit'])->name('admin.category.edit');
         //Category delete 
@@ -253,7 +254,7 @@ Route::group(['prefix' => 'admin'], function () {
         //Book add
         Route::post('/book-add', [ProductController::class, 'add'])->name('admin.books.add');
         //Book edit view
-        Route::get('/book-edit-view/{book_id}', [HomeController::class, 'book_edit_view'])->name('admin.books.edit.view');
+        Route::get('/book-edit-view/{book_id}-{page}--{route}', [HomeController::class, 'book_edit_view'])->name('admin.books.edit.view');
         //Book edit
         Route::post('/book-edit', [ProductController::class, 'update'])->name('admin.books.edit');
         //Book delete 
@@ -266,7 +267,7 @@ Route::group(['prefix' => 'admin'], function () {
         //Publisher-add
         Route::post('publisher-add', [PublisherController::class, 'add_publisher'])->name('admin.publisher.add');
         //Publisher-edit view
-        Route::get('publisher-edit-view/{pub_id}', [HomeController::class, 'edit_publisher_view'])->name('admin.publisher.edit.view');
+        Route::get('publisher-edit-view/{pub_id}-{page}--{route}', [HomeController::class, 'edit_publisher_view'])->name('admin.publisher.edit.view');
         //Publisher edit
         Route::post('publisher-edit/{pub_id}', [PublisherController::class, 'edit_publisher'])->name('admin.publisher.edit');
         //Publisher delete
@@ -285,6 +286,11 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/delete-user-{user_name}',[UserController::class,'delete_user'])->name('admin.users.delete');
         //User search 
         Route::get('/user_search',[UserController::class,'search_user'])->name('admin_search_user');
+
+        //Route option
+        Route::get('/back-{page}-{route}', function ($page,$route) {
+            return redirect()->route($route,['page'=>$page]);
+        })->name('back');
     });
     //================================ SLIDER ====================================================================//
 });

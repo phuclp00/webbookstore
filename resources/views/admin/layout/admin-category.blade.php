@@ -46,7 +46,7 @@
                               <td>
                                  <div class="flex align-items-center list-user-action">
                                     <a class="bg-primary option" data-toggle="tooltip" data-placement="top" title=""
-                                       data-original-title="Edit" href="{{route('admin.category.edit.view',$value->cat_id)}}"><i
+                                       data-original-title="Edit" href="{{route('admin.category.edit.view',['cat_id'=>$value->cat_id,'page'=>$cat_list->currentPage(),'route'=>Request::route()->getName()])}}"><i
                                           class="ri-pencil-line"></i></a>
                                     <a class="bg-primary option" data-toggle="tooltip" data-placement="top" title=""
                                        data-original-title="Delete" href="{{route('admin.category.delete',$value->cat_id)}}"><i class="ri-delete-bin-line"></i></a>

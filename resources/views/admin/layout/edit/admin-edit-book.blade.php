@@ -2,10 +2,14 @@
 @section('admin_section')
 <!-- Page Content  -->
 <div id="content-page" class="content-page">
+   {{$book->img}}
    <div class="container-fluid">
       <div class="row">
          <div class="col-sm-12">
             <div class="iq-card">
+               <form action="{{route('back',['page'=>$page,'route'=>$route])}}" method="get">
+                  <button type="submit" class="btn btn-info btn-fixed">Return back</button>
+               </form>
                <div class="iq-card-img-top">
                   @if($book->img==null)
                   <img src="{{asset('images/books/8k.jpg')}}" alt="Book Image"
@@ -24,6 +28,7 @@
                <div class="iq-card-body">
                   <form action="{{route('admin.books.edit')}}" method="post" enctype="multipart/form-data">
                      @csrf
+                     <input type="hidden" name="page" value="{{$page}}">
                      <div class="form-group">
                         <label>Book ID:</label>
                         <input name="id_block" type="text" class="form-control" value="{{$book->book_id}}" disabled>
@@ -97,7 +102,7 @@
                      <div class="form-group">
                         <label>Book Description:</label>
                         <textarea class="form-control" rows="4" name="content"
-                           id="editor" >{{$book->description}}</textarea>
+                           id="editor">{{$book->description}}</textarea>
                      </div>
                      <button type="submit" class="btn btn-primary">Submit</button>
                      <button type="reset" class="btn btn-danger"

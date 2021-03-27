@@ -169,8 +169,9 @@ class HomeController extends Controller
     public function category_edit_view(Request $request)
     {
         $result = CategoryModel::find($request->cat_id);
-
-        return view('admin.layout.edit.admin-edit-category', ['category' => $result]);
+        $page=$request->page;
+        $route=$request->route;
+        return view('admin.layout.edit.admin-edit-category', ['category' => $result,'page'=>$page,'route'=>$route]);
     }
     //Book
     public function book_list_view()
@@ -188,6 +189,8 @@ class HomeController extends Controller
     {
         $cat = CategoryModel::all();
         $pub = PublisherModel::all();
+        $page=$request->page;
+        $route=$request->route;
         $result = ProductModel::find($request->book_id);
         $thumb = BookThumbnailModel::find($request->book_id);
         $old_thumb = null;
@@ -198,12 +201,13 @@ class HomeController extends Controller
                 $i++;
             }
         }
-        return view('admin.layout.edit.admin-edit-book', ['book' => $result, 'cat' => $cat, 'pub' => $pub, 'old_thumb' => $old_thumb]);
+        return view('admin.layout.edit.admin-edit-book', ['book' => $result, 'cat' => $cat, 'pub' => $pub, 'old_thumb' => $old_thumb,'page'=>$page,'route'=>$route]);
     }
     //Publisher 
-    public function publisher_view()
+    public function publisher_view(Request $request)
     {
         $result = PublisherModel::paginate(6);
+
         return view('admin.layout.admin-publisher', ['pub_list' => $result]);
     }
     public function add_publisher_view()
@@ -213,7 +217,9 @@ class HomeController extends Controller
     public function edit_publisher_view(Request $request)
     {
         $result = PublisherModel::find($request->pub_id);
-        return view('admin.layout.edit.admin-edit-publisher', ['publisher' => $result]);
+        $page=$request->page;
+        $route=$request->route;
+        return view('admin.layout.edit.admin-edit-publisher', ['publisher' => $result,'page'=>$page,'route'=>$route]);
     }
     //User
     public function user_list_view()

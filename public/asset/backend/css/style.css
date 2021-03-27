@@ -5512,3 +5512,10 @@ Custom
         .alert .close {
             color: black;
         }
+        
+        .btn-fixed {
+            position: fixed;
+            margin-right: 40px;
+            height: 50px;
+            right: 0;
+        }

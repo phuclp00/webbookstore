@@ -134,8 +134,8 @@
                                     </div>
                                     @else
                                     <ul>
-                                        <li><a href="{{route('show_login')}}">Sign In</a></li>
-                                        <li><a href="{{route('show_login')}}">Create An Account</a></li>
+                                        <li><a href="{{route('login')}}">Sign In</a></li>
+                                        <li><a href="{{route('login')}}">Create An Account</a></li>
                                     </ul>
                                     @endif
                                 </div>
@@ -218,33 +218,19 @@
 <!-- //Header -->
 <!-- Start Search Popup -->
 <div class="box-search-content search_active block-bg close__top">
-    <form id="search_mini_form" class="minisearch" action="{{route('search')}}" method="POST">
+    <form id="search_mini_form" class="minisearch" method="POST">
         <div class="field__search">
-            <input type="text" placeholder="Search for book title or publisher name, book category...">
-            <div class="action">
-                <a><i class="zmdi zmdi-search"></i></a>
+            <input type="text" id="searchBox" placeholder="Search for book title or publisher name, book category..." autocomplete="on"/>
+            <div id="searchBox__check" class="action">
+                <a href="#"><i class="zmdi zmdi-search"></i></a>
             </div>
-            {{$post[]=""}}
-            @if ($post !="")
-            <div class="minicart-content-wrapper bg--white">
-                <table>
-                    <tr>
-                        <th>
-                            <h3>RESULT</h3>
-                        </th>
-                    </tr>
-                    <tr>
-                        @foreach ($post as $result)
-                        <td><a href="#">HEELO</a></td>
-                        @endforeach
-                    </tr>
-                </table>
-            </div>
-            @endif 
+            <div id="stats" style="color:white"></div>
+            <div id="hit"></div>
         </div>
     </form>
     <div class="close__wrap">
         <span>close</span>
     </div>
 </div>
+<script src="{{asset('js/algolia.js')}}"></script>
 <!-- END Search Popup -->

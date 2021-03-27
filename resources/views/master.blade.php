@@ -7,7 +7,8 @@
 	<title>Home | Bookshop Responsive Bootstrap4 Template - SHARED ON THEMELOCK.COM</title>
 	<meta name="description" content="Home | Bookshop Responsive Bootstrap4 Template - SHARED ON THEMELOCK.COM ">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="csrf-token" content="{{ csrf_token() }}" />
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+
 
 	<!-- Favicons -->
 	<link rel="shortcut icon" href="{{asset('asset/frontend/images/favicon.ico')}}">
@@ -26,17 +27,28 @@
 
 	<!-- Cusom css -->
 	<link rel="stylesheet" href="{{asset('asset/frontend/css/custom.css')}}">
+	<link rel="stylesheet" href="{{asset('asset/frontend/css/jquery-confirm.min.css')}}">
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-	<!-- Modernizer js -->
-	<script src="{{asset('asset/frontend/js/vendor/jquery-3.6.0.min.js')}}"></script>
-	<script src="{{asset('asset/frontend/js/vendor/modernizr-3.5.0.min.js')}}"></script>
+	{{-- Google map --}}
+	<script src="https://cdn.jsdelivr.net/npm/@goongmaps/goong-js/dist/goong-js.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/@goongmaps/goong-js/dist/goong-js.css" rel="stylesheet" />
+	{{-- Algolia Search --}}
+	<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"
+		integrity="sha256-EXPXz4W6pQgfYY3yTpnDa3OH8/EPn16ciVsPQ/ypsjk=" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.8.3/dist/instantsearch.production.min.js"
+		integrity="sha256-LAGhRRdtVoD6RLo2qDQsU2mp+XVSciKRC8XPOBWmofM=" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.3.1/themes/reset-min.css"
+		integrity="sha256-t2ATOGCtAIZNnzER679jwcFcKYfLlw01gli6F6oszk8=" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.5/themes/satellite-min.css" integrity="sha256-TehzF/2QvNKhGQrrNpoOb2Ck4iGZ1J/DI4pkd2oUsBc=" crossorigin="anonymous">
+
 </head>
 
 <body>
 	<div id="loading">
-        <div id="loading-center">
-        </div>
-    </div>
+		<div id="loading-center">
+		</div>
+	</div>
 	<div id="app" class="wrapper">
 		<!--[if lte IE 9]>
 		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
@@ -44,6 +56,8 @@
 		@yield('content')
 		<!-- Main wrapper -->
 		<!-- Footer Area -->
+		@include('public.slide.letter')
+		@include('public.slide.brand')
 		<footer id="wn__footer" class="footer__area bg__cat--8 brown--color">
 			<div class="footer-static-top">
 				<div class="container">
@@ -102,11 +116,19 @@
 		<!-- //Main wrapper -->
 	</div>
 
+	<!-- Modernizer js -->
+	<script src="{{asset('asset/frontend/js/vendor/jquery-3.6.0.min.js')}}"></script>
+	<script src="{{asset('asset/frontend/js/vendor/modernizr-3.5.0.min.js')}}"></script>
+	<script src="{{asset('asset/frontend/js/jquery-confirm.min.js')}}"></script>
+
 	<!-- JS Files -->
+
 	<script src="{{asset('asset/frontend/js/popper.min.js')}}"></script>
 	<script src="{{asset('asset/frontend/js/bootstrap.min.js')}}"></script>
 	<script src="{{asset('asset/frontend/js/plugins.js')}}"></script>
 	<script src="{{asset('asset/frontend/js/active.js')}}"></script>
+
+	@include('vendor.notifications.feeback')
 </body>
 
 </html>

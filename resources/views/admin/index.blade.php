@@ -24,7 +24,6 @@
 </head>
 
 <body>
-   
     <!-- loader Start -->
     <div id="loading">
         <div id="loading-center">
@@ -136,14 +135,7 @@
     <script src="{{asset('asset/backend/js/custom.js')}}"></script>
     <script src="{{asset('asset/backend/js/ls.js')}}" type="text/javascript"></script>
     <!-- Appear JavaScript -->
-    @if(session()->has('info_warning'))
-    <script>
-        $.dialog({
-            title: '<text style="color:red;margin:0px auto">Messenger To You !</text>',
-            content: '{!!session()->get('info_warning')!!}',
-            });
-    </script>
-    @endif
+    @include('vendor.notifications.feeback')
 </body>
 
 <!-- Mirrored from iqonic.design/themes/booksto/html/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 01 Aug 2020 14:10:36 GMT -->

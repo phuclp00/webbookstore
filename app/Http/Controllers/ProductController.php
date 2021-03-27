@@ -153,6 +153,7 @@ class ProductController extends Controller
     }
     public function update(ProductRequest $request)
     {
+        $page=$request->page;
         try {
             $data = ProductModel::find($request->book_id);
             $thumb = BookThumbnailModel::find($request->book_id);
@@ -214,7 +215,7 @@ class ProductController extends Controller
                 }
             }
             $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Update ' . $request->book_name . ' Successfully !! </div>');
-            return \redirect()->route('admin.books');
+            return \redirect()->route("admin.books",['page'=>$page]);
         } catch (QueryException $e) {
             $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Update ' . $request->book_name . 'Fail,Try Again !! </div>');
             return \redirect()->back();

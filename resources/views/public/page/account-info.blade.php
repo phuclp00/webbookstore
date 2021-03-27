@@ -1,11 +1,7 @@
 ﻿@extends('master')
 @section('content')
-
 @include('public.slide.slide_header')
 <!-- Start My Account Area -->
-@if(session()->has('account_info_warning'))
-{!!session()->get('account_info_warning')!!}
-@endif
 
 <section class="my_account_area pt--80 pb--55 bg--white">
 	<div class="container">
@@ -142,53 +138,58 @@
 								<label class="col-lg-3 col-form-label form-control-label">Full Name</label>
 								<div class="col-lg-9">
 									<input class="form-control" id="full_name" name="fullname" type="text"
-										value="{{$data->user_detail->full_name}}">
+										value="{{$data->user_detail->full_name}}" autocomplete="on">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label form-control-label">Email</label>
 								<div class="col-lg-9">
 									<input class="form-control" id="email" type="email" name="email_register"
-										value="{{$data->email}}">
+										value="{{$data->email}}" autocomplete="on">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label form-control-label">Phone</label>
 								<div class="col-lg-9">
 									<input class="form-control" id="phone" type="text" name="phone"
-										value="{{$data->user_detail->phone}}">
+										value="{{$data->user_detail->phone}}" autocomplete="on">
 								</div>
+							</div>
+							<div class="form-group ">
+								<div id="map"></div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label form-control-label">Address</label>
 								<div class="col-lg-9">
 									<input class="form-control" id="street" name="street" type="text"
-										value="{{$data->user_detail->street}}" placeholder="Street">
+										value="{{$data->user_detail->street}}" placeholder="Street" autocomplete="on">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label form-control-label"></label>
 								<div class="col-lg-6">
 									<input class="form-control" id="district" name="district" type="text"
-										value="{{$data->user_detail->district}}" placeholder="District">
+										value="{{$data->user_detail->district}}" placeholder="District"
+										autocomplete="on">
 								</div>
 								<div class="col-lg-3">
 									<input class="form-control" id="city" name="city" type="text"
-										value="{{$data->user_detail->city}}" placeholder="Province/City">
+										value="{{$data->user_detail->city}}" placeholder="Province/City"
+										autocomplete="on">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label form-control-label">Password</label>
 								<div class="col-lg-9">
 									<input class="form-control" id="password_register" name="password_register"
-										type="password" value="11111122333">
+										autocomplete="on" type="password" value="11111122333">
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
 								<div class="col-lg-9">
 									<input class="form-control" id="re_password" name="re_password" type="password"
-										value="11111122333">
+										autocomplete="on" value="11111122333">
 								</div>
 							</div>
 							<div class="form-group row">
@@ -207,8 +208,8 @@
 
 			<div class="col-lg-4 order-lg-1 text-center">
 				@if($data->user_detail->img != null)
-				<img src="{{asset('images/user_profile/'.$data->user_detail->img)}}" class="avatar" style="max-height:450px"
-					alt="avatar">
+				<img src="{{asset('images/user_profile/'.$data->user_detail->img)}}" class="avatar"
+					style="max-height:450px" alt="avatar">
 				@else
 				<img src="{{asset('/images/users/user_default.svg')}}" class="avatar"
 					style="vertical-align: middle; width: 100px;height: 100px;border-radius:50%;" alt="avatar">
@@ -219,9 +220,11 @@
 						{{ csrf_field() }}
 						<div class="input">
 							<label for="file" value="Choose Picture"></label>
-							<input type="file" id="upload_file" name="upload_file" class="custom-file-input">
+							<input type="file" id="upload_file" name="upload_file" class="custom-file-input"
+								onchange="javascript:showname_file()">
 							<span class="custom-file-control">Choose file</span>
 						</div>
+						<div id="file_name" class="btn-outline-danger"></div>
 						<button type="submit" class="btn btn-primary active" role="button"> OK</button>
 						@if ($errors->any())
 						<div class="alert alert-danger">
@@ -238,8 +241,14 @@
 		</div>
 	</div>
 </section>
+<script>
+	goongjs.accessToken = 'ggkICrqiDJwyjOoIyWGtZQEEs8iDKCLVOakceuqa';
+    var map = new goongjs.Map({
+        container: 'map', // container id
+        style: 'https://tiles.goong.io/assets/goong_map_web.json', // stylesheet location
+        center: [105, 21], // starting position [lng, lat]
+        zoom: 9 // starting zoom
+    });
+</script>
 <!-- End My Account Area -->
-
-
-
 @endsection

@@ -7,6 +7,9 @@
 
 **********************************************************************************/
     /*Loading*/
+    /* * {
+        font-family: 'Arial,Helvetica,sans-serif,sans-serif';
+    } */
     
     #loading {
         background: var(--white) url(../images/loader.gif) no-repeat scroll center center;
@@ -46,4 +49,36 @@
         font-size: 20px;
         margin: 0 5px;
         text-decoration: line-through;
+    }
+    
+    #map {
+        position: inherit;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+    
+    .img__boxsearch {
+        position: inherit;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+    }
+    
+    .title__boxsearch {
+        float: right;
+        margin: 0px auto;
+    }
+    
+    #hit {
+        overflow-y: scroll;
+        height: auto;
+        background: white;
+        width: 390px;
+        padding: 25px 20px;
+        box-shadow: 0 3px 3px rgb(0 0 0 / 15%);
+        margin: 4px 0 0;
+        min-width: 100%;
+        top: 100%;
+        z-index: 100;
     }

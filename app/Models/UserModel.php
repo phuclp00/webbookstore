@@ -29,6 +29,7 @@ class UserModel extends Authenticatable
     protected $primaryKey = "user_id";
     protected $keyType="int";
     const UPDATED_AT = 'modiffed_at';
+    protected $guard = 'web';
     /**
      * The attributes that are mass assignable.
      *
@@ -38,6 +39,11 @@ class UserModel extends Authenticatable
         'user_name',
         'email',
         'password',
+        'level',
+        'status',
+        'created_by',
+        'remember_token',
+        'email_verified_at'
     ];
 
     /**
@@ -57,7 +63,7 @@ class UserModel extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'modiffed_by' => 'datetime',
+        'modiffed_at' => 'datetime',
         'created_at'  => 'datetime',
     ];
     /**
@@ -65,9 +71,6 @@ class UserModel extends Authenticatable
      *
      * @var array
      */
-    protected $appends = [
-        'profile_photo_url',
-    ];
     protected $guarded = [
         
     ];
@@ -96,6 +99,13 @@ class UserModel extends Authenticatable
         $array = $this->toArray();
         return $array;
     }
+    public function setPasswordAttribute($password)
+{
+    if(Hash::needsRehash($password)) 
+        $password = Hash::make($password);
+
+    $this->attributes['password'] = $password;
+}
     protected function makeAllSearchableUsing($query)
     {
         return $query->with('user_detail');
@@ -104,7 +114,7 @@ class UserModel extends Authenticatable
     {
         return $this->hasOne(UserDetail::class,'user_id');
     }
-
+  
     public function get_notify()
     {
         return $this->hasMany(Notifications::class,'notifiable_id','user_id');

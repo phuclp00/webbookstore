@@ -3,7 +3,6 @@
 
 @include('public.slide.slide_header')
 
-{{session()->get('info_warning')}}
 <!-- Start My Account Area -->
 <section class="my_account_area pt--80 pb--55 bg--white">
 	<div class="container">
@@ -16,18 +15,17 @@
 						<div class="account__form">
 							<div class="input__box">
 								<label> Email address <span>*</span></label>
-								<input type="text" name="email" autocomplete="on">
+								<input type="text" name="email" autocomplete="on" value="{{old('email')}}">
 							</div>
 							<div class="input__box">
 								<label>Password<span>*</span></label>
-								<input type="password" name="password"autocomplete="on">
+								<input type="password" name="password"autocomplete="on" value="{{old('password')}}">
 							</div>
 							<div class="form__btn">
 								<button>Login</button>
 								<input type="hidden" name="Submit" value="Login">
 								<label class="label-for-checkbox">
-									<input id="remember" class="input-checkbox" name="remember" value="forever"
-										type="checkbox">
+									<input id="remember" class="input-checkbox" name="remember" type="checkbox">
 									<span>Remember me</span>
 								</label>
 							</div>
@@ -47,11 +45,11 @@
 						<div class="account__form">
 							<div class="input__box">
 								<label>User Name <span>*</span></label>
-								<input type="text" name="username_register" value="{{old('username_register')}}">
+								<input type="text" name="username_register" value="{{old('username_register')}}" autocomplete="on">
 							</div>
 							<div class="input__box">
 								<label>Email address <span>*</span></label>
-								<input type="email" name="email_register" value="{{old('email_register')}}">
+								<input type="email" name="email_register" value="{{old('email_register')}}" autocomplete="on">
 							</div>
 							<div class="input__box">
 								<label>Password<span>*</span></label>

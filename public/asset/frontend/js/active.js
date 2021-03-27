@@ -561,8 +561,19 @@
     $('#loading').fadeOut();
     jQuery("#loading-center").delay().fadeOut("");
 
-    /* ------------------------------------------------------------------
-    Add to Cart 
-    --------------------------------------------------------------------*/
 
 })(jQuery);
+/* ------------------------------------------------------------------
+   Show file name
+   --------------------------------------------------------------------*/
+showname_file = function() {
+    try {
+        var la = document.getElementById('upload_file');
+        var ot = document.getElementById('file_name');
+        ot.innerHTML = '<ul>';
+        ot.innerHTML += '<li>' + la.files.item(0).name + '</li>';
+        ot.innerHTML += '</ul>';
+    } catch (err) {
+        document.getElementById('file_name').innerHTML = " Choose one an image !";
+    }
+}

@@ -53,7 +53,7 @@
                                  <div class="flex align-items-center list-user-action">
                                     <a class="bg-primary option" data-toggle="tooltip" data-placement="top" title=""
                                        data-original-title="Edit" data-value="{{$item->book_id}}"
-                                       href="{{route('admin.books.edit.view',$item->book_id)}}"><i
+                                       href="{{route('admin.books.edit.view',['book_id'=>$item->book_id,'page'=>$book->currentPage(),'route'=>Request::route()->getName()])}}"><i
                                           class="ri-pencil-line"></i></a>
                                     <a class="bg-primary option" data-toggle="tooltip" data-text="{{$item->book_id}}"
                                        data-placement="top" title="" data-original-title="Delete"

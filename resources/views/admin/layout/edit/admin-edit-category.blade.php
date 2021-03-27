@@ -6,6 +6,9 @@
       <div class="row">
          <div class="col-sm-12">
             <div class="iq-card">
+               <form action="{{route('back',['page'=>$page,'route'=>$route])}}" method="get">
+                  <button type="submit" class="btn btn-info btn-fixed">Return back</button>
+               </form>
                <div class="iq-card-header d-flex justify-content-between">
                   <div class="iq-header-title">
                      <h4 class="card-title">Edit Categories: {{$category->cat_id}}</h4>

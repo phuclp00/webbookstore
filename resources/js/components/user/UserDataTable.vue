@@ -29,9 +29,14 @@
         <tbody>
           <tr v-for="user in tableData" :key="user.user_id">
             <td class="text-center">
-              <img
+              <img v-if="user.user_detail.img !=null"
                 class="rounded img-fluid avatar-40"
-                :src="'../images/user/01.jpg'"
+                :src="'../images/user_profile/'.user.user_detail.img"
+                alt="profile"
+              />
+              <img v-else
+                class="rounded img-fluid avatar-40"
+                :src="'../images/users/user_default.svg'"
                 alt="profile"
               />
             </td>
@@ -46,7 +51,7 @@
             </td>
             <td>
               <a
-                v-if="user.user_detail.phone != ''"
+                v-if="user.user_detail.phone != null"
                 href="https://iqonic.design/cdn-cgi/l/email-protection"
                 class="__cf_email__"
                 :data-cfemail="user.user_detail.phone"
@@ -63,16 +68,10 @@
               </span>
             </td>
             <td>
-              <span v-if="user.status == 'ban'" class="badge iq-bg-danger"
-                ><a href="#" @click="changeStatus(user)">{{
-                  user.status
-                }}</a></span
-              >
-              <span v-else class="badge iq-bg-info"
-                ><a href="#" @click="changeStatus(user)">{{
-                  user.status
-                }}</a></span
-              >
+              <button v-if="user.status == 0" class="badge iq-bg-danger option"
+                 @click="changeStatus(user)">BAN</button>
+              <button v-else class="badge iq-bg-info option"
+                 @click="changeStatus(user)">ACTIVE</button>
             </td>
             <td>
               <p>
@@ -115,14 +114,14 @@
         </tbody>
         <tfoot>
           <tr class="thead-light">
-            <th>Profile</th>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Contact</th>
-            <th>Address</th>
-            <th>Status</th>
-            <th>Join Date</th>
-            <th>Action</th>
+            <th width="5%">Profile</th>
+            <th width="15%">User Name</th>
+            <th width="10%">Email</th>
+            <th width="15%">Contact</th>
+            <th width="20%">Address</th>
+            <th width="10%">Status</th>
+            <th width="15%">Join Date</th>
+            <th width="10%">Action</th>
           </tr>
         </tfoot>
       </table>
@@ -135,21 +134,12 @@
 import Pagination from "./DataTablePagination";
 import Header from "./DataTableHeader";
 import moment from "moment";
-
-// import VueTimeago from "vue-timeago";
-// Vue.use(VueTimeago, {
-//   name: "Timeago", // Component name, `Timeago` by default
-//   locale: "en", // Default locale
-//   // We use `date-fns` under the hood
-//   // So you can use all locales from it
-//   locales: {
-//     ja: require("date-fns/locale/ja"),
-//   },
-// });
+import Button from '../../Jetstream/Button.vue';
 export default {
   components: {
     Header,
-    Pagination,
+    Pagination
+    //Button,
   },
   data() {
     return {
@@ -179,7 +169,7 @@ export default {
       );
     },
     changeStatus(user) {
-      axios.post("../change-status-user/"+user.user_id+"/"+user.status)
+      axios.get("../change-status-user/"+user.user_id+"/"+user.status)
         .then((response) => {
           this.tableData=response.data;
         });
