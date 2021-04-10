@@ -45,7 +45,7 @@
                     <div class="product__thumb">
                         <a class="first__img"
                             href="{{route('product',['id'=>$product->book_id,'cat_id'=>$product->cat_id])}}"><img
-                                src="{{asset('images/books/'.$product->book_id.'/'.$product->img)}}" alt="product image"
+                                src="{{asset('images/books/'.$product->book_id.'/'.$product->m)}}" alt="product image"
                                 style="width: 270px;height: 340px;"></a>
                         <a class="second__img animation1"
                             href="{{route('product',['id'=>$product->book_id,'cat_id'=>$product->cat_id])}}"><img

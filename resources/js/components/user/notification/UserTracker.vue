@@ -31,7 +31,6 @@
             class="iq-sub-card"
             :key="notification.id"
             ref="notification"
-           
           >
             <div class="media align-items-center">
               <div class="">

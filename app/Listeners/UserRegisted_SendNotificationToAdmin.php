@@ -29,14 +29,14 @@ class UserRegisted_SendNotificationToAdmin
      * @param  UserRegisted  $event
      * @return void
      */
-    
+
     public function handle(UserRegisted $event)
     {
-     
+
         $result = UserModel::where('level', '=', 'admin')->get();
         if ($result != null) {
             foreach ($result as $user) {
-                $this->user=$event;
+                $this->user = $event;
                 $user->notify(new UserRegistedNotification($event->user));
             }
         }

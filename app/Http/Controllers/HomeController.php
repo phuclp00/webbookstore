@@ -3,21 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\Detail;
 use App\Http\Controllers\SilderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Product\CategoryController;
 use App\Models\CategoryModel;
 use App\Models\ProductModel;
-use App\Cart;
-use App\Models\Book_list_view;
 use App\Models\BookThumbnailModel;
 use App\Models\PublisherModel;
-use App\Models\Show_info_user;
 use App\Models\UserModel;
-use Illuminate\Support\Facades\Session as FacadesSession;
-use Session;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller

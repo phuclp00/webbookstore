@@ -51,14 +51,14 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
- 
+
         ],
         'images' => [
             'driver' => 'local',
             'root' => storage_path('app/images'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
         's3' => [
@@ -67,16 +67,13 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
- 
         ],
         'ftp' => [
             'driver' => 'ftp',
             'host' => 'ftp.example.com',
             'username' => 'your-username',
             'password' => 'your-password',
-        
+
             // Optional FTP Settings...
             // 'port' => 21,
             // 'root' => '',
@@ -90,16 +87,31 @@ return [
             'host' => 'example.com',
             'username' => 'your-username',
             'password' => 'your-password',
-        
+
             // Settings for SSH key based authentication...
             'privateKey' => '/path/to/privateKey',
             'password' => 'encryption-password',
-        
+
             // Optional SFTP Settings...
             // 'port' => 22,
             // 'root' => '',
             // 'timeout' => 30,
-   
+
+        ],
+        'google' => [
+            'driver' => 'google',
+            'clientId' => env('GOOGLE_DRIVE_CLIENT_ID'),
+            'clientSecret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
+            'refreshToken' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
+            'folderId' => env('GOOGLE_DRIVE_FOLDER_ID'),
+            // 'teamDriveId' => env('GOOGLE_DRIVE_TEAM_DRIVE_ID'),
+        ],
+        'second_google' => [
+            'driver' => 'google',
+            'clientId' => env('SECOND_GOOGLE_DRIVE_CLIENT_ID'),
+            'clientSecret' => env('SECOND_GOOGLE_DRIVE_CLIENT_SECRET'),
+            'refreshToken' => env('SECOND_GOOGLE_DRIVE_REFRESH_TOKEN'),
+            'folderId' => env('SECOND_GOOGLE_DRIVE_FOLDER_ID'),
         ],
     ],
 

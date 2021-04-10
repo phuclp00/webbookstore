@@ -15,9 +15,10 @@ use Illuminate\Support\Facades\Auth;
 | used to check if an authenticated user can listen to the channel.a
 |
 */
+
 Broadcast::channel('App.Models.UserModel.{id}', function ($user, $id) {
-   return true;
- });
- Broadcast::channel('user-registed', function ($user) {
-    return true;
-  });
+  return true;
+});
+Broadcast::channel('user-registed', function ($user) {
+  return true;
+});

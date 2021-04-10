@@ -1,39 +1,18 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController as AuthLoginController;
-use Illuminate\Support\Facades\Config;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SilderController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DBconnect;
-use App\Http\Controllers\FileuploadController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\PublisherController;
-use App\Http\Controllers\ShopController;
-use App\Http\Controllers\SigninController;
-use App\Http\Controllers\SignupController;
-use App\Http\Controllers\UserController;
-use App\Models\CategoryModel;
-use App\Models\ProductModel;
-use App\Models\PublisherModel;
-use App\Models\Show_info_user;
-use App\Models\SlideModel;
-use App\Models\User;
+use App\Http\Controllers\Product\CategoryController;
+use App\Http\Controllers\Store\FileuploadController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Product\PublisherController;
+use App\Http\Controllers\Auth\UserController;
 use App\Models\UserModel;
-use Encore\Admin\Controllers\AdminController;
-use Encore\Admin\Facades\Admin;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Events\NotificationEvent;
 use App\Events\UserRegisted;
 use App\Http\Controllers\CheckoutController;
-use App\Models\Notifications;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\UserRegistedNotification;
-use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Store\GoogleDriverController;
+use App\Http\Controllers\Store\S3Controller;
 use  Illuminate\Support\Facades\Storage;
 
 /*
@@ -59,16 +38,18 @@ use  Illuminate\Support\Facades\Storage;
 //=========================================================//KHU VUC TESTING =========================================================//
 
 
-Route::get('/cache', function() {   
-    dd (Storage::deleteDirectory("images/books/td00"));
+Route::get('/cache', function () {
+    dd(Storage::deleteDirectory("images/books/td00"));
 });
-Route::get('/users-list',[UserController::class,'index']);
-Route::get('/change-status-user/{userid}/{status}',[UserController::class,'update_status']);
+Route::get('/view', function () {
+    return view('file');
+});
+Route::post('/file', [GoogleDriverController::class, 'store'])->name('file');
+
+Route::get('/users-list', [UserController::class, 'index']);
+Route::get('/change-status-user/{userid}/{status}', [UserController::class, 'update_status']);
 Route::get('/test', function () {
-    $data= UserModel::where('user_id',58)->first();
-    //$event= event(new UserRegisted($data));
-    //broadcast( new UserRegisted($data))->toOthers();
-    //UserRegisted::dispatch($data);
+    $data = UserModel::where('user_id', 82)->first();
     event(new UserRegisted($data));
     return "test";
 });
@@ -76,7 +57,7 @@ Route::get('/test', function () {
 
 //===================================LOG-IN ========================================================================//
 $controllerName = 'login';
-Route::group(['prefix' => $controllerName,'middleware'=>['login']], function () {
+Route::group(['prefix' => $controllerName, 'middleware' => ['login']], function () {
     $controller = LoginController::class;
     Route::get('/', [$controller, 'show_login'])->name("login");
     Route::post('/sign-in', [$controller, 'Login'])->name("login_signin");
@@ -85,7 +66,7 @@ Route::group(['prefix' => $controllerName,'middleware'=>['login']], function () 
 Route::get('/log-out', [LoginController::class, 'log_out'])->name('log_out');
 
 //===================================HOME - PAGE ====================================================================//
-Route::get('/', [HomeController::class,'home'])->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
 //======================================HOME - ABOUT ===================================================//
 
@@ -194,7 +175,7 @@ Route::group(['prefix' => $controllerName], function () {
 });
 $controllerName = 'my-account';
 //====================================== - ACCOUNT PROFILE ========================================================//
-Route::group(['prefix' => $controllerName,'middleware'=>['user']], function () {
+Route::group(['prefix' => $controllerName, 'middleware' => ['user']], function () {
     $controller = UserController::class;
     Route::POST('/img_change', [$controller, 'update_img'])->name("user.image.update");
     Route::get('/account_view', [$controller, 'account_view'])->name("user.account.view");
@@ -204,24 +185,23 @@ Route::group(['prefix' => $controllerName,'middleware'=>['user']], function () {
 
 $controllerName = 'shop';
 Route::group(['prefix' => $controllerName], function () {
-    $controller = CategoryController::class;
     Route::get('/', [HomeController::class, 'shop_view'])->name("shop", ["get_cat_items" => $get_cat_items = null]);
     //LAY ID CATEGORY KHI DUOC TRUYEN GIA TRI VAO TRA VE LIST THEO ID CATEGORY
     Route::get('/cat_id={cat_id}', [HomeController::class, 'get_category'])->name("category");
     Route::post('/search_product', [ProductController::class, 'find_product'])->name("search");
 });
 //====================================== - ACCOUNT ========================================================//
-Route::get('/notify', [UserController::class,'get_list_notify']);
-Route::get('/notify/{id}',  [UserController::class,'get_id_notify']);
+Route::get('/notify', [UserController::class, 'get_list_notify']);
+Route::get('/notify/{id}',  [UserController::class, 'get_id_notify']);
 
 Route::get('/mark-all-read/{user}', function (UserModel $user) {
     $user->unreadNotifications->markAsRead();
-    return response(['message'=>'done', 'notifications'=>$user->notifications]);
+    return response(['message' => 'done', 'notifications' => $user->notifications]);
 });
-Route::get('/mark-as-read/{userId}/{notifyId}', [UserController::class,'markAsRead']);
+Route::get('/mark-as-read/{userId}/{notifyId}', [UserController::class, 'markAsRead']);
 //===================================ADMIN ===========================================================================//
 Route::group(['prefix' => 'admin'], function () {
-    
+
     //================================ ADMIN AUTH ================================================================//
 
     Route::get('/', [LoginController::class, 'admin_auth'])->name('admin_author');
@@ -283,13 +263,13 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/register', [HomeController::class, 'register_view'])->name('admin.register.view');
         Route::get('/register-admin', [LoginController::class, 'admin_register'])->name('admin.register');
         //Delete user 
-        Route::get('/delete-user-{user_name}',[UserController::class,'delete_user'])->name('admin.users.delete');
+        Route::get('/delete-user-{user_name}', [UserController::class, 'delete_user'])->name('admin.users.delete');
         //User search 
-        Route::get('/user_search',[UserController::class,'search_user'])->name('admin_search_user');
+        Route::get('/user_search', [UserController::class, 'search_user'])->name('admin_search_user');
 
         //Route option
-        Route::get('/back-{page}-{route}', function ($page,$route) {
-            return redirect()->route($route,['page'=>$page]);
+        Route::get('/back-{page}-{route}', function ($page, $route) {
+            return redirect()->route($route, ['page' => $page]);
         })->name('back');
     });
     //================================ SLIDER ====================================================================//

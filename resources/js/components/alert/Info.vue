@@ -2,7 +2,7 @@
   <alert
     v-model="showAlert"
     placement="top-right"
-    duration=7000
+    duration="7000"
     type="info"
     width="400px"
     dismissable
@@ -21,12 +21,12 @@
         /></svg
     ></span>
     <strong>Notification to Admin !</strong>
-    <p>{{notification}}!</p>
+    <p>{{ notification }}!</p>
   </alert>
 </template>
 
 <script>
-import { alert } from "vue-strap"
+import { alert } from "vue-strap";
 export default {
   components: {
     alert,
@@ -35,17 +35,23 @@ export default {
   data() {
     return {
       showAlert: false,
-      notification:null
+      notification: null,
     };
   },
   mounted() {
-        Echo.private('App.Models.UserModel.'+this.user).notification((notification) => {
-          this.showAlert = !this.showAlert;
-          this.notification=notification.data;
-        })
-    // Echo.private("App.Models.UserModel."+this.user).listen("UserRegisted",(user)=>{
-    //     this.showAlert = !this.showAlert;
-    // });
+    Echo.private("App.Models.UserModel." + this.user).notification(
+      (notification) => {
+        this.showAlert = !this.showAlert;
+        this.notification = notification.data;
+      }
+    );
+    Echo.private("App.Models.UserModel." + this.user).listen(
+      "UserRegisted",
+      (user) => {
+        this.showAlert = !this.showAlert;
+        console.log("OK");
+      }
+    );
     // Echo.private("user-registed").listen("UserRegisted",(user)=>{
     //     this.showAlert = !this.showAlert;
     // })

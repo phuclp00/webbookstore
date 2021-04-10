@@ -29,7 +29,7 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-	'google' => [
+    'google' => [
         'client_id' => env('GOOGLE_CLIENT_API'),
         'client_secret' => env('GOOGLE_CLIENT_SECRECT'),
         'redirect' => 'http://localhost:8000/auth/google/callback',

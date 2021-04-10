@@ -18,7 +18,7 @@ use App\Http\Controllers\CommentController;
 //     return $request->user();
 // });
 
-Route::get('posts/{post}/comments', [CommentController::class,'index']);
-Route::middleware('auth:api')->group(function(){
-    Route::get('posts/{post}/comment',[CommentController::class,'store']);
+Route::get('posts/{post}/comments', [CommentController::class, 'index']);
+Route::middleware('auth:api')->group(function () {
+    Route::get('posts/{post}/comment', [CommentController::class, 'store']);
 });

@@ -1,7 +1,7 @@
 <?php
 
 return [
-   
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -179,6 +179,7 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
+        App\Providers\GoogleDriveServiceProvider::class,
     ],
 
     /*

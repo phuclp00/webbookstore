@@ -9,9 +9,8 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class UserRegistedNotification extends Notification implements ShouldQueue
+class UserRegistedNotification extends Notification
 {
-    use Queueable;
     public  $user;
     /**
      * Create a new notification instance.
@@ -67,9 +66,9 @@ class UserRegistedNotification extends Notification implements ShouldQueue
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-           // 'thread' => $this->user->user_id,
+            // 'thread' => $this->user->user_id,
             //'data' => 'User' . $this->user->user_name . ' has been created !'
-            'notifiable'=>$notifiable->notifications()->latest()->first()
+            'notifiable' => $notifiable->notifications()->latest()->first()
         ]);
     }
 }

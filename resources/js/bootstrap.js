@@ -35,8 +35,8 @@ window.Pusher = require('pusher-js');
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '09623629634650020d40',
-    cluster: 'ap1',
+    wsHost: window.location.hostname,
+    wsPort: 6001,
     forceTLS: false,
-    "authEndpoint": "../broadcasting/auth",
-    "authHost": "../public/",
+    disableStats: true,
 });

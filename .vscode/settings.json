@@ -1,3 +1,14 @@
 {
-    "compile-hero.disable-compile-files-on-did-save-code": false
+    "blade.format.enable": true,
+    "compile-hero.generate-minified-css": true,
+    "compile-hero.generate-minified-css-only": true,
+    "compile-hero.generate-minified-html": true,
+    "compile-hero.generate-minified-javascript": true,
+    "compile-hero.generate-minified-html-only": true,
+    "compile-hero.generate-minified-javascript-only": true,
+    "git.allowForcePush": true,
+    "git.allowNoVerifyCommit": true,
+    "git.alwaysShowStagedChangesResourceGroup": true,
+    "github.allowUnsafeSSL": true,
+    "html.format.endWithNewline": true
 }

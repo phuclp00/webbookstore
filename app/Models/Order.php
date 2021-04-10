@@ -17,10 +17,10 @@ class Order extends Model
 
     public function user_detail()
     {
-        return $this->belongsTo("App\Models\OrderDetail","user_name","order_id");
+        return $this->belongsTo("App\Models\OrderDetail", "user_name", "order_id");
     }
     public function book()
     {
-        return $this->hasOne("App\Models\Book","book_id","book_id");
+        return $this->hasOne("App\Models\Book", "book_id", "book_id");
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Product\CategoryController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SilderController;
 use App\Models\Show_info_user;
