@@ -6,6 +6,8 @@
       <div class="row">
          <div class="col-sm-12">
             <div class="iq-card">
+               <a href="{{route('admin.category')}}"> <button type="button" class="btn btn-info btn-fixed"> Return
+                     back</button></a>
                <div class="iq-card-header d-flex justify-content-between">
                   <div class="iq-header-title">
                      <h4 class="card-title">Add Categories</h4>
@@ -24,8 +26,27 @@
                         <input type="text" name="cat_name" class="form-control" value="{{ old('cat_name') }}">
                      </div>
                      <div class="form-group">
+                        <label>Book Type:</label>
+                        <select id="type" name="type" class="form-control">
+                           <option selected="" disabled="">Book Type</option>
+                           @isset($type)
+                           @foreach($type as $data =>$item)
+                           @if(old("type")==$item->id)
+                           <option value="{{$item->id}}" selected>{{$item->name}}</option>
+                           @else
+                           <option value="{{$item->id}}">{{$item->name}}</option>
+                           @endif
+                           @endforeach
+                           @endisset
+                        </select>
+                        <label for="new_type" style="font-style: italic"> Add new type :</label>
+                        <input type="text" class="form-control" name="new_type" id="new_type"
+                           value="{{ old('new_type') }}" readonly>
+                     </div>
+                     <div class="form-group">
                         <label>Category Description:</label>
-                        <textarea class="form-control" rows="4" name="content" id="editor">{{ old('content') }}</textarea>
+                        <textarea class="form-control" rows="4" name="content"
+                           id="content">{{ old('content') }}</textarea>
                      </div>
                      <button type="submit" class="btn btn-primary">Submit</button>
                      <button type="reset" class="btn btn-danger"

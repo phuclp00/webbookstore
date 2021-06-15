@@ -4,33 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BookThumbnailModel extends Model
 {
     use HasFactory;
     //DEFINED DATABASE TABLE
-    protected $table = "book_thumbnail";
-    protected $primaryKey = "book_id";
-    const UPDATED_AT = 'modiffed_at';
-    //DINH NGHIA KHOA TRONG TABBLE NAY KHONG PHAI LA KHOA TU TANG VA KIEU KHOA LA STRING 
-    public $incrementing = false;
-    protected $keyType = 'string';
-      /**
+    protected $table = "thumbnail";
+    protected $primaryKey = "id";
+    const UPDATED_AT = 'modified_at';
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
         'book_id',
-        'thumbnail_1',
-        'thumbnail_2',
-        'thumbnail_3',
-        'thumbnail_4',
-        'thumbnail_5',
-        'thumbnail_6',
-        'thumbnail_7',
+        'image',
+        'description',
         'created_by',
-        'modiffed_by',
+        'modified_by',
     ];
     /**
      * The attributes that should be cast to native types.
@@ -38,10 +31,11 @@ class BookThumbnailModel extends Model
      * @var array
      */
     protected $casts = [
-        'modiffed' => 'datetime',
-        'created'  => 'datetime',
+        'modified_at' => 'datetime',
+        'created_at'  => 'datetime',
     ];
-    public function book(){
-        return $this->belongsTo(ProductModel::class,'book_id');
+    public function book()
+    {
+        return $this->belongsTo(ProductModel::class, 'book_id');
     }
 }

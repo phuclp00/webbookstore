@@ -16,7 +16,7 @@
          </div>
       </div>
    </div>
-      @include('admin.menu.side-bard')
+   @include('admin.menu.side-bard')
 </div>
 <!-- TOP Nav Bar -->
 <div class="iq-top-navbar">
@@ -61,7 +61,7 @@
                      <i class="ri-search-line"></i>
                   </a>
                   <form action="#" class="search-box p-0">
-                     <input type="text" class="text search-input" placeholder="Type here to search..."> 
+                     <input type="text" class="text search-input" placeholder="Type here to search...">
                      <a class="search-link" href="#"><i class="ri-search-line"></i></a>
                   </form>
                </li> --}}
@@ -141,16 +141,17 @@
                   </div>
                </li>
                <li class="line-height pt-3">
-                  @if(Auth::user()->user_detail->img != null)
+                  @if(Auth::user()->image != null)
                   <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                     <img src="{{asset('images/user_profile/'.Auth::user()->user_detail->img)}}" class="img-fluid rounded-circle mr-3" alt="user">
+                     <img src="{{asset('/'.Auth::user()->image)}}" class="img-fluid rounded-circle mr-3" alt="user">
                      <div class="caption">
                         <h6 class="mb-1 line-height">{{Auth::user()->user_name}}</h6>
                      </div>
                   </a>
                   @else
                   <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
-                     <img src="{{asset('/images/users/user_default.svg')}}" class="img-fluid rounded-circle mr-3" alt="user">
+                     <img src="{{asset('/images/users/user_default.svg')}}" class="img-fluid rounded-circle mr-3"
+                        alt="user">
                      <div class="caption">
                         <h6 class="mb-1 line-height">{{Auth::user()->user_name}}</h6>
                      </div>
@@ -161,9 +162,9 @@
                         <div class="iq-card-body p-0 ">
                            <div class="bg-primary p-3">
                               <h5 class="mb-0 text-white line-height">Hello {{Auth::user()->user_name}} </h5>
-                              <span class="text-white font-size-12">Available</span>
+                              <span class="text-white font-size-12">{{Auth::user()->level}}</span>
                            </div>
-                           {{-- <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
+                           <a href="profile.html" class="iq-sub-card iq-bg-primary-hover">
                               <div class="media align-items-center">
                                  <div class="rounded iq-card-icon iq-bg-primary">
                                     <i class="ri-file-user-line"></i>
@@ -173,8 +174,8 @@
                                     <p class="mb-0 font-size-12">View personal profile details.</p>
                                  </div>
                               </div>
-                           </a> --}}
-                           {{-- <a href="profile-edit.html" class="iq-sub-card iq-bg-primary-hover">
+                           </a>
+                           <a href="profile-edit.html" class="iq-sub-card iq-bg-primary-hover">
                               <div class="media align-items-center">
                                  <div class="rounded iq-card-icon iq-bg-primary">
                                     <i class="ri-profile-line"></i>
@@ -184,8 +185,8 @@
                                     <p class="mb-0 font-size-12">Modify your personal details.</p>
                                  </div>
                               </div>
-                           </a> --}}
-                           {{-- <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
+                           </a>
+                           <a href="account-setting.html" class="iq-sub-card iq-bg-primary-hover">
                               <div class="media align-items-center">
                                  <div class="rounded iq-card-icon iq-bg-primary">
                                     <i class="ri-account-box-line"></i>
@@ -195,8 +196,8 @@
                                     <p class="mb-0 font-size-12">Manage your account parameters.</p>
                                  </div>
                               </div>
-                           </a> --}}
-                           {{-- <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
+                           </a>
+                           <a href="privacy-setting.html" class="iq-sub-card iq-bg-primary-hover">
                               <div class="media align-items-center">
                                  <div class="rounded iq-card-icon iq-bg-primary">
                                     <i class="ri-lock-line"></i>
@@ -206,7 +207,7 @@
                                     <p class="mb-0 font-size-12">Control your privacy parameters.</p>
                                  </div>
                               </div>
-                           </a> --}}
+                           </a>
                            <div class="d-inline-block w-100 text-center p-3">
                               <a class="bg-primary iq-sign-btn" href="{{route('admin.logout')}}" role="button">Sign out
                                  <i class="ri-login-box-line ml-2"></i></a>

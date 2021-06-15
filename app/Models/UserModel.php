@@ -9,11 +9,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
-use App\Events\UserRegisted;
+use App\Events\User\UserRegisted;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prophecy\Doubler\Generator\Node\ReturnTypeNode;
 use Laravel\Scout\Searchable;
+use Laravel\Sanctum\HasApiTokens;
+use Gabievi\Promocodes\Traits\Rewardable;
 
 class UserModel extends Authenticatable
 {
@@ -23,12 +25,12 @@ class UserModel extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use Searchable;
-
+    use SoftDeletes;
+    use Rewardable;
     //DEFINED DATABASE TABLE
     protected $table = "user_account";
     protected $primaryKey = "user_id";
-    protected $keyType="int";
-    const UPDATED_AT = 'modiffed_at';
+    const UPDATED_AT = 'modified_at';
     protected $guard = 'web';
     /**
      * The attributes that are mass assignable.
@@ -39,11 +41,15 @@ class UserModel extends Authenticatable
         'user_name',
         'email',
         'password',
+        'image',
+        'membership_id',
         'level',
         'status',
-        'created_by',
         'remember_token',
-        'email_verified_at'
+        'email_verified_at',
+        'deleted_by',
+        'modified_by',
+        'created_by'
     ];
 
     /**
@@ -63,24 +69,21 @@ class UserModel extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'modiffed_at' => 'datetime',
+        'modified_at' => 'datetime',
         'created_at'  => 'datetime',
+        'deleted_at' => 'datetime'
     ];
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $guarded = [
-        
-    ];
+    protected $guarded = [];
     protected static $logAttributesToIgnore = ['remember_token'];
     protected static $ignoreChangedAttributes = ['remember_token'];
 
     protected $dispatchesEvents = [
         'created' => UserRegisted::class,
-        'delete' => UserDeleted::class,
-        'ban'=>UserBan::class,
     ];
     public function getRouteKeyName()
     {
@@ -100,34 +103,34 @@ class UserModel extends Authenticatable
         return $array;
     }
     public function setPasswordAttribute($password)
-{
-    if(Hash::needsRehash($password)) 
-        $password = Hash::make($password);
+    {
+        if (Hash::needsRehash($password))
+            $password = Hash::make($password);
 
-    $this->attributes['password'] = $password;
-}
+        $this->attributes['password'] = $password;
+    }
     protected function makeAllSearchableUsing($query)
     {
-        return $query->with('user_detail');
+        return $query->with('phone')->with('address');
     }
-    public function user_detail()
-    {
-        return $this->hasOne(UserDetail::class,'user_id');
-    }
-  
     public function get_notify()
     {
-        return $this->hasMany(Notifications::class,'notifiable_id','user_id');
+        return $this->hasMany(Notifications::class, 'notifiable_id', 'user_id');
     }
-    public function posts(){
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
     public function getLevel()
     {
         return $this->level;
     }
-  
+    public function is_admin()
+    {
+        return $this->level == "admin" ? true : false;
+    }
 }

@@ -3,15 +3,23 @@
     $.dialog({
        title: 'Opps!',
        type: 'red',
-       content: "{{session()->get('infor_warning')}}",
+       content: {!! json_encode(session()->get('infor_warning')) !!},
    });
-   </script>
+</script>
 @elseif(session()->has('infor_success'))
 <script>
- $.dialog({
+    $.dialog({
     title: 'Great!',
     type: 'green',
-    content: "{{session()->get('infor_success')}}",
+    content: {!! json_encode(session()->get('infor_success')) !!},
+});
+</script>
+@elseif(session()->has('infor_mess'))
+<script>
+    $.dialog({
+    title: 'Messenge!',
+    type: 'purple',
+    content: {!! json_encode(session()->get('infor_mess')) !!},
 });
 </script>
 @endif

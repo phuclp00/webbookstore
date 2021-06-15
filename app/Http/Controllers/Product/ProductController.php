@@ -4,21 +4,34 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Store\FileuploadController;
-use App\Http\Requests\ProductRequest;
+use App\Http\Controllers\Store\ImagesController;
+use App\Http\Requests\Product\Product_Update;
+use App\Http\Requests\Product\ProductRequest;
+use App\Models\Author;
+use App\Models\BookSeries;
+use App\Models\BooksFormat;
+use App\Models\BookType;
 use App\Models\BookThumbnailModel;
 use Illuminate\Http\Request;
 use App\Models\ProductModel;
+use App\Models\Translator;
+use Carbon\Carbon;
 use Cart;
 use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use  Illuminate\Support\Facades\Storage;
+use Image;
+use Illuminate\Support\Facades\DB;
+
 class ProductController extends Controller
 {
-    public function index(Request $request )
-    {   
+
+    public function index(Request $request)
+    {
         $id = $request->id;
-        $result = ProductModel::find($id)->with('thumb')->first();
-        $thumb=$result->thumb->first();
+        $result = ProductModel::where("book_id", $id)->first();
+        $thumb = $result->thumb->first();
         $arr_thumb = array();
         if ($thumb != null) {
             $i = 1;
@@ -27,7 +40,27 @@ class ProductController extends Controller
                 $i++;
             }
         }
-        return view('public.page.single-product', ["item" => $result,'thumb' =>$arr_thumb]);
+        return view('public.page.single-product', ["item" => $result, 'thumb' => $arr_thumb]);
+    }
+    public function show()
+    {
+        $books = ProductModel::all();
+        // foreach ($books as $item => $data) {
+        //     $result[] = [
+        //         'book_id' => $data->book_id,
+        //         'book_name' => $data->book_name,
+        //         'img' => $data->img,
+        //         'publisher' => $data->publisher->pub_name,
+        //         'category' => $data->category->cat_name,
+        //         'author' => $data->author->name,
+        //         'promotion_price' => $data->promotion_price,
+        //         'price' => $data->price,
+        //         'rating' => $data->rating,
+        //         'serialNumber' => $data->serialNumber
+        //     ];
+        // }
+
+        return response()->json($books, 200);
     }
     public function add_to_cart(Request $request)
     {
@@ -82,7 +115,6 @@ class ProductController extends Controller
     {
         return view('public.page.cart');
     }
-    //Admin 
     public function find_product(Request $request)
     {
         $key_find = $request->key_word;
@@ -101,139 +133,330 @@ class ProductController extends Controller
             return view('errors.error404');
         }
     }
+    //================================================================ ADMIN  =================================================================//
+
     public function add(ProductRequest  $request)
     {
+        $author = null;
+        $format = null;
+        $translator = null;
+        $series = null;
         try {
-            $data = new ProductModel();
-            $thumb = new BookThumbnailModel();
-            $file =  new FileuploadController();
+            DB::beginTransaction();
+            // declare parameters
+            $file =  new ImagesController(450, 565, $request->book_id);
+            $thumb = new ImagesController(450, 565, "$request->book_id/thumb");
+            //Check author from requet 
+            if ($request->author == null) {
+                $author = Author::create([
+                    'name' => $request->new_author,
+                    'description' => "New author has been created by " . Auth::user()->user_name,
+                    'created_by' => Auth::user()->user_name
+                ])->id;
+            } else {
+                $author = $request->author;
+            }
+            //Check format from requet 
+            if ($request->format == null) {
+                $format = BooksFormat::create([
+                    'name' => $request->new_format,
+                    'description' => " New format has been created by " . Auth::user()->user_name,
+                    'created_by' => Auth::user()->user_name
+                ])->id;
+            } else {
+                $format = $request->format;
+            }
+            //Check translator from requet 
+            if ($request->translator == null && $request->new_translator != null) {
+                $translator = Translator::create([
+                    'name' => $request->new_translator,
+                    'about' => "New translator has been created by " . Auth::user()->user_name,
+                    'created_by' => Auth::user()->user_name
+                ])->id;
+            } else {
+                $translator = $request->translator;
+            }
+            //Check series from requet 
+            if ($request->series == null && $request->new_series != null) {
+                $series = BookSeries::create([
+                    'name' => $request->new_series,
+                    'about' => "New translator has been created by " . Auth::user()->user_name,
+                    'created_by' => Auth::user()->user_name
+                ])->id;
+            } else {
+                $series = $request->series;
+            }
+            if ($series && $request->episode != null) {
+                $data = ProductModel::where(['series' => $series, 'episode' => $request->episode])->first();
+                if ($data != null) {
+                    return \redirect()->back()->withInput($request->all())->withErrors('Already have this episode in book store !');
+                }
+            }
+            if (date('Y', \strtotime($request->date_published)) < $request->copyright) {
+                return \redirect()->back()->withInput($request->all())->withErrors('Date published cannot be less than the CopyrightYear !');
+            }
             //Book insert
-            $data->book_id = $request->book_id;
-            $data->book_name = $request->book_name;
-            $data->cat_id = $request->cat_id;
-            $data->pub_id = $request->pub_id;
-            $data->price = $request->price;
-            $data->promotion_price = $request->promotion;
-            $data->description=$request->content;
-            $file_name = $request->img;
-            $data->img = $file_name != null ? $data->book_id . "_" . $data->book_name . "." . $file_name->clientExtension() : null;
-            //Thumb insert
-            $thumb->book_id = $request->book_id;
-            $ext_thumb = $request->thumb;
-            if ($ext_thumb != null) {
-                $i = 0;
-                while ($i < 8) {
-                    $tmp = $i + 1;
-                    $thumb["thumbnail_" . $tmp] =  $data->book_id . "_thumb_$tmp" . "." . $ext_thumb[$i]->clientExtension();
-                    $i++;
+            $product = ProductModel::create([
+                'book_id' => $request->book_id,
+                'book_name' => $request->book_name,
+                'cat_id' => $request->cat_id,
+                'pub_id' => $request->pub_id,
+                'series' => $series,
+                'auth_id' => $author,
+                'episode' => $request->episode,
+                'size' => $request->size_height . ' x ' . $request->size_width . ' cm',
+                'weight' => $request->weight,
+                'datePublished' => $request->date_published,
+                'copyrightYear' => $request->copyright,
+                'bookFormat' => $format,
+                'translator' => $translator,
+                'serialNumber' => $request->code,
+                'out_of_business' => 0,
+                'numberOfPages' => $request->page_number,
+                'language' => $request->language,
+                'price' => $request->price,
+                'promotion_id' => $request->promotion,
+                'total' => $request->total,
+                'description' => $request->content,
+                //Upload images
+                'img' => $request->img != null ? $file->store($request->img) : null,
+                'created_by' => Auth::user()->user_name,
+            ]);
+
+            //Thumb insert 
+            if ($request->thumb != null) {
+                foreach ($request->thumb as $key => $value) {
+                    BookThumbnailModel::create(
+                        [
+                            'book_id' => $request->book_id,
+                            'image' => $thumb->store($value),
+                            'description' => $product->book_name,
+                            'created_by' => Auth::user()->user_name,
+                            'modified_by' => Auth::user()->user_name
+                        ]
+                    );
                 }
             }
-            //Insert on DB
-            $check = $data->save();
-            $check = $thumb->save();
-            //Upload images
-            if ($check == true) {
-                //Book image upload
-                if ($file_name != null)
-                    $file->store($request->img, "books/$data->book_id", $data->book_id . "_" . $data->book_name);
-                //Thumb image upload
-                if ($ext_thumb != null) {
-                    $tmp = 0;
-                    while ($tmp < 8) {
-                        $i = $tmp + 1;
-                        $file->store($request->thumb["$tmp"], "books/$data->book_id", $data->book_id . "_thumb_$i");
-                        $tmp++;
-                    }
-                }
-            }
-            $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Add ' . $request->book_name . ' Successfully !! </div>');
+            DB::commit();
+            $request->session()->flash(
+                'infor_success',
+                '<div class="alert alert-primary" style="text-align: center;font-size: x-large;font-family: fangsong;"> 
+                    Add ' . $request->book_name . ' Successfully !! 
+                </div>'
+            );
+            return redirect()->back();
         } catch (QueryException $e) {
-            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Add ' . $request->book_name . 'Fail,Try Again !! </div>');
-        } finally {
-            return \redirect()->back();
+            DB::rollBack();
+            $request->session()->flash(
+                'info_warning',
+                '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;">
+                    Add ' . $request->book_name . ' Failed with error : </br> ' . $e->getMessage() . '</br> Try Again !!
+                   </div>'
+            );
+            return redirect()->back();
         }
     }
-    public function update(ProductRequest $request)
+    public function update(Product_Update $request)
     {
-        $page=$request->page;
+
+        $page = $request->page;
+        $author = null;
+        $format = null;
+        $translator = null;
+        $series = null;
+
         try {
-            $data = ProductModel::find($request->book_id);
-            $thumb = BookThumbnailModel::find($request->book_id);
-            $file =  new FileuploadController();
+            DB::beginTransaction();
+            $data = ProductModel::find($request->book_id)->load('thumb');
+            $file =  new ImagesController(450, 565, $data->book_id);
+            $thumb = new ImagesController(450, 565, "$data->book_id/thumb");
+            //Check author from requet 
+            if ($request->author == null) {
+                $author = Author::create([
+                    'name' => $request->new_author,
+                    'description' => "New author has been created by " . Auth::user()->user_name,
+                    'created_by' => Auth::user()->user_name
+                ])->id;
+            } else {
+                $author = $request->author;
+            }
+            //Check format from requet 
+            if ($request->format == null) {
+                $format = BooksFormat::create([
+                    'name' => $request->new_format,
+                    'description' => " New format has been created by " . Auth::user()->user_name,
+                    'created_by' => Auth::user()->user_name
+                ])->id;
+            } else {
+                $format = $request->format;
+            }
+
+            //Check translator from requet 
+            if ($request->translator == null && $request->new_translator != null) {
+                $translator = Translator::create([
+                    'name' => $request->new_translator,
+                    'about' => "New translator has been created by " . Auth::user()->user_name,
+                    'created_by' => Auth::user()->user_name
+                ])->id;
+            } else {
+                $translator = $request->translator;
+            }
+            //Check series from requet 
+            if ($request->series == null && $request->new_series != null) {
+                $series = BookSeries::create([
+                    'name' => $request->new_series,
+                    'about' => "New translator has been created by " . Auth::user()->user_name,
+                    'created_by' => Auth::user()->user_name
+                ])->id;
+            } else {
+                $series = $request->series;
+            }
+
             //Book update
+            $check_episode = ProductModel::where(['series' => $series, 'episode' => $request->episode])->first();
+            if ($check_episode != null && $check_episode->episode != $data->episode) {
+                return \redirect()->back()->withErrors('Already have this episode in book store !');
+            }
             $data->book_name = $request->book_name;
             $data->cat_id = $request->cat_id;
             $data->pub_id = $request->pub_id;
+            $data->series = $series;
+            $data->episode = $request->episode;
+            $data->auth_id = $author;
+            $data->size = $request->size_height . ' x ' . $request->size_width . ' cm';
+            $data->weight = $request->weight;
+            $data->datePublished = $request->date_published;
+            $data->copyrightYear = $request->copyright;
+            $data->bookFormat = $format;
+            $data->translator = $translator;
+            $data->serialNumber = $request->code;
+            $data->numberOfPages = $request->page_number;
+            $data->language = $request->language;
             $data->price = $request->price;
-            $data->promotion_price = $request->promotion;
-            $data->description=$request->content;
-
-            $file_name = $request->img != null ? $request->img : null;
-            //Thumb check request
-            $ext_thumb = $request->thumb != null ? $request->thumb : null;
-
-            if ($file_name != null && $ext_thumb != null) {
-                //Update DB Img
-                $data->img =  $data->book_id . "_" . $data->book_name . "." . $file_name->clientExtension();
-                $i = 0;
-                //Update DB Thumb
-                while ($i < 8) {
-                    $tmp = $i + 1;
-                    $thumb["thumbnail_" . $tmp] =  $data->book_id . "_thumb_$tmp" . "." . $ext_thumb[$i]->clientExtension();
-                    $i++;
-                }
-                //destroy folder
-                $file->destroy("images", "books/$data->book_id",null);
-            } elseif ($file_name != null) {
-                $data->img =  $data->book_id . "_" . $data->book_name . "." . $file_name->clientExtension();
-                //Book image destroy
-                $file->destroy("images", "books","$data->book_id/$data->img");
-            } elseif ($ext_thumb != null) {
-                $i = 0;
-                while ($i < 8) {
-                    $tmp = $i + 1;
-                    //Old thumb destroy 
-                    $file->destroy(null, null, "images/books/$data->book_id/" . $thumb['thumbnail_' . $tmp]);
-                    //Add new thumb 
-                    $thumb["thumbnail_" . $tmp] =  $data->book_id . "_thumb_$tmp" . "." . $ext_thumb[$i]->clientExtension();
-                    $i++;
-                }
-            }
-            $check = $data->save();
-            $check = $ext_thumb == null ? true : $thumb->save();
+            $data->promotion_id = $request->promotion;
+            $data->total = $request->total;
+            $data->description = $request->content;
+            $data->modified_by = Auth::user()->user_name;
+            // Check file upload 
+            $check_img_upload = $request->img != null ? true : false;
+            $check_thumb_upload = $request->thumb != null ? true : false;
             //Upload images
-            if ($check == true) {
+            if ($check_img_upload) {
                 //Book image update
-                if ($file_name != null)
-                    $file->store($request->img, "books/$data->book_id", $data->book_id . "_" . $data->book_name);
-                //Thumbnail  update
-                if ($ext_thumb != null) {
-                    $tmp = 0;
-                    while ($tmp < 8) {
-                        $i = $tmp + 1;
-                        $file->store($request->thumb["$tmp"], "books/$data->book_id", $data->book_id . "_thumb_$i");
-                        $tmp++;
+                $result = $file->update($request->img, $data->img);
+                $data->img = $result;
+            }
+            if ($check_thumb_upload) {
+                //Check book_thumb d
+                if ($data->thumb()->exists() == false) {
+                    //Thumb insert 
+                    foreach ($request->thumb as $key => $value) {
+                        BookThumbnailModel::create(
+                            [
+                                'book_id' => $data->book_id,
+                                'image' => $thumb->store($value),
+                                'description' => $data->book_name,
+                                'created_by' => Auth::user()->user_name,
+                                'modified_by' => Auth::user()->user_name
+                            ]
+                        );
+                    }
+                } else {
+                    $data->thumb()->delete();
+                    $thumb->destroy();
+                    foreach ($request->thumb as $key => $value) {
+                        BookThumbnailModel::create(
+                            [
+                                'book_id' => $data->book_id,
+                                'image' => $thumb->store($value),
+                                'description' => $data->book_name,
+                                'created_by' => Auth::user()->user_name,
+                                'modified_by' => Auth::user()->user_name
+                            ]
+                        );
                     }
                 }
+            } elseif ($data->isDirty() == false) {
+                $request->session()->flash(
+                    'infor_mess',
+                    '<div class="alert alert-primary" style="text-align: center;font-size: x-large;font-family: fangsong;"> 
+                        You have yet to update the information for "' . $data->getOriginal('book_name') . '" ! 
+                        </br>
+                        Please check it or return back if you dont want to update this book ! 
+                    </div>'
+                );
+                return redirect()->back();
             }
-            $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Update ' . $request->book_name . ' Successfully !! </div>');
-            return \redirect()->route("admin.books",['page'=>$page]);
+            $request->session()->flash(
+                'infor_success',
+                '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> 
+                    Update ' . $request->book_name . ' Successfully !! 
+                </div>'
+            );
+            $data->save();
+            DB::commit();
+            return redirect()->route('admin.books');
         } catch (QueryException $e) {
-            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Update ' . $request->book_name . 'Fail,Try Again !! </div>');
+            $request->session()->flash(
+                'infor_warning',
+                '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> 
+                    Update ' . $request->book_name . ' failed with error : </br> ' . $e->getMessage() . '</br> Try Again !!
+                </div>'
+            );
+            DB::rollBack();
             return \redirect()->back();
         }
     }
     public function remove(Request $request)
     {
-        $file = new FileuploadController();
         try {
-            $result = ProductModel::destroy($request->book_id);
-            if($result){
-                $file->destroy("images", "books/$request->book_id",null);
-                $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Remove ' . $request->book_name . ' Successfully !! </div>');
+            $file =  new ImagesController(450, 565, $request->book_id);
+            $data = ProductModel::withTrashed()->where('book_id', $request->book_id)->with('rating')->first();
+            if ($data->order_detail()->exists() == false && $data->rating()->count() == 0 && $data->favorite()->count() == 0) {
+                $data->thumb()->forceDelete();
+                $file->destroy();
+                $data->forceDelete();
+                $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Remove ' . $request->book_name . ' Successfully !! </div>');
+                return redirect()->back();
+            } else {
+                $data->out_of_business = 1;
+                $data->deleted_by = Auth::user()->user_name;
+                $data->save();
+                $data->delete();
+                $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> The book ' . $request->book_name . 'can not be removed , but this will be moved to " Product Is Out Of Business" category !! </div>');
             }
+            return redirect()->back();
         } catch (\Throwable $th) {
-            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Remove ' . $request->book_name . 'Fail,Try Again !! </div>');
+            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Remove ' . $request->book_name . ' Failed with error : </br> ' . $th->getMessage() . '</br> Try Again !! </div>');
+            return redirect()->back();
+        }
+    }
+    public function sale(Request $request)
+    {
+        try {
+            $data = ProductModel::withTrashed()->where('book_id', $request->book_id)->first();
+            $data->out_of_business = 0;
+            $data->deleted_by = null;
+            $data->save();
+            $data->restore();
+            $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Product ' . $request->book_name . ' Are On Sale !! </div>');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            $request->session()->flash('infor_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Seting for ' . $request->book_name . ' Fail,Try Again !! ' . $th->getMessage() . '</div>');
+            return redirect()->back();
+        }
+    }
+    public function stop_selling(Request $request)
+    {
+        try {
+            $data = ProductModel::find($request->book_id);
+            $data->out_of_business = 1;
+            $data->deleted_by = Auth::user()->user_name;
+            $data->save();
+            $data->delete();
+            $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;">Stop selling product ' . $request->book_name . ' successfully !! </div>');
+        } catch (\Throwable $th) {
+            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Stop selling product ' . $request->book_name . ' failed with error : </br>' . $th->getMessage() . ' </br> Try Again  !!  </div>');
         } finally {
             return redirect()->back();
         }

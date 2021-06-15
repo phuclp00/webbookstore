@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://booksto.tk'),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -167,6 +167,12 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
+        UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
+        PeterColes\Languages\LanguagesServiceProvider::class,
+        Gabievi\Promocodes\PromocodesServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -180,6 +186,8 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
         App\Providers\GoogleDriveServiceProvider::class,
+        Monarobase\CountryList\CountryListServiceProvider::class,
+
     ],
 
     /*
@@ -194,7 +202,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
@@ -232,7 +239,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
-
+        'Image' => Intervention\Image\Facades\Image::class,
+        'ListLanguages' => PeterColes\Languages\LanguagesFacade::class,
+        'Countries' => Monarobase\CountryList\CountryListFacade::class,
+        'Promocodes' => Gabievi\Promocodes\Facades\Promocodes::class
     ],
 
 ];

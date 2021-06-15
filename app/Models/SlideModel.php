@@ -11,7 +11,7 @@ class SlideModel extends Model
     protected $table = "slider";
     protected $primaryKey = "id";
     const CREATED_AT = 'created';
-    const UPDATED_AT = 'modiffed';
+    const UPDATED_AT = 'modified';
     public $timestamps = false;
 
     //FUNCTION

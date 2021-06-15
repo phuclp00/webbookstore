@@ -7,52 +7,32 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Booksto - Responsive Bootstrap 4 Admin Dashboard Template</title>
-    <link rel="stylesheet" href="{{asset('asset/backend/css/jquery-confirm.min.css')}}">
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{asset('asset/backend/images/favicon.ico')}}" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{asset('asset/backend/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('asset/backend/css/dataTables.bootstrap4.min.css')}}">
     <!-- Typography CSS -->
     <link rel="stylesheet" href="{{asset('asset/backend/css/typography.css')}}">
     <!-- Style CSS -->
     <link rel="stylesheet" href="{{asset('asset/backend/css/style.css')}}">
     <!-- Responsive CSS -->
     <link rel="stylesheet" href="{{asset('asset/backend/css/responsive.css')}}">
-    <script src="https://cdn.ckeditor.com/ckeditor5/24.0.0/classic/ckeditor.js" type="text/javascript"></script>
-    <script src={{asset("/css/app.css")}}></script>
+    {{-- Option CSS --}}
+    <link rel="stylesheet" href="{{asset('asset/backend/css/jquery-confirm.min.css')}}">
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
+    <script type="text/javascript" src="/js/ckfinder/ckfinder.js"></script>
 
 </head>
 
 <body>
-
     <!-- loader Start -->
     <div id="loading">
         <div id="loading-center">
         </div>
     </div>
 
-    <!-- Load Facebook SDK for JavaScript -->
-    <div id="fb-root"></div>
-    <script>
-        window.fbAsyncInit = function() {
-                  FB.init({
-                    xfbml            : true,
-                    version          : 'v10.0'
-                  });
-                };
-        
-                (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
-                fjs.parentNode.insertBefore(js, fjs);
-              }(document, 'script', 'facebook-jssdk'));
-    </script>
-
-    <!-- Your Chat Plugin code -->
-    <div class="fb-customerchat" attribution="setup_tool" page_id="105193708338194">
-    </div>
     <div id="app" class="wrapper">
         <!-- loader END -->
         @include('admin.menu.menu')
@@ -98,16 +78,16 @@
         </div>
     </div>
     <!-- color-customizer END -->
-
     <!-- Optional JavaScript -->
     <script src={{asset("/js/app.js")}}></script>
     <script src="{{asset('asset/backend/js/jquery.min.js')}}"></script>
-    <script src="{{asset('asset/backend/js/jquery-confirm.min.js')}}"></script>
-    <script src="{{asset('asset/backend/js/admin_ajax.js')}}"></script>
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
     <script src="{{asset('asset/backend/js/popper.min.js')}}"></script>
     <script src="{{asset('asset/backend/js/bootstrap.min.js')}}"></script>
+    {{-- <script src="{{asset('asset/backend/js/jquery.dataTables.min.js')}}"></script> --}}
+    {{-- <script src="{{asset('asset/backend/js/dataTables.bootstrap4.min.js')}}"></script> --}}
+    {{-- <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script> --}}
+    <script src="{{asset('asset/backend/js/jquery-confirm.min.js')}}"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!-- Appear JavaScript -->
     <script src="{{asset('asset/backend/js/jquery.appear.js')}}"></script>
     <!-- Countdown JavaScript -->
@@ -157,11 +137,34 @@
     <script src="{{asset('asset/backend/js/chart-custom.js')}}"></script>
     <!-- Custom JavaScript -->
     <script src="{{asset('asset/backend/js/custom.js')}}"></script>
+    <script src="{{asset('asset/backend/js/admin_ajax.js')}}"></script>
     <script src="{{asset('asset/backend/js/ls.js')}}" type="text/javascript"></script>
-    <!-- Appear JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    @include('ckfinder::setup')
+    <script>
+        CKFinder.config( { connectorPath: '/ckfinder/connector',displayFoldersPanel:false } );
+    </script>
+    <script>
+        ClassicEditor.create( document.querySelector( '#editor' ), {
+            toolbar:{
+                items: [
+                    'heading', '|',
+                    'bold', 'italic', '|',
+                    'link', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'insertTable', '|',
+                    'outdent', 'indent', '|',
+                    'uploadImage', 'blockQuote', '|',
+                    'undo', 'redo' ,'|',
+                    'ckfinder'
+                    ],
+            },
+            ckfinder: {
+               uploadUrl:'http://booksto.tk/ckfinder/connector?command=FileUpload&lang=vi&langCode=vi&type=Trash&currentFolder=%2F&hash=90636d853368df3a&responseType=json' ,
+            },
+          });
+    </script>
     @include('vendor.notifications.feeback')
 </body>
-
-<!-- Mirrored from iqonic.design/themes/booksto/html/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 01 Aug 2020 14:10:36 GMT -->
 
 </html>

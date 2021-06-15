@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Broadcast::channel('App.Models.UserModel.{id}', function ($user, $id) {
-  return true;
+    return true;
 });
 Broadcast::channel('user-registed', function ($user) {
-  return true;
+    return true;
 });

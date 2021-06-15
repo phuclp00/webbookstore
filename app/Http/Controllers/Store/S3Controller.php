@@ -5,12 +5,8 @@ namespace App\Http\Controllers\Store;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Jobs\PutFile;
-use App\Models\UserModel;
-use Exception;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
+use Image;
 
 class S3Controller extends Controller
 {
@@ -44,11 +40,9 @@ class S3Controller extends Controller
     {
         $file = $request->file('file');
         $fileName = $file->getClientOriginalName();
-
-        $uploadDir = 'upload/';
-        $fullpath = $uploadDir . $fileName;
-
-        Storage::disk('s3')->put($fileName, file_get_contents($file));
+        $ext = $file->getClientOriginalExtension();
+        $img_resize = Image::make($file)->fit(450, 565)->encode($ext);
+        Storage::disk('s3')->put($fileName, (string)($img_resize));
         $url = $this->show($fileName);
         return \view('file', ['data' => $url]);
     }

@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     //DEFINED DATABASE TABLE
     protected $table = "order";
     protected $primaryKey = "order_id";
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'modiffed';
+    const UPDATED_AT = 'modified_at';
     public $timestamps = false;
 
     public function user_detail()

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
-use App\Models\Fileupload;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Image;
 
 class FileuploadController extends Controller
 {
@@ -36,15 +36,38 @@ class FileuploadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($request, $folder, $name = null)
+    public function store($request, $folder, $name, $type)
     {
+        $width = 0;
+        $height = 0;
         try {
-            $ext = $request->clientExtension();
+            if ($type == "thumb") {
+                $width = 450;
+                $height = 565;
+            } elseif ($type == "avt") {
+                $width = 170;
+                $height = 170;
+            } elseif ($type == "banner") {
+                $width = 1920;
+                $height = 1285;
+            } else 
+            {
+                $width = 50;
+                $height = 50;
+            }
+            //File name
+            $file_name = $request->getClientOriginalName();
+            //File extension
+            $ext = $request->getClientOriginalExtension();
+            // Resize file
+            $img_resize = Image::make($request)->fit($width, $height)->encode($ext);
             if ($name == null) {
-                $path = $request->storeAs($folder, $request->getClientOriginalName(), 'images');
-                return true;
+                //$path = (string)$img_resize->storeAs($folder, $file_name, 'images');
+                Storage::put($folder . "/" . $file_name, (string)$img_resize);
+                $path = Storage::url($file_name);
+                return $path;
             } else {
-                $path = $request->storeAs($folder, $name . "." . $ext, 'images');
+                $path = (string)$img_resize->storeAs($folder, $name . "." . $ext, 'images');
                 return true;
             }
             //Update lai thong tin nguoi dung 

@@ -6,6 +6,7 @@ NOTE: This file contains the styling for responsive Template.
 */
 @media(max-width:1980px) {
 	.iq-scrollable-block { overflow-x: hidden; overflow-y: scroll; height: 390px; }
+}
 @media(max-width:1600px) {
 	.iq-scrollable-block { height: 310px; }
 }
@@ -27,7 +28,7 @@ NOTE: This file contains the styling for responsive Template.
 	.sidebar-main .iq-sidebar:hover .iq-submenu li a { font-size: 16px; }
 	body.sidebar-main .iq-sidebar-menu .iq-menu li a .iq-arrow-right { margin-right: 0; display: none; }
 	body.sidebar-main .iq-sidebar:hover .iq-sidebar-menu .iq-menu li a .iq-arrow-right { margin-right: 10px; display: inline-block; }
-	body.sidebar-main .iq-sidebar:hover .iq-sidebar-menu .iq-menu li ul.iq-submenu-data li > a { padding-left: 50px; }
+	/*body.sidebar-main .iq-sidebar:hover .iq-sidebar-menu .iq-menu li ul.iq-submenu-data li > a { padding-left: 50px; }*/
 	body.sidebar-main .iq-navbar-logo a { display: none; }
 	.iq-top-navbar .iq-navbar-logo { display: none !important; }
 	.iq-top-navbar .iq-navbar-custom .iq-menu-bt { display: none !important; }

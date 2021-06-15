@@ -4,10 +4,15 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Store\FileuploadController;
-use App\Http\Requests\PublisherRequest;
+use App\Http\Controllers\Store\ImagesController;
+use App\Http\Requests\Publisher\Publisher_Update;
+use App\Http\Requests\Publisher\PublisherRequest;
 use Illuminate\Http\Request;
 use App\Models\PublisherModel as MainModel;
 use App\Models\PublisherModel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 use Exception;
 
 class PublisherController extends Controller
@@ -32,67 +37,101 @@ class PublisherController extends Controller
 
         view()->share('top_list_category', $top_items);
     }
-
-    public function edit_publisher(PublisherRequest $request)
+    public function edit_publisher(Publisher_Update $request)
     {
         try {
-            $data = PublisherModel::find($request->pub_id);
-            $file = new FileuploadController();
-
-            $data->pub_name = $request->pub_name;
-            $temp_file = $request->img == null ? null : $request->img;
-            if ($temp_file != null) {
-
-                //Delete old image
-                if ($data->pub_img != null) {
-                    $file->destroy(null, null, "publisher/$data->pub_img");
-                }
-                //update new image
-                $data->pub_img =  $data->pub_id . "_" . $data->pub_name . "." . $temp_file->clientExtension();
+            DB::beginTransaction();
+            $data = PublisherModel::withTrashed()->where('id', $request->id)->first();
+            $file =  new ImagesController(250, 200, $request->id);
+            $data->name = $request->name;
+            $data->description = $request->content == null ? "This publisher has been added by " . Auth::user()->user_name : $request->content;
+            if ($request->img) {
+                $data->image = $file->update($request->img, $data->image, "publisher");
             }
-            $data->description = $request->content;
-            $result = $data->save();
-            //Store image after update
-            if ($result == true && $temp_file != null) {
-                $file->store($request->img, "publisher", $data->pub_id . "_" . $data->pub_name);
+            $data->modified_by = Auth::user()->user_name;
+
+            if ($data->isDirty() == false) {
+                $request->session()->flash(
+                    'infor_mess',
+                    '<div class="alert alert-primary" style="text-align: center;font-size: x-large;font-family: fangsong;"> 
+                        You have yet to update the information for "' . $data->getOriginal('name') . '" ! 
+                        </br>
+                        Please check it or return back if you dont want to update this category ! 
+                    </div>'
+                );
+                return redirect()->back();
             }
-            $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Add ' . $request->pub_name . ' Successfully !! </div>');
+            $data->save();
+            $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->name . ' Successfully !! </div>');
+            DB::commit();
             return \redirect()->route('admin.publisher');
         } catch (\Throwable $th) {
-            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Add ' . $request->pub_name . 'Fail,Try Again !! </div>');
+            $request->session()->flash('infor_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->name . 'Fail,Try Again !! </div>');
+            DB::rollBack();
             return \redirect()->back();
         }
     }
     public function add_publisher(PublisherRequest $request)
     {
-
+        $file =  new ImagesController(250, 200, $request->id);
         try {
-            $data = new PublisherModel();
-            $data_file = new FileuploadController();
-            $data->pub_id = $request->pub_id;
-            $data->pub_name = $request->pub_name;
-            $temp_file = $request->img;
-            $data->pub_img = $temp_file->getClientOriginalName();
-            $data->description = $request->content;
-            $data_file->store($request->img, 'publisher');
-            $data->save();
-            $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->pub_name . ' Successfully !! </div>');
+            DB::beginTransaction();
+            PublisherModel::create([
+                'id' => $request->id,
+                'name' => $request->name,
+                'description' => $request->content == null ? "This publisher has been added by " . Auth::user()->user_name : $request->content,
+                'image' => $request->img != null ? $file->store($request->img, "publisher") : null,
+                'created_by' => Auth::user()->user_name,
+            ]);
+            $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->name . ' Successfully !! </div>');
+            DB::commit();
             return \redirect()->route('admin.publisher');
         } catch (\Throwable $th) {
-            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->pub_name . 'Fail,Try Again !! </div>');
-
+            $request->session()->flash('infor_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->name . 'Fail,Try Again !! </div>');
+            DB::rollBack();
             return \redirect()->back();
         }
     }
     public function delete_publisher(Request $request)
     {
+        $file =  new ImagesController(250, 200, $request->id);
         try {
-            MainModel::destroy($request->pub_id);
-            $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Delete ' . $request->pub_name . ' Successfully !! </div>');
+            DB::beginTransaction();
+            $data = MainModel::withTrashed()->where('id', $request->id)->with('books')->first();
+            if ($data->books()->exists() == false) {
+                $data->forceDelete();
+                $file->destroy("publisher");
+                $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Delete ' . $request->name . ' Successfully !! </div>');
+            } else {
+                $data->deleted_by = Auth::user()->user_name;
+                $data->save();
+                $data->delete();
+                $request->session()->flash('infor_mess', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> The publisher ' . $request->name . ' has been moved to the "Restore List" category!! </div>');
+            }
+            DB::commit();
+            return redirect()->route("admin.publisher");
         } catch (Exception $e) {
-            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Delete ' . $request->pub_name . 'Failed, Cannot Be Deleted If It Has Been Used By A Book !! </div>');
-        } finally {
-            return \redirect()->route("admin.publisher");
+            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Delete ' . $request->name . 'Failed, Cannot Be Deleted If It Has Been Used By A Book !! </div>');
+            DB::rollBack();
+            return redirect()->route("admin.publisher");
+        }
+    }
+    public function restore(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $data = MainModel::withTrashed()->where('id', $request->id)->first();
+            $data->deleted_by = null;
+            $data->save();
+            $data->restore();
+            $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Restore ' . $data->name . ' Successfully !! </div>');
+            DB::commit();
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Delete ' . $data->name . 'Failed with error ' . $th->getMessage() . '</div>');
+
+            return redirect()->back();
         }
     }
 }

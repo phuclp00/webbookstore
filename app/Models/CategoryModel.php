@@ -2,29 +2,33 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
 class CategoryModel extends Model
 {
-    use HasFactory,Searchable;
+    use HasFactory, Searchable, SoftDeletes;
     protected $table = "category";
     protected $primaryKey = "cat_id";
-    const UPDATED_AT = 'modiffed_at';
-    public $timestamps = false;
+    const UPDATED_AT = 'modified_at';
     protected $keyType = 'string';
-      /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
         'cat_id',
+        'parent_id',
         'cat_name',
+        'type_id',
         'description',
         'created_by',
-        'modiffed_by'
+        'modified_by',
+        'deleted_by'
     ];
     /**
      * The attributes that should be cast to native types.
@@ -32,8 +36,10 @@ class CategoryModel extends Model
      * @var array
      */
     protected $casts = [
-        'modiffed_at' => 'datetime',
+        'modified_at' => 'datetime',
         'created_at'  => 'datetime',
+        'deleted_at' => 'datetime'
+
     ];
     public function getRouteKeyName()
     {
@@ -60,17 +66,34 @@ class CategoryModel extends Model
     {
         return $this->pub_name;
     }
-    public function book()
+    public function child()
     {
-        return $this->hasMany(ProductModel::class,'cat_id');
+        return $this->hasMany(self::class, 'parent_id');
     }
-    public function listItems($params, $options,$stament=null,$number_stament=null)
+    public function childrent()
+    {
+        return $this->child()->with('childrent');
+    }
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'cat_id');
+    }
+    public function root()
+    {
+        return $this->parent()->with('root');
+    }
+    public function books()
+    {
+        return $this->belongsToMany(ProductModel::class, 'book_category', 'cat_id', 'book_id');
+    }
+
+    public function listItems($params, $options, $stament = null, $number_stament = null)
     {
         //Tat debugbar
         //\Debugbar::disable();
         $result = null;
         if ($options['task'] == "special-list-items-total") {
-            $result          =   ProductModel::where($params,$stament,$number_stament)->get("total");
+            $result          =   ProductModel::where($params, $stament, $number_stament)->get("total");
             return $result;
         }
         if ($options['task'] == "admin-list-items") {
@@ -83,10 +106,10 @@ class CategoryModel extends Model
         }
         if ($options['task'] == "top-list-items") {
             $result =
-                CategoryModel::orderBy('total','DESC')
+                CategoryModel::orderBy('total', 'DESC')
                 ->limit($number_stament)
                 ->get();
-                return $result ;
+            return $result;
         }
     }
 }

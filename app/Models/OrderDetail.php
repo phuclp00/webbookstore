@@ -4,25 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrderDetail extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     //DEFINED DATABASE TABLE
     protected $table = "order_detail";
     protected $primaryKey = "order_id";
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'modiffed';
+    const UPDATED_AT = 'modified_at';
     public $timestamps = false;
 
 
-    public function user_detail()
-        {
-            return $this->belongsTo('App\Models\User','user_id','user_id');
-
-        }
+    public function book()
+    {
+        return $this->belongsTo(ProductModel::class, 'book_id');
+    }
     public function order()
     {
-        return $this->hasOne("App\Models\Order","order_id","order_id");
+        return $this->hasOne("App\Models\Order", "order_id", "order_id");
     }
 }

@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
-use App\Listeners\UserRegisted_SendNotificationToAdmin;
-use App\Events\UserRegisted as Event_UserRegisted;
+use App\Listeners\User\UserRegisted_SendNotificationToAdmin;
+use App\Events\User\UserRegisted as Event_UserRegisted;
+use App\Listeners\Product\RemoveListenner as ProductRemove;
+use App\Listeners\Product\StoreListenner as ProductStore;
+use App\Listeners\Product\UpdateListenner as ProductUpdate;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -14,16 +18,20 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        // NotificationEvent::class => [
-        //     // SendEmailVerificationNotification::class,
-        //     //UserModel::class,
-        //     //SendPodcastNotification::class,
-        //     //UserRegisted::class,
-        //     SendPodcastNotification::class,
-        // ],
+
+        //User Listen
         Event_UserRegisted::class => [
             UserRegisted_SendNotificationToAdmin::class,
         ],
+
+        //Product Listen
+        ProductStore::class => [
+            StoreListenner::class
+        ],
+        ProductRemove::class => [],
+        ProductUpdate::class => [],
+
+
     ];
 
     /**

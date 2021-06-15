@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Image as ImageResize;
 
 class GoogleDriverController extends Controller
 {
@@ -39,7 +40,9 @@ class GoogleDriverController extends Controller
     {
         $file = $request->file('file');
         $fileName = $file->getClientOriginalName();
-        Storage::cloud()->put($fileName, file_get_contents($file));
+        $img_resize = ImageResize::make($file->getRealPath());
+        $img_resize->fit(450, 450);
+        Storage::cloud()->put($fileName, file_get_contents($img_resize));
         $url = $this->show($fileName);
         return \view('file', ['data' => $url]);
     }

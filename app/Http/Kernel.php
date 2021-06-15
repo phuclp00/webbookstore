@@ -44,6 +44,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
@@ -53,7 +54,7 @@ class Kernel extends HttpKernel
         'login' => [
             \App\Http\Middleware\LoginRequest::class,
         ],
-        'user'=>[
+        'user' => [
             \App\Http\Middleware\UserProfileRequest::class,
         ]
     ];

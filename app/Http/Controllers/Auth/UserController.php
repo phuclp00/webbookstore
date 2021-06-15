@@ -18,7 +18,7 @@ class UserController extends Controller
         return $users;
     }
     public function account_view(Request $request)
-    {   
+    {
         $key_find = Auth::user()->user_id;
         if (Auth::check()) {
             $data = UserModel::find($key_find)->load('user_detail');
@@ -46,8 +46,8 @@ class UserController extends Controller
             $userId = Auth::user()->user_id;
             $data = UserModel::find($userId)->load('user_detail');
             $data->user_detail->img = $file->getClientOriginalName();
-            $data->modiffed_by = Auth::user()->user_name;
-            $data->user_detail->modiffed_by = Auth::user()->user_name;
+            $data->modified_by = Auth::user()->user_name;
+            $data->user_detail->modified_by = Auth::user()->user_name;
             $data->user_detail->save();
             $data->save();
             $path = $file->storeAs('user_profile', $file->getClientOriginalName(), 'images');
@@ -106,79 +106,15 @@ class UserController extends Controller
         }
         return \redirect()->back();
     }
-    public function search_user(Request $request)
-    {
-        $output = "";
-        $key_find = $request->search_user;
-        if ($key_find != " ") {
-            try {
-                $list_search = UserModel::with('user_detail')->where('level', '=', $key_find)
-                    ->orwhere('user_name', 'like', '%' . $key_find . '%')
-                    ->orWhere('full_name', 'like', '%' . $key_find . '%')
-                    ->orwhere('status', '=', $key_find)
-                    ->get();
-                if ($list_search != "") {
-                    foreach ($list_search as $data => $user) {
-                        $output .= "<tr id='show_user_list'>
-                       <td class='text-center'><img class='rounded img-fluid avatar-40'
-                             src='../images/users/$user->user_id/$user->img' alt='profile'></td>
-                       <td>$user->user_name</td>
-                       <td>$user->full_name</td>
-                       <td><a href='https://iqonic.design/cdn-cgi/l/email-protection' class='__cf_email__'
-                             data-cfemail='$user->email'>[email&#160;protected]</a>
-                       </td>
-                       <td>$user->street-$user->district-$user->city</td>
-                       <td>$user->phone</td>";
-                        if ($user->level == 'admin')
-                            $output .= "<td><span class='badge iq-bg-warning'>$user->level</span></td>";
-                        else
-                            $output .= "<td><span class='badge iq-bg-info'>$user->level</span></td>";
-                        if ($user->status == 'ban')
-                            $output .= "<td><span class='badge iq-bg-danger'>$user->status</span></td>";
-                        else
-                            $output .= "<td><span class='badge iq-bg-primary'>$user->status</span></td>";
-                        $output .= "
-                       <td>$user->created</td>
-                       <td>
-                          <div class='flex align-items-center list-user-action'>
-                             <a class='iq-bg-primary' data-toggle='tooltip' data-placement='top' title=''
-                                data-original-title='Add' href='#'><i class='ri-user-add-line'></i></a>
-                             <a class='iq-bg-primary' data-toggle='tooltip' data-placement='top' title=''
-                                data-original-title='Edit' href='#'><i class='ri-pencil-line'></i></a>
-                             <a class='iq-bg-primary' data-toggle='tooltip' data-placement='top' title=''
-                                data-original-title='Delete' href='" . route('admin_delete_user', [$user->user_name]) . "'><i class='ri-delete-bin-line'></i></a>
-                          </div>
-                       </td>
-                    </tr>";
-                    }
-                } else {
-                    $output = '
-                        <tr>
-                            <td align="center" colspan="5">No Data Found</td>
-                        </tr>
-                        ';
-                }
-                $data = array(
-                    'result' => $output
-                );
-                return \json_encode($data);
-            } catch (Exception $e) {
-                \report($e);
-            }
-        } else {
-            $data = null;
-            return $data;
-        }
-    }
     public function update_status(Request $request)
     {
         try {
             $user_id = $request->userid;
             $status = $request->status;
             $result = UserModel::find($user_id);
-            $result->status=($status == 1 ? 0 : 1);
+            $result->status = ($status == 1 ? 0 : 1);
             $result->save();
-            $data=UserModel::with('user_detail')->get();
+            $data = UserModel::with('user_detail')->get();
             return \response($data);
         } catch (Exception $e) {
             \report($e);
@@ -214,5 +150,9 @@ class UserController extends Controller
         } catch (Exception $e) {
             \report($e);
         }
+    }
+    public function user(Request $request)
+    {
+        return response()->json($request->user());
     }
 }

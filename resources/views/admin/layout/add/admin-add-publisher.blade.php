@@ -6,6 +6,8 @@
       <div class="row">
          <div class="col-sm-12">
             <div class="iq-card">
+               <a href="{{route('admin.publisher')}}"> <button type="button" class="btn btn-info btn-fixed"> Return
+                     back</button></a>
                <div class="iq-card-header d-flex justify-content-between">
                   <div class="iq-header-title">
                      <h4 class="card-title">Add Publisher</h4>
@@ -33,7 +35,7 @@
                      </div>
                      <div class="form-group">
                         <label>Publisher Description:</label>
-                        <textarea class="form-control" rows="4" name="content" id="editor"></textarea>
+                        <textarea class="form-control" rows="4" name="content" id="content"></textarea>
                      </div>
                      <button type="submit" class="btn btn-primary">Submit</button>
                      <button type="reset" class="btn btn-danger"

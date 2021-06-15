@@ -11,8 +11,9 @@ use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Auth;
-use App\Events\UserRegisted;
+use App\Events\User\UserRegisted;
 use App\Http\Resources\User;
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 
 class LoginController extends Controller
@@ -69,9 +70,8 @@ class LoginController extends Controller
                 'status' => 1,
                 'created_by' => $data_request['username_register']
             ]);
-            event(new UserRegisted($user));
+           // event(new UserRegisted($user));
             $request->session()->flash('infor_success', "Your account has been created successfully !");
-
             return redirect()->back();
         } catch (Exception $e) {
             $request->session()->flash('infor_warning', "Can't create an account, Please try again !");
@@ -97,9 +97,9 @@ class LoginController extends Controller
             $user->level = $request->level;
             $user->status = "active";
             $user->save();
-            $user->refresh();
+            $user->createToken('Laravel Personal Access Client')->accessToken;
             $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Create account ' . $request->username . ' Successfully !! </div>');
-            return \redirect()->route("admin.login");
+            return \redirect()->route("admin.login.view");
         } catch (\Throwable $th) {
             $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;">  Create account ' . $request->username . 'Fail,Try Again !! </div>');
             return \redirect()->back();
@@ -107,14 +107,18 @@ class LoginController extends Controller
     }
     public function admin_login(LoginRequest $loginRequest)
     {
-        $result = $loginRequest->only('email', 'password');
+        $credentials = $loginRequest->only('email', 'password', 'admin');
         $option = $loginRequest->remember == "on" ? true : false;
-        if (Auth::guard("web")->attempt([
-            'email' => $result['email'],
-            'password' => $result['password'],
-            'level' => "admin"
-        ], $remember = $option)) {
-            $loginRequest->session()->regenerate();
+        if (Auth::attempt($credentials)) {
+            $user = $loginRequest->user();
+            $user->createToken('Laravel Personal Access Client')->accessToken;
+            //$token = $tokenResult->token;
+            //Option remember
+            // if ($loginRequest->remember_me) {
+            //     $token->expires_at = Carbon::now()->addWeeks(1);
+            // }
+            // $token->save();
+            //$loginRequest->session()->regenerate();
             return redirect()->route('admin.dashboard');
         } else
             $loginRequest->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;">  Login Fail,Try Again !! </div>');
@@ -122,6 +126,13 @@ class LoginController extends Controller
     }
     public function admin_logout(Request $request)
     {
+        // dd($request->user()->token());
+        // $request->user()->token()->revoke();
+        //    $token = $request->user()->token();
+        //    $token->revoke();
+
+        // $token = $request->user()->token();
+        // $token->revoke();
         Auth::logout();
 
         $request->session()->invalidate();
@@ -145,5 +156,5 @@ class LoginController extends Controller
         $user   =   UserModel::updateOrCreate(['email' => $auth_user->email], ['refresh_token'  =>  $auth_user->token, 'name'  => $auth_user->name]);
         Auth::login($user, true);
         return   redirect()->to('/');   // Redirect to a secure page 
-    } 
+    }
 }

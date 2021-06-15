@@ -9,12 +9,20 @@ use App\Http\Controllers\Product\PublisherController;
 use App\Http\Controllers\Auth\UserController;
 use App\Models\UserModel;
 use Illuminate\Support\Facades\Route;
-use App\Events\UserRegisted;
+use App\Events\User\UserRegisted;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Product\AuthorController;
+use App\Http\Controllers\Product\BooksFormatController;
+use App\Http\Controllers\Product\BooksTypeController;
+use App\Http\Controllers\Product\SeriesController;
+use App\Http\Controllers\Product\SupplierController;
+use App\Http\Controllers\Product\TranslatorController;
 use App\Http\Controllers\Store\GoogleDriverController;
 use App\Http\Controllers\Store\S3Controller;
+use App\Models\ProductModel;
+use Illuminate\Support\Facades\Request;
 use  Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,16 +44,10 @@ use  Illuminate\Support\Facades\Storage;
 
 
 //=========================================================//KHU VUC TESTING =========================================================//
-
-
-Route::get('/cache', function () {
-    dd(Storage::deleteDirectory("images/books/td00"));
-});
 Route::get('/view', function () {
     return view('file');
 });
-Route::post('/file', [GoogleDriverController::class, 'store'])->name('file');
-
+Route::post('/file', [FileuploadController::class, 'store'])->name('file');
 Route::get('/users-list', [UserController::class, 'index']);
 Route::get('/change-status-user/{userid}/{status}', [UserController::class, 'update_status']);
 Route::get('/test', function () {
@@ -53,6 +55,10 @@ Route::get('/test', function () {
     event(new UserRegisted($data));
     return "test";
 });
+// Route::get('/voucher', function () {
+//     Promocodes::create($amount = 1, $reward = null, array $data = [], $expires_in = null, $quantity = null, $is_disposable = false);
+//     return "OK";
+// });
 //=========================================================//KHU VUC TESTING =========================================================//
 
 //===================================LOG-IN ========================================================================//
@@ -193,91 +199,240 @@ Route::group(['prefix' => $controllerName], function () {
 //====================================== - ACCOUNT ========================================================//
 Route::get('/notify', [UserController::class, 'get_list_notify']);
 Route::get('/notify/{id}',  [UserController::class, 'get_id_notify']);
-
 Route::get('/mark-all-read/{user}', function (UserModel $user) {
     $user->unreadNotifications->markAsRead();
     return response(['message' => 'done', 'notifications' => $user->notifications]);
 });
 Route::get('/mark-as-read/{userId}/{notifyId}', [UserController::class, 'markAsRead']);
+
 //===================================ADMIN ===========================================================================//
 Route::group(['prefix' => 'admin'], function () {
 
     //================================ ADMIN AUTH ================================================================//
-
-    Route::get('/', [LoginController::class, 'admin_auth'])->name('admin_author');
+    //Register user
+    Route::get('/register', [HomeController::class, 'register_view'])->name('admin.register.view');
+    Route::post('/register-admin', [LoginController::class, 'admin_register'])->name('admin.register');
     //================================ LOGIN ADMIN================================================================//
-    Route::get('/login', [HomeController::class, 'login_view'])->name('admin.login.view');
-    Route::get('/logout', [LoginController::class, 'admin_logout'])->name('admin.logout');
-    Route::post('/login-admin', [LoginController::class, 'admin_login'])->name('admin.login');
+    Route::prefix('auth')->group(function () {
+        Route::get('/login', [HomeController::class, 'login_view'])->name('admin.login.view');
+        Route::get('/logout', [LoginController::class, 'admin_logout'])->name('admin.logout');
+        Route::post('/login-admin', [LoginController::class, 'admin_login'])->name('admin.login');
+    });
+    //
     Route::group(['middleware' => ['admin']], function () {
-
-        //Dash board
-
+        Route::get('/', [LoginController::class, 'admin_auth'])->name('admin_author');
         Route::get('/dashboard', [HomeController::class, 'dash_view'])->name('admin.dashboard');
         //==========================================Category==============================================================
-        Route::get('/category', [HomeController::class, 'category_view'])->name('admin.category');
-        //Category add view 
-        Route::get('/category-view-add', [HomeController::class, 'category_add_view'])->name('admin.category.add.view');
-        //Category add 
-        Route::post('/category-add', [CategoryController::class, 'add_category'])->name('admin.category.add');
-        //Category edit view
-        Route::get('/category-edit-view/{cat_id}-{page}--{route}', [HomeController::class, 'category_edit_view'])->name('admin.category.edit.view');
-        //Category edit 
-        Route::post('/category-edit/{cat_id}', [CategoryController::class, 'category_edit'])->name('admin.category.edit');
-        //Category delete 
-        Route::get('/category-delete/{cat_id}', [CategoryController::class, 'category_delete'])->name('admin.category.delete');
-
+        Route::prefix('category')->group(function () {
+            Route::get('/', [HomeController::class, 'category_view'])->name('admin.category');
+            //Category add view 
+            Route::get('/category-view-add', [HomeController::class, 'category_add_view'])->name('admin.category.add.view');
+            //Category add 
+            Route::post('/category-add', [CategoryController::class, 'add_category'])->name('admin.category.add');
+            //Category edit view
+            Route::get('/category-edit-view/{cat_id}', [HomeController::class, 'category_edit_view'])->name('admin.category.edit.view');
+            //Category edit 
+            Route::post('/category-edit', [CategoryController::class, 'category_edit'])->name('admin.category.edit');
+            //Category delete 
+            Route::get('/category-delete/{cat_id}', [CategoryController::class, 'category_delete'])->name('admin.category.delete');
+            //Category restore
+            Route::get('/category-restore/{cat_id}', [CategoryController::class, 'restore'])->name('admin.category.restore');
+            //Category list for type
+            Route::get('/{id}', [CategoryController::class, 'show']);
+        });
         //==========================================Book list==============================================================
-        Route::get('/book-list', [HomeController::class, 'book_list_view'])->name('admin.books');
-        //Book add view
-        Route::get('/book-add-view', [HomeController::class, 'book_list_add_view'])->name('admin.books.add.view');
-        //Book add
-        Route::post('/book-add', [ProductController::class, 'add'])->name('admin.books.add');
-        //Book edit view
-        Route::get('/book-edit-view/{book_id}-{page}--{route}', [HomeController::class, 'book_edit_view'])->name('admin.books.edit.view');
-        //Book edit
-        Route::post('/book-edit', [ProductController::class, 'update'])->name('admin.books.edit');
-        //Book delete 
-        Route::get('/book-delete/book_id={book_id}', [ProductController::class, 'remove'])->name('admin.books.delete');
-
+        Route::prefix('books')->group(function () {
+            //Book list
+            Route::get('/', [HomeController::class, 'book_list_view'])->name('admin.books');
+            //Booklist ajax call 
+            Route::get('/books', [ProductController::class, 'show']);
+            //Book add view
+            Route::get('/book-add-view', [HomeController::class, 'book_list_add_view'])->name('admin.books.add.view');
+            //Book add
+            Route::post('/book-add', [ProductController::class, 'add'])->name('admin.books.add');
+            //Book edit view
+            Route::get('/book-edit-view/{book_id}', [HomeController::class, 'book_edit_view'])->name('admin.books.edit.view');
+            //Book edit
+            Route::post('/book-edit', [ProductController::class, 'update'])->name('admin.books.edit');
+            //Book delete 
+            Route::get('/book-delete/book_id={book_id}', [ProductController::class, 'remove'])->name('admin.books.delete');
+            //Book stop selling
+            Route::get('/book-stop-selling/book_id={book_id}', [ProductController::class, 'stop_selling']);
+            //Book continue to sell
+            Route::get('/book-continue-to-sale/book_id={book_id}', [ProductController::class, 'sale']);
+        });
         //==========================================Publisher=============================================================
-        Route::get('/publisher', [HomeController::class, 'publisher_view'])->name('admin.publisher');
-        //Publisher-add view
-        Route::get('publisher-add-view', [HomeController::class, 'add_publisher_view'])->name('admin.publisher.add.view');
-        //Publisher-add
-        Route::post('publisher-add', [PublisherController::class, 'add_publisher'])->name('admin.publisher.add');
-        //Publisher-edit view
-        Route::get('publisher-edit-view/{pub_id}-{page}--{route}', [HomeController::class, 'edit_publisher_view'])->name('admin.publisher.edit.view');
-        //Publisher edit
-        Route::post('publisher-edit/{pub_id}', [PublisherController::class, 'edit_publisher'])->name('admin.publisher.edit');
-        //Publisher delete
-        Route::get('publisher-delete/{pub_id}', [PublisherController::class, 'delete_publisher'])->name('admin.publisher.delete');
-
-
+        Route::prefix('publishers')->group(function () {
+            Route::get('/', [HomeController::class, 'publisher_view'])->name('admin.publisher');
+            //Publisher-add view
+            Route::get('publisher-add-view', [HomeController::class, 'add_publisher_view'])->name('admin.publisher.add.view');
+            //Publisher-add
+            Route::post('publisher-add', [PublisherController::class, 'add_publisher'])->name('admin.publisher.add');
+            //Publisher-edit view
+            Route::get('publisher-edit-view/{id}', [HomeController::class, 'edit_publisher_view'])->name('admin.publisher.edit.view');
+            //Publisher edit
+            Route::post('publisher-edit/{id}', [PublisherController::class, 'edit_publisher'])->name('admin.publisher.edit');
+            //Publisher delete
+            Route::get('publisher-delete/{id}', [PublisherController::class, 'delete_publisher'])->name('admin.publisher.delete');
+            //Publisher restore
+            Route::get('publisher-restore/{id}', [PublisherController::class, 'restore'])->name('admin.publisher.restore');
+        });
+        //==========================================Supplier=============================================================
+        Route::prefix('suppliers')->group(function () {
+            Route::get('/', [HomeController::class, 'supplier_view'])->name('admin.supplier');
+            //Supplier-add view
+            Route::get('supplier-add-view', [HomeController::class, 'add_supplier_view'])->name('admin.supplier.add.view');
+            //Supplier-add
+            Route::post('supplier-add', [SupplierController::class, 'add_supplier'])->name('admin.supplier.add');
+            //Supplier-edit view
+            Route::get('supplier-edit-view/{id}', [HomeController::class, 'edit_supplier_view'])->name('admin.supplier.edit.view');
+            //Supplier edit
+            Route::post('supplier-edit/{id}', [SupplierController::class, 'edit_supplier'])->name('admin.supplier.edit');
+            //Supplier delete
+            Route::get('supplier-delete/{id}', [SupplierController::class, 'delete_supplier'])->name('admin.supplier.delete');
+            //Supplier restore
+            Route::get('supplier-restore/{id}', [SupplierController::class, 'restore'])->name('admin.supplier.restore');
+        });
+        //==========================================Author=============================================================
+        Route::prefix('authors')->group(function () {
+            Route::get('/', [HomeController::class, 'author_view'])->name('admin.author');
+            //Author-add view
+            Route::get('author-add-view', [HomeController::class, 'author_add_view'])->name('admin.author.add.view');
+            //Author-add
+            Route::post('author-add', [AuthorController::class, 'add'])->name('admin.author.add');
+            //Author-edit view
+            Route::get('author-edit-view/{id}', [HomeController::class, 'author_edit_view'])->name('admin.author.edit.view');
+            //Author edit
+            Route::post('author-edit/{id}', [AuthorController::class, 'edit'])->name('admin.author.edit');
+            //Author delete
+            Route::get('author-delete/{id}', [AuthorController::class, 'delete'])->name('admin.author.delete');
+            //Author restore
+            Route::get('author-restore/{id}', [AuthorController::class, 'restore'])->name('admin.author.restore');
+        });
+        //========================================== Series =============================================================
+        Route::prefix('series')->group(function () {
+            Route::get('/', [HomeController::class, 'series_view'])->name('admin.series');
+            //Series-add view
+            Route::get('series-add-view', [HomeController::class, 'series_add_view'])->name('admin.series.add.view');
+            //Series-add
+            Route::post('series-add', [SeriesController::class, 'add'])->name('admin.series.add');
+            //Series-edit view
+            Route::get('series-edit-view/{id}', [HomeController::class, 'series_edit_view'])->name('admin.series.edit.view');
+            //Series edit
+            Route::post('series-edit/{id}', [SeriesController::class, 'edit'])->name('admin.series.edit');
+            //Series delete
+            Route::get('series-delete/{id}', [SeriesController::class, 'delete'])->name('admin.series.delete');
+            //Series restore
+            Route::get('series-restore/{id}', [SeriesController::class, 'restore'])->name('admin.series.restore');
+        });
+        //========================================== Format =============================================================
+        Route::prefix('format')->group(function () {
+            Route::get('/', [HomeController::class, 'format_view'])->name('admin.format');
+            //Series-add view
+            Route::get('format-add-view', [HomeController::class, 'format_add_view'])->name('admin.format.add.view');
+            //Series-add
+            Route::post('format-add', [BooksFormatController::class, 'add'])->name('admin.format.add');
+            //Series-edit view
+            Route::get('format-edit-view/{id}', [HomeController::class, 'format_edit_view'])->name('admin.format.edit.view');
+            //Series edit
+            Route::post('format-edit/{id}', [BooksFormatController::class, 'edit'])->name('admin.format.edit');
+            //Series delete
+            Route::get('format-delete/{id}', [BooksFormatController::class, 'delete'])->name('admin.format.delete');
+            //Series restore
+            Route::get('format-restore/{id}', [BooksFormatController::class, 'restore'])->name('admin.format.restore');
+        });
+        //========================================== Book type =============================================================
+        Route::prefix('type')->group(function () {
+            Route::get('/', [HomeController::class, 'type_view'])->name('admin.type');
+            //Series-add view
+            Route::get('type-add-view', [HomeController::class, 'type_add_view'])->name('admin.type.add.view');
+            //Series-add
+            Route::post('type-add', [BooksTypeController::class, 'add'])->name('admin.type.add');
+            //Series-edit view
+            Route::get('type-edit-view/{id}', [HomeController::class, 'type_edit_view'])->name('admin.type.edit.view');
+            //Series edit
+            Route::post('type-edit/{id}', [BooksTypeController::class, 'edit'])->name('admin.type.edit');
+            //Series delete
+            Route::get('type-delete/{id}', [BooksTypeController::class, 'delete'])->name('admin.type.delete');
+            //Series restore
+            Route::get('type-restore/{id}', [BooksTypeController::class, 'restore'])->name('admin.type.restore');
+        });
+        //========================================== Series =============================================================
+        Route::prefix('series')->group(function () {
+            Route::get('/', [HomeController::class, 'series_view'])->name('admin.series');
+            //Series-add view
+            Route::get('series-add-view', [HomeController::class, 'series_add_view'])->name('admin.series.add.view');
+            //Series-add
+            Route::post('series-add', [SeriesController::class, 'add'])->name('admin.series.add');
+            //Series-edit view
+            Route::get('series-edit-view/{id}', [HomeController::class, 'series_edit_view'])->name('admin.series.edit.view');
+            //Series edit
+            Route::post('series-edit/{id}', [SeriesController::class, 'edit'])->name('admin.series.edit');
+            //Series delete
+            Route::get('series-delete/{id}', [SeriesController::class, 'delete'])->name('admin.series.delete');
+            //Series restore
+            Route::get('series-restore/{id}', [SeriesController::class, 'restore'])->name('admin.series.restore');
+        }); //========================================== Translator =============================================================
+        Route::prefix('translator')->group(function () {
+            Route::get('/', [HomeController::class, 'translator_view'])->name('admin.translator');
+            //Series-add view
+            Route::get('translator-add-view', [HomeController::class, 'translator_add_view'])->name('admin.translator.add.view');
+            //Series-add
+            Route::post('translator-add', [TranslatorController::class, 'add'])->name('admin.translator.add');
+            //Series-edit view
+            Route::get('translator-edit-view/{id}', [HomeController::class, 'translator_edit_view'])->name('admin.translator.edit.view');
+            //Series edit
+            Route::post('translator-edit/{id}', [TranslatorController::class, 'edit'])->name('admin.translator.edit');
+            //Series delete
+            Route::get('translator-delete/{id}', [TranslatorController::class, 'delete'])->name('admin.translator.delete');
+            //Series restore
+            Route::get('translator-restore/{id}', [TranslatorController::class, 'restore'])->name('admin.translator.restore');
+        });
         //================================ MANAGER USER================================================================//
-        // User list view
-        Route::get('/user-list', [HomeController::class, 'user_list_view'])->name('admin.users');
-        // User add view
-        Route::get('/add-user', [HomeController::class, 'add_user'])->name('admin.users.view');
-        //Register user
-        Route::get('/register', [HomeController::class, 'register_view'])->name('admin.register.view');
-        Route::get('/register-admin', [LoginController::class, 'admin_register'])->name('admin.register');
-        //Delete user 
-        Route::get('/delete-user-{user_name}', [UserController::class, 'delete_user'])->name('admin.users.delete');
-        //User search 
-        Route::get('/user_search', [UserController::class, 'search_user'])->name('admin_search_user');
-
-        //Route option
-        Route::get('/back-{page}-{route}', function ($page, $route) {
-            return redirect()->route($route, ['page' => $page]);
-        })->name('back');
+        Route::prefix('users')->group(function () {
+            // User list view
+            Route::get('/', [HomeController::class, 'user_list_view'])->name('admin.users');
+            // User add view
+            Route::get('/add-user', [HomeController::class, 'add_user'])->name('admin.users.view');
+            //Delete user 
+            Route::get('/delete-user-{user_name}', [UserController::class, 'delete_user'])->name('admin.users.delete');
+            //User search 
+            Route::get('/user_search', [UserController::class, 'search_user'])->name('admin_search_user');
+        });
+        //================================ MANAGER FOLDER================================================================//
+        Route::get('/laravel-folder-manager', function () {
+            return view('vendor.ckfinder.browser')->render();
+        })->name('folder');
+        //================================ RESTORE LIST================================================================//
+        Route::prefix('restore-list')->group(function () {
+            //Book out of business
+            Route::prefix('books')->group(function () {
+                //Books-restore-list
+                Route::get('/', [HomeController::class, 'book_list_out_of_business'])->name('admin.books.out_of_business');
+                //Publisher-restore-list
+                Route::get('/publishers', [HomeController::class, 'publisher_old_view'])->name('admin.publisher.old');
+                //Supplier-restore-list
+                Route::get('/suppliers', [HomeController::class, 'supplier_old_view'])->name('admin.supplier.old');
+                //Category-restore-list
+                Route::get('/category', [HomeController::class, 'category_old_view'])->name('admin.category.old');
+                //Category-restore-list
+                Route::get('/authors', [HomeController::class, 'author_old_view'])->name('admin.author.old');
+                //Series-restore-list
+                Route::get('/series', [HomeController::class, 'series_old_view'])->name('admin.series.old');
+                //Translator-restore-list
+                Route::get('/translator', [HomeController::class, 'translator_old_view'])->name('admin.translator.old');
+                //Format-restore-list
+                Route::get('/format', [HomeController::class, 'format_old_view'])->name('admin.format.old');
+                Route::get('/type', [HomeController::class, 'type_old_view'])->name('admin.type.old');
+            });
+            Route::get('/account', [HomeController::class, 'account_old_view'])->name('admin.account.old');
+        });
     });
     //================================ SLIDER ====================================================================//
 });
 
+Route::prefix('home')->group(function () {
+    Route::get('/', [HomeController::class, 'index']);
+});
 
 //================================ UPLOAD_ FILE ========================================================//
-Route::post('fileupload', [FileuploadController::class, 'store'])->name('fileupload.store');
-//================================ AJAX - POST REQUEST =================================================//
-Route::post('item', function ($request) {
-});

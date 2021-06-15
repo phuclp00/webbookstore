@@ -6,31 +6,31 @@
       <div class="row">
          <div class="col-sm-12">
             <div class="iq-card">
-               <form action="{{route('back',['page'=>$page,'route'=>$route])}}" method="get">
-                  <button type="submit" class="btn btn-info btn-fixed">Return back</button>
-               </form>
+               <a href="{{route('admin.publisher')}}"> <button type="button" class="btn btn-info btn-fixed"> Return
+                     back</button></a>
                <div>
-                  <img src="{{asset('images/publisher/'.$publisher->pub_img)}}" alt="Publisher"
-                     style="margin-top: 20px;padding: 20px;width:300px ;height:200px ;">
+                  <img class="img-thumbnail rounded"
+                     src="{{asset($publisher->image==null?"images/books/publisher/book-na-1.jpg":$publisher->image)}}"
+                     alt="Publisher Image" style="margin-top: 20px;padding: 20px;">
                </div>
                <div class="iq-card-header d-flex justify-content-between">
                   <div class="iq-header-title">
-                     <h4 class="card-title">Edit Publisher: {{$publisher->pub_name}}</h4>
+                     <h4 class="card-title">Edit Publisher: {{$publisher->name}}</h4>
                   </div>
                </div>
                @include('post.create')
                <div class="iq-card-body">
-                  <form id="edit_form" action="{{route('admin.publisher.edit',[$publisher->pub_id])}}" method="post"
+                  <form id="edit_form" action="{{route('admin.publisher.edit',[$publisher->id])}}" method="post"
                      enctype="multipart/form-data">
                      {{ csrf_field() }}
                      <div class="form-group">
                         <label>Publisher ID:</label>
-                        <input type="text" class="form-control" value="{{$publisher->pub_id}}" disabled>
-                        <input type="hidden" name="pub_id" value="{{$publisher->pub_id}}">
+                        <input type="text" class="form-control" value="{{$publisher->id}}" disabled>
+                        <input type="hidden" name="id" value="{{$publisher->id}}">
                      </div>
                      <div class="form-group">
                         <label>Publisher Name:</label>
-                        <input name="pub_name" type="text" class="form-control" value="{{$publisher->pub_name}}">
+                        <input name="name" type="text" class="form-control" value="{{$publisher->name}}">
                      </div>
                      <div class="form-group">
                         <label>Publisher Picture:</label>
@@ -44,7 +44,7 @@
                      <div class="form-group">
                         <label>Publisher Description:</label>
                         <textarea class="form-control" rows="4" name="content"
-                           id="editor">{{$publisher->description}}</textarea>
+                           id="content">{{$publisher->description}}</textarea>
                      </div>
                      <button type="submit" class="btn btn-primary">Submit</button>
                      <button type="reset" class="btn btn-danger"

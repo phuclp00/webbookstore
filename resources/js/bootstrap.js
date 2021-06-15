@@ -7,9 +7,9 @@ window._ = require('lodash');
  */
 
 try {
-    window.Popper = require('popper.js').default;
+    //window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
-    require('bootstrap');
+    //require('bootstrap');
 } catch (e) {}
 
 /**
@@ -21,6 +21,7 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.withCredentials = true;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -34,7 +35,8 @@ window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: '09623629634650020d40',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     wsHost: window.location.hostname,
     wsPort: 6001,
     forceTLS: false,

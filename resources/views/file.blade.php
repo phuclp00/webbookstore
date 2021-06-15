@@ -20,7 +20,7 @@
     </form>
 
     @isset($data)
-    <img src="{{$data}}">
+    <img src="{{asset("$data")}}">
     @endisset
 </body>
 

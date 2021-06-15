@@ -4,26 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
 class PublisherModel extends Model
 {
-    use HasFactory,Searchable;
+    use HasFactory, Searchable, SoftDeletes;
     protected $table = "publisher";
-    protected $primaryKey = "pub_id";
-    const UPDATED_AT = 'modiffed_at';
-    public $timestamps = false;
+    protected $primaryKey = "id";
+    const UPDATED_AT = 'modified_at';
     protected $keyType = 'string';
-      /**
+    public $incrementing = false;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'pub_id',
-        'pub_name',
-        'pub_img',
+        'id',
+        'name',
+        'image',
         'description',
+        'created_by',
+        'modified_by',
+        'deleted_by'
     ];
     /**
      * The attributes that should be cast to native types.
@@ -31,12 +36,13 @@ class PublisherModel extends Model
      * @var array
      */
     protected $casts = [
-        'modiffed_at' => 'datetime',
+        'modified_at' => 'datetime',
         'created_at'  => 'datetime',
+        'deleted_at' => 'datetime'
     ];
     public function getRouteKeyName()
     {
-        return 'pub_id';
+        return 'id';
     }
     public function isPublished()
     {
@@ -59,8 +65,8 @@ class PublisherModel extends Model
     {
         return $this->pub_name;
     }
-    public function book()
+    public function books()
     {
-        return $this->hasMany(ProductModel::class,'pub_id');
+        return $this->hasMany(ProductModel::class, 'pub_id', 'id');
     }
 }

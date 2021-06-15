@@ -3,18 +3,20 @@
 namespace App\Models;
 
 use App\Models\DB;
+use App\Models\Language;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Redis;
 use Laravel\Scout\Searchable;
 
 class ProductModel extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory, Searchable, SoftDeletes;
     //DEFINED DATABASE TABLE
     protected $table = "book";
-    protected $primaryKey = "book_id";
-    const UPDATED_AT = 'modiffed_at';
-    //DINH NGHIA KHOA TRONG TABBLE NAY KHONG PHAI LA KHOA TU TANG VA KIEU KHOA LA STRING 
+    public  $primaryKey = "book_id";
+    const UPDATED_AT = 'modified_at';
     public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = [
@@ -24,10 +26,26 @@ class ProductModel extends Model
         'price',
         'img',
         'pub_id',
-        'cat_id',
-        'promotion_price',
-        'modiffed_by',
-        'created_by'
+        'sup_id',
+        'weight',
+        'episode',
+        'series',
+        'promotion_id',
+        'auth_id',
+        'out_of_business',
+        'datePublished',
+        'copyrightYear',
+        'bookFormat',
+        'translator',
+        'rating',
+        'total',
+        'size',
+        'serialNumber',
+        'numberOfPages',
+        'language',
+        'modified_by',
+        'created_by',
+        'deleted_by',
     ];
     /**
      * The attributes that should be cast to native types.
@@ -35,9 +53,15 @@ class ProductModel extends Model
      * @var array
      */
     protected $casts = [
-        'modiffed_at' => 'datetime',
+        'modified_at' => 'datetime',
         'created_at'  => 'datetime',
+        'date_published' => 'date',
+        'deleted_at' => 'datetime'
     ];
+    // public function __construct()
+    // {
+    //     $this->storage = Redis::connection();
+    // }
     public function getRouteKeyName()
     {
         return 'book_id';
@@ -57,11 +81,15 @@ class ProductModel extends Model
     }
     protected function makeAllSearchableUsing($query)
     {
-        return $query->with('category','publisher');
+        return $query->with('category', 'publisher');
     }
     public function category()
     {
-        return $this->belongsTo(CategoryModel::class, "cat_id");
+        return $this->belongsToMany(CategoryModel::class, "book_category", "book_id", "cat_id");
+    }
+    public function supplier()
+    {
+        return $this->belongsTo(SupplierModel::class, "sup_id");
     }
     public function publisher()
     {
@@ -71,31 +99,36 @@ class ProductModel extends Model
     {
         return $this->hasMany(BookThumbnailModel::class, 'book_id');
     }
-    public function all_list_items($params, $options, $stament = null, $number_stament = null)
+    public function format()
     {
-        //Tat debugbar
-        //\Debugbar::disable();
-        $result = null;
-        if ($options['task'] == "special-list-items") {
-            $result          =   ProductModel::where($params, $stament, $number_stament)->get();
-            return $result;
-        }
-        if ($options['task'] == "special-list-items-1") {
-            $result          =   ProductModel::where($params, $stament, $number_stament)->get("book_name");
-            return $result;
-        }
-        if ($options['task'] == "admin-list-items") {
-            //$result          = ProductModel::all();
-            return $result;
-        }
-        if ($options['task'] == "frontend-list-items") {
-            $result          = ProductModel::all();
-            return $result;
-        }
-        if ($options['task'] == "pagi-list-items") {
-            $result          = ProductModel::paginate($number_stament);
-            return $result;
-        }
-        return  $result;
+        return $this->belongsTo(BooksFormat::class, 'bookFormat');
+    }
+    public function series()
+    {
+        return $this->belongsTo(BookSeries::class, 'series');
+    }
+    public function author()
+    {
+        return $this->belongsTo(Author::class, "auth_id");
+    }
+    public function translator()
+    {
+        return $this->belongsTo(Translator::class, "translator");
+    }
+    public function lang()
+    {
+        return $this->belongsTo(Language::class, "language");
+    }
+    public function order_detail()
+    {
+        return $this->hasOne(OrderDetail::class, "book_id");
+    }
+    public function rating()
+    {
+        return $this->hasMany(Rating::class, "id");
+    }
+    public function favorite()
+    {
+        return $this->hasMany(Favorite::class, "book_id");
     }
 }
