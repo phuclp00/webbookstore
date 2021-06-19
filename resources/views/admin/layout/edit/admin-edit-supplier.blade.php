@@ -23,11 +23,7 @@
                   <form id="edit_form" action="{{route('admin.supplier.edit',[$supplier->id])}}" method="post"
                      enctype="multipart/form-data">
                      {{ csrf_field() }}
-                     <div class="form-group">
-                        <label>Supplier ID:</label>
-                        <input type="text" class="form-control" value="{{$supplier->id}}" disabled>
-                        <input type="hidden" name="id" value="{{$supplier->id}}">
-                     </div>
+                     <input type="hidden" name="id" value="{{$supplier->id}}">
                      <div class="form-group">
                         <label>Supplier Name:</label>
                         <input name="name" type="text" class="form-control" value="{{$supplier->name}}">

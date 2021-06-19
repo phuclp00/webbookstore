@@ -194,7 +194,7 @@
                           <span
                             v-if="data.category != null"
                             class="text-body"
-                            >{{ data.category.cat_name }}</span
+                            >{{ data.category.name }}</span
                           >
                           <span v-else class="text-body"
                             >This category is being updated</span

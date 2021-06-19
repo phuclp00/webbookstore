@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Product\AuthorController;
+use App\Http\Controllers\Product\CategoryController;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -19,3 +21,6 @@ use Illuminate\Support\Facades\Http;
 |
 */
 
+Route::apiResource('category', 'Product\CategoryController');
+Route::apiResource('author', 'Product\AuthorController');
+Route::get('author/book/{book_id}', 'Product\AuthorController@get_related');

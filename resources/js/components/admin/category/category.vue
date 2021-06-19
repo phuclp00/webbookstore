@@ -8,25 +8,27 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Group Category</th>
         <th>Date Create</th>
         <th>Modified By</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="value in category" :key="value.cat_id">
-        <td>{{ value.cat_id }}</td>
-        <td>{{ value.cat_name }}</td>
+      <tr v-for="value in data" :key="value.id">
+        <td>{{ value.id }}</td>
+        <td>{{ value.name }}</td>
+        <td>{{ find_parent_category(value) }}</td>
         <td>{{ datetime(value.created_at) }}</td>
         <td>
-          {{ value.modified_by == null ? value.created_by : value.modified_by }}
+          {{ value.modified_by == "" ? value.created_by : value.modified_by }}
         </td>
         <td>
           <div class="flex align-items-center list-user-action">
             <a
               class="bg-primary"
               data-toggle="tooltip"
-              :data-text="value.cat_id"
+              :data-text="value.id"
               data-placement="top"
               title="Detail"
               data-original-title="Detail"
@@ -40,7 +42,7 @@
               data-placement="top"
               title="Edit"
               data-original-title="Edit"
-              :href="'/admin/category/category-edit-view/' + value.cat_id"
+              :href="'/admin/category/category-edit-view/' + value.id"
               ><i class="ri-pencil-line"></i
             ></a>
             <a
@@ -51,7 +53,7 @@
               title="Restore"
               data-original-title="Restore"
               s
-              :href="'/admin/category/category-restore/' + value.cat_id"
+              :href="'/admin/category/category-restore/' + value.id"
               ><i class="fa fa-undo"></i
             ></a>
             <a
@@ -62,7 +64,7 @@
               title="Delete"
               data-original-title="Delete"
               s
-              :href="'/admin/category/category-delete/' + value.cat_id"
+              :href="'/admin/category/category-delete/' + value.id"
               ><i class="ri-delete-bin-line"></i
             ></a>
           </div>
@@ -76,6 +78,7 @@
 <script>
 Vue.component("modal-category", require("./modal/category.vue").default);
 import moment from "moment";
+import { result } from "lodash";
 export default {
   props: ["data", "router", "delete"],
   components: { moment },
@@ -97,6 +100,15 @@ export default {
     hideModal() {
       this.$refs.modal.hide();
     },
+    find_parent_category(item) {
+      result = "Root";
+      this.category.forEach((element) => {
+        if (item.parent_id == element.id) {
+          result = element.name;
+        }
+      });
+      return result;
+    },
   },
   mounted() {
     this.category = this.data;
@@ -104,7 +116,9 @@ export default {
   created() {
     $(document).ready(function () {
       $.noConflict();
-      var table = $("#datatable").DataTable({});
+      var table = $("#datatable").DataTable({
+        order: [],
+      });
       new $.fn.dataTable.Buttons($("#datatable"), {
         buttons: [
           {
@@ -175,7 +189,6 @@ export default {
           },
         ],
       });
-
       table.buttons(0, null).container().prependTo(table.table().container());
     });
   },

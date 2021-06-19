@@ -19,14 +19,14 @@
                                 <ul class="item item03">
                                     <li class="title">Categories</li>
                                     @foreach($list_category as $cat_list)
-                                    <li><a href="{{route('category',$cat_list->cat_id)}}">{{$cat_list->cat_name}}
+                                    <li><a href="{{route('category')}}">{{$cat_list->cat_name}}
                                         </a></li>
                                     @endforeach
                                 </ul>
                                 <ul class="item item03">
                                     <li class="title">Favourite</li>
                                     @foreach($top_list_category as $top_cat_list)
-                                    <li><a href="{{route('category',$top_cat_list->cat_id)}}">{{$top_cat_list->cat_name}}
+                                    <li><a href="#">{{$top_cat_list->cat_name}}
                                         </a></li>
                                     @endforeach
                                 </ul>
@@ -34,7 +34,7 @@
                                     <li class="title">Collections</li>
 
                                     @foreach($top_list_category as $top_cat_list)
-                                    <li><a href="{{route('category',$top_cat_list->cat_id)}}">{{$top_cat_list->cat_name}}
+                                    <li><a href="#">{{$top_cat_list->cat_name}}
                                         </a></li>
                                     @endforeach
                                 </ul>
@@ -219,8 +219,9 @@
 <!-- Start Search Popup -->
 <div class="box-search-content search_active block-bg close__top">
     <form id="search_mini_form" class="minisearch" method="POST">
-        <div  class="field__search">
-            <input type="text" id="searchBox" placeholder="Search for book title or publisher name, book category..." autocomplete="on"/>
+        <div class="field__search">
+            <input type="text" id="searchBox" placeholder="Search for book title or publisher name, book category..."
+                autocomplete="on" />
             <div id="searchBox__check" class="action">
                 <a href="#"><i class="zmdi zmdi-search"></i></a>
             </div>

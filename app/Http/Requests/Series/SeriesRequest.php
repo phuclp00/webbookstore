@@ -24,8 +24,7 @@ class SeriesRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|unique:author,pub_id',
-            'name' => 'required|unique:author,pub_name',
+            'name' => 'required|unique:book_series,name|not_regex:/[\s]{2,}|^[\s]/',
             'img' => ['sometimes', 'image', 'max:10240 '],
             'content' => ['required', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
         ];

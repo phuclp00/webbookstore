@@ -19,10 +19,6 @@
                      enctype="multipart/form-data">
                      {{ csrf_field() }}
                      <div class="form-group">
-                        <label>Supplier ID:</label>
-                        <input type="text" name="id" class="form-control" value="">
-                     </div>
-                     <div class="form-group">
                         <label>Supplier Name:</label>
                         <input type="text" name="name" class="form-control" value="">
                      </div>

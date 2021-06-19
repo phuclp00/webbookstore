@@ -11,29 +11,29 @@
                      back</button></a>
                <div class="iq-card-header d-flex justify-content-between">
                   <div class="iq-header-title">
-                     <h4 class="card-title">Edit Categories: {{$category->cat_name}}</h4>
+                     <h4 class="card-title">Edit Categories: {{$category->name}}</h4>
                   </div>
                </div>
                @include('post.create')
                <div class="iq-card-body">
-                  <form action="{{route('admin.category.edit',[$category->cat_id])}}" method="post">
+                  <form action="{{route('admin.category.edit',[$category->id])}}" method="post">
                      @csrf
                      <div class="form-group">
                         <label>Category Name:</label>
-                        <input type="text" class="form-control" value="{{$category->cat_id}}" disabled>
-                        <input type="hidden" name="cat_id" value="{{$category->cat_id}}">
+                        <input type="text" class="form-control" value="{{$category->id}}" disabled>
+                        <input type="hidden" name="id" value="{{$category->id}}">
                      </div>
                      <div class="form-group">
                         <label>Category Name:</label>
-                        <input type="text" name="cat_name" class="form-control" value="{{$category->cat_name}}">
+                        <input type="text" name="name" class="form-control" value="{{$category->name}}">
                      </div>
                      <div class="form-group">
-                        <label>Book Type:</label>
-                        <select id="type" name="type" class="form-control">
-                           <option selected="" disabled="">Book Type</option>
-                           @isset($type)
-                           @foreach($type as $data =>$item)
-                           @if($category->type_id==$item->id)
+                        <label>Group Category:</label>
+                        <select id="type" name="cat_group" class="form-control">
+                           <option selected="" disabled="">Group Category</option>
+                           @isset($group)
+                           @foreach($group as $data =>$item)
+                           @if($category->parent_id==$item->id)
                            <option value="{{$item->id}}" selected>{{$item->name}}</option>
                            @else
                            <option value="{{$item->id}}">{{$item->name}}</option>
@@ -41,9 +41,6 @@
                            @endforeach
                            @endisset
                         </select>
-                        <label for="new_type" style="font-style: italic"> Add new type :</label>
-                        <input type="text" class="form-control" name="new_type" id="new_type"
-                           value="{{ old('new_type') }}" readonly>
                      </div>
                      <div class="form-group">
                         <label>Category Description:</label>

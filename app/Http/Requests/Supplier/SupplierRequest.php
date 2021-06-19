@@ -24,8 +24,7 @@ class SupplierRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|unique:supplier,id',
-            'name' => 'required|unique:supplier,name',
+            'name' => ['required', 'unique:supplier,name', 'not_regex:/[\s]{2,}|^[\s]/'],
             'img' => ['sometimes', 'image', 'max:10240 '],
             'content' => ['nullable', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
         ];

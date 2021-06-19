@@ -6,7 +6,7 @@
         <th style="width: 10%">Book Image</th>
         <th style="width: 15%">Book Name</th>
         <th style="width: 10%">Code</th>
-        <th style="width: 10%">Supplier</th>
+        <th style="width: 10%">Category</th>
         <th style="width: 10%">Publisher</th>
         <th style="width: 10%">Author</th>
         <th style="width: 10%">Price</th>
@@ -46,10 +46,10 @@
         <td v-else>{{ item.book_name + " - Episode " + item.episode }}</td>
         <td>{{ item.serialNumber }}</td>
         <!-- Category -->
-        <td v-if="item.sup_id != null">
-          {{ item.supplier.name }}
+        <td v-if="item.category != null">
+          {{ item.category.name }}
         </td>
-        <td v-else class="bg-info">Book Supplier is being updated</td>
+        <td v-else class="bg-info">Book Category is being updated</td>
         <!-- Publisher -->
         <td v-if="item.publisher != null">{{ item.publisher.name }}</td>
         <td v-else class="bg-secondary">Book Publisher is being updated</td>

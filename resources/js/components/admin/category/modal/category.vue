@@ -75,7 +75,7 @@
                             >
                           </p>
                           <h3 class="mb-3">
-                            {{ data.cat_name }}
+                            {{ data.name }}
                           </h3>
                           <span
                             class="text-dark mb-4 pb-4 iq-border-bottom d-block"
@@ -92,7 +92,7 @@
                     <b-tab
                       no-body
                       title="General"
-                      @click="loading_books(data.cat_id)"
+                      @click="loading_books(data.id)"
                     >
                       <div
                         class="
@@ -111,7 +111,7 @@
                         <div class="iq-header-title">
                           <h3 class="card-title mb-0">
                             The Books Belong To The Category: "{{
-                              data.cat_name
+                              data.name
                             }}"
                           </h3>
                         </div>
@@ -233,9 +233,9 @@
                     <b-tab
                       no-body
                       v-for="index in data.children"
-                      :title="index.cat_name"
-                      :key="index.cat_id"
-                      @click="loading_books(index.cat_id)"
+                      :title="index.name"
+                      :key="index.id"
+                      @click="loading_books(index.id)"
                     >
                       <div
                         class="
@@ -254,7 +254,7 @@
                         <div class="iq-header-title">
                           <h3 class="card-title mb-0">
                             The Books Belong To The Category: "{{
-                              index.cat_name
+                              index.name
                             }}"
                           </h3>
                         </div>
@@ -397,7 +397,7 @@ export default {
   methods: {
     show_model: function (item) {
       this.$modal.show("catlisher_detail");
-      this.loading_books(item.cat_id);
+      this.loading_books(item.id);
       return (this.data = item);
     },
     moment: function () {

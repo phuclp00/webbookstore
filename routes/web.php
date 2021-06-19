@@ -16,6 +16,7 @@ use App\Http\Controllers\Product\BooksFormatController;
 use App\Http\Controllers\Product\BooksTypeController;
 use App\Http\Controllers\Product\SeriesController;
 use App\Http\Controllers\Product\SupplierController;
+use App\Http\Controllers\Product\TagsController;
 use App\Http\Controllers\Product\TranslatorController;
 use App\Http\Controllers\Store\GoogleDriverController;
 use App\Http\Controllers\Store\S3Controller;
@@ -193,7 +194,7 @@ $controllerName = 'shop';
 Route::group(['prefix' => $controllerName], function () {
     Route::get('/', [HomeController::class, 'shop_view'])->name("shop", ["get_cat_items" => $get_cat_items = null]);
     //LAY ID CATEGORY KHI DUOC TRUYEN GIA TRI VAO TRA VE LIST THEO ID CATEGORY
-    Route::get('/cat_id={cat_id}', [HomeController::class, 'get_category'])->name("category");
+    Route::get('/cat_id', [HomeController::class, 'get_category'])->name("category");
     Route::post('/search_product', [ProductController::class, 'find_product'])->name("search");
 });
 //====================================== - ACCOUNT ========================================================//
@@ -230,15 +231,33 @@ Route::group(['prefix' => 'admin'], function () {
             //Category add 
             Route::post('/category-add', [CategoryController::class, 'add_category'])->name('admin.category.add');
             //Category edit view
-            Route::get('/category-edit-view/{cat_id}', [HomeController::class, 'category_edit_view'])->name('admin.category.edit.view');
+            Route::get('/category-edit-view/{id}', [HomeController::class, 'category_edit_view'])->name('admin.category.edit.view');
             //Category edit 
             Route::post('/category-edit', [CategoryController::class, 'category_edit'])->name('admin.category.edit');
             //Category delete 
-            Route::get('/category-delete/{cat_id}', [CategoryController::class, 'category_delete'])->name('admin.category.delete');
+            Route::get('/category-delete/{id}', [CategoryController::class, 'category_delete'])->name('admin.category.delete');
             //Category restore
-            Route::get('/category-restore/{cat_id}', [CategoryController::class, 'restore'])->name('admin.category.restore');
+            Route::get('/category-restore/{id}', [CategoryController::class, 'restore'])->name('admin.category.restore');
             //Category list for type
             Route::get('/{id}', [CategoryController::class, 'show']);
+        });
+        //==========================================Tags==============================================================
+        Route::prefix('tags')->group(function () {
+            Route::get('/', [HomeController::class, 'tags_view'])->name('admin.tags');
+            //Category add view 
+            Route::get('/tags-view-add', [HomeController::class, 'tags_add_view'])->name('admin.tags.add.view');
+            //Category add 
+            Route::post('/tags-add', [TagsController::class, 'add_tags'])->name('admin.tags.add');
+            //Category edit view
+            Route::get('/tags-edit-view/{id}', [HomeController::class, 'tags_edit_view'])->name('admin.tags.edit.view');
+            //Category edit 
+            Route::post('/tags-edit', [TagsController::class, 'tags_edit'])->name('admin.tags.edit');
+            //Category delete 
+            Route::get('/tags-delete/{id}', [TagsController::class, 'tags_delete'])->name('admin.tags.delete');
+            //Category restore
+            Route::get('/tags-restore/{id}', [TagsController::class, 'restore'])->name('admin.tags.restore');
+            //Category list for type
+            Route::get('/{id}', [TagsController::class, 'show']);
         });
         //==========================================Book list==============================================================
         Route::prefix('books')->group(function () {
@@ -341,22 +360,6 @@ Route::group(['prefix' => 'admin'], function () {
             //Series restore
             Route::get('format-restore/{id}', [BooksFormatController::class, 'restore'])->name('admin.format.restore');
         });
-        //========================================== Book type =============================================================
-        Route::prefix('type')->group(function () {
-            Route::get('/', [HomeController::class, 'type_view'])->name('admin.type');
-            //Series-add view
-            Route::get('type-add-view', [HomeController::class, 'type_add_view'])->name('admin.type.add.view');
-            //Series-add
-            Route::post('type-add', [BooksTypeController::class, 'add'])->name('admin.type.add');
-            //Series-edit view
-            Route::get('type-edit-view/{id}', [HomeController::class, 'type_edit_view'])->name('admin.type.edit.view');
-            //Series edit
-            Route::post('type-edit/{id}', [BooksTypeController::class, 'edit'])->name('admin.type.edit');
-            //Series delete
-            Route::get('type-delete/{id}', [BooksTypeController::class, 'delete'])->name('admin.type.delete');
-            //Series restore
-            Route::get('type-restore/{id}', [BooksTypeController::class, 'restore'])->name('admin.type.restore');
-        });
         //========================================== Series =============================================================
         Route::prefix('series')->group(function () {
             Route::get('/', [HomeController::class, 'series_view'])->name('admin.series');
@@ -415,6 +418,8 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::get('/suppliers', [HomeController::class, 'supplier_old_view'])->name('admin.supplier.old');
                 //Category-restore-list
                 Route::get('/category', [HomeController::class, 'category_old_view'])->name('admin.category.old');
+                //Category-restore-list
+                Route::get('/tags', [HomeController::class, 'tags_old_view'])->name('admin.tags.old');
                 //Category-restore-list
                 Route::get('/authors', [HomeController::class, 'author_old_view'])->name('admin.author.old');
                 //Series-restore-list

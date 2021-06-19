@@ -43,6 +43,6 @@ class Author extends Model
     }
     public function books()
     {
-        return $this->hasMany(ProductModel::class, 'auth_id');
+        return $this->belongsToMany(ProductModel::class, 'book_author', 'auth_id', 'book_id');
     }
 }

@@ -25,7 +25,7 @@ class PublisherRequest extends FormRequest
     {
         return [
             'id' => 'required|unique:publisher,id',
-            'name' => 'required|unique:publisher,name',
+            'name' => ['required','unique:publisher,name','not_regex:/[\s]{2,}|^[\s]/'],
             'img' => ['sometimes', 'image', 'max:10240 '],
             'content' => ['nullable', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
         ];

@@ -24,11 +24,9 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'cat_id' => 'required|unique:category,cat_id',
-            'cat_name' => 'required|unique:category,cat_name',
-            'type' => 'required_without:new_type',
-            'new_type' => ['nullable', 'required_without:type', 'not_regex:/\W/', 'unique:book_type,name'],
-            'content' => ['required', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
+            'name' => ['required', 'unique:category,name', 'not_regex:/[\s]{2,}|^[\s]/', 'max:255'],
+            'cat_group' => 'nullable',
+            'content' => ['nullable', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
         ];
     }
     public function messages()

@@ -16,6 +16,7 @@ use App\Models\Language;
 use App\Models\PublisherModel;
 use App\Models\Series;
 use App\Models\SupplierModel;
+use App\Models\TagsModel;
 use App\Models\Translator;
 use App\Models\UserModel;
 use Illuminate\Support\Facades\Auth;
@@ -73,7 +74,7 @@ class HomeController extends Controller
     public function get_list_id(Request $request)
     {
         $items = $request->id;
-        $items = ProductModel::with('category')->where("cat_id", "=", $items);
+        $items = ProductModel::with('category')->where("id", "=", $items);
         view()->share('get_cat_items', $items);
     }
     // Quick View chua xu ly duoc 
@@ -86,15 +87,15 @@ class HomeController extends Controller
     }
     public function get_category(Request $request)
     {
-        $id = $request->cat_id;
+        $id = $request->id;
         $mainModel = new CategoryModel();
 
         //Truy xuat theo dieu kien trong Model()
 
-        //$items=$mainModel->listItems("cat_id",['task'=>"special-list-items"],$id,"===");
+        //$items=$mainModel->listItems("id",['task'=>"special-list-items"],$id,"===");
 
         //Truy xuat theo relationship
-        $items = ProductModel::with('category')->where("cat_id", "=", $id)->paginate(6);
+        $items = ProductModel::with('category')->where("id", "=", $id)->paginate(6);
 
         return view($this->pathViewController . $this->subpatchViewController  . '.shop', ["get_cat_items" => $items]);
     }
@@ -151,24 +152,46 @@ class HomeController extends Controller
     //Category
     public function category_view()
     {
-        $result = CategoryModel::all()->load('childrent');
+        $result = CategoryModel::all()->toFlatTree();
         return view('admin.layout.show.admin-category', ['cat_list' => $result]);
     }
     public function category_old_view()
     {
-        $result = CategoryModel::where('parent_id', null)->onlyTrashed()->with('books')->with('types')->get();
+        $result = CategoryModel::onlyTrashed()->get();
         return view('admin.layout.show.old.admin-category', ['cat_list' => $result]);
     }
-    public function category_add_view(Request $request)
+    public function category_add_view()
     {
-        $type = BookType::all();
-        return view('admin.layout.add.admin-add-category', ['type' => $type]);
+        $group = CategoryModel::all()->toFlatTree();
+        return view('admin.layout.add.admin-add-category', ['group' => $group]);
     }
     public function category_edit_view(Request $request)
     {
-        $result = CategoryModel::withTrashed()->where('cat_id', $request->cat_id)->first();
-        $type = BookType::all();
-        return view('admin.layout.edit.admin-edit-category', ['category' => $result, 'type' => $type]);
+        $result = CategoryModel::withTrashed()->where('id', $request->id)->first();
+        $group = CategoryModel::all()->toFlatTree();
+        return view('admin.layout.edit.admin-edit-category', ['category' => $result, 'group' => $group]);
+    }
+    //Tags
+    public function tags_view()
+    {
+        $result = TagsModel::all()->toFlatTree();
+        return view('admin.layout.show.admin-tags', ['cat_list' => $result]);
+    }
+    public function tags_old_view()
+    {
+        $result = TagsModel::onlyTrashed()->get();
+        return view('admin.layout.show.old.admin-tags', ['cat_list' => $result]);
+    }
+    public function tags_add_view()
+    {
+        $group = TagsModel::all()->toFlatTree();
+        return view('admin.layout.add.admin-add-tags', ['group' => $group]);
+    }
+    public function tags_edit_view(Request $request)
+    {
+        $result = TagsModel::withTrashed()->where('id', $request->id)->first();
+        $group = TagsModel::all()->toFlatTree();
+        return view('admin.layout.edit.admin-edit-tags', ['tags' => $result, 'group' => $group]);
     }
     //Book
     public function book_list_view()
@@ -179,9 +202,11 @@ class HomeController extends Controller
             ->load('author')
             ->load('translator')
             ->load('series')
+            ->load('tags')
+            ->load('category')
             ->load('format')
+            ->load('supplier')
             ->load('lang');
-        dd($result[0]->category);
         return view('admin.layout.show.admin-books', ['book' => $result]);
     }
     public function book_list_out_of_business()
@@ -190,8 +215,11 @@ class HomeController extends Controller
             ->with('thumb')
             ->with('publisher')
             ->with('author')
+            ->with('category')
             ->with('translator')
+            ->with('tags')
             ->with('lang')
+            ->with('supplier')
             ->with('series')
             ->with('format')
             ->get();
@@ -200,12 +228,13 @@ class HomeController extends Controller
     }
     public function book_list_add_view()
     {
-        $cat = CategoryModel::all();
+        $cat = CategoryModel::all()->toFlatTree();
         $pub = PublisherModel::all();
         $auth = Author::all();
         $format = BooksFormat::all();
         $lang = ListLanguages::lookup();
         $translator = Translator::all();
+        $sup = SupplierModel::all();
         $series = BookSeries::all();
         return view(
             'admin.layout.add.admin-add-book',
@@ -213,6 +242,7 @@ class HomeController extends Controller
                 'cat' => $cat,
                 'pub' => $pub,
                 'auth' => $auth,
+                'sup' => $sup,
                 'format' => $format,
                 'language' => $lang,
                 'translator' => $translator,
@@ -222,14 +252,27 @@ class HomeController extends Controller
     }
     public function book_edit_view(Request $request)
     {
-        $cat = CategoryModel::all();
+        $cat = CategoryModel::all()->toFlatTree();
         $pub = PublisherModel::all();
         $auth = Author::all();
         $format = BooksFormat::all();
         $lang = ListLanguages::lookup();
         $translator = Translator::all();
+        $sup = SupplierModel::all();
         $series = BookSeries::all();
-        $result = ProductModel::withTrashed()->where('book_id', $request->book_id)->first();
+        $result = ProductModel::withTrashed()
+            ->where('book_id', $request->book_id)
+            ->with('thumb')
+            ->with('publisher')
+            ->with('author')
+            ->with('category')
+            ->with('translator')
+            ->with('tags')
+            ->with('lang')
+            ->with('supplier')
+            ->with('series')
+            ->with('format')
+            ->first();
         preg_match_all('/\d+/', $result->size, $size);
         $height = $size[0][0];
         $width = $size[0][1];
@@ -240,6 +283,7 @@ class HomeController extends Controller
                 'cat' => $cat,
                 'pub' => $pub,
                 'auth' => $auth,
+                'sup' => $sup,
                 'format' => $format,
                 'language' => $lang,
                 'translator' => $translator,
@@ -348,25 +392,6 @@ class HomeController extends Controller
     {
         $data = BooksFormat::withTrashed()->where('id', $request->id)->first();
         return view('admin.layout.edit.admin-edit-format', ['data' => $data]);
-    }  //Book Type 
-    public function type_view()
-    {
-        $data = BookType::all()->load('category');
-        return view('admin.layout.show.admin-type', ['data' => $data]);
-    }
-    public function type_old_view()
-    {
-        $data = BookType::onlyTrashed()->with('category')->get();
-        return view('admin.layout.show.old.admin-type', ['data' => $data]);
-    }
-    public function type_add_view()
-    {
-        return view('admin.layout.add.admin-add-type');
-    }
-    public function type_edit_view(Request $request)
-    {
-        $data = BookType::withTrashed()->where('id', $request->id)->first();
-        return view('admin.layout.edit.admin-edit-type', ['data' => $data]);
     }
     //Translator 
     public function translator_view()

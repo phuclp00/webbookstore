@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\BooksType;
+namespace App\Http\Requests\Tags;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BooksTypeRequest extends FormRequest
+class Tags_Update extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class BooksTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:author,pub_name',
-            'img' => ['sometimes', 'image', 'max:10240 '],
-            'content' => ['required', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
+            'name' => ['required', 'not_regex:/[\s]{2,}|^[\s]/'],
+            'cat_group' => 'nullable',
+            'content' => ['nullable', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
         ];
     }
     public function messages()

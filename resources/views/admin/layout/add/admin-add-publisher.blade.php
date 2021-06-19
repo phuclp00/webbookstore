@@ -20,11 +20,11 @@
                      {{ csrf_field() }}
                      <div class="form-group">
                         <label>Publisher ID:</label>
-                        <input type="text" name="pub_id" class="form-control" value="">
+                        <input type="text" name="id" class="form-control" value="">
                      </div>
                      <div class="form-group">
                         <label>Publisher Name:</label>
-                        <input type="text" name="pub_name" class="form-control" value="">
+                        <input type="text" name="name" class="form-control" value="">
                      </div>
                      <div class="form-group">
                         <label>Publisher Picture:</label>

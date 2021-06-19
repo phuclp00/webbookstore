@@ -14,6 +14,7 @@ use App\Models\BookType;
 use App\Models\BookThumbnailModel;
 use Illuminate\Http\Request;
 use App\Models\ProductModel;
+use App\Models\PublisherModel;
 use App\Models\Translator;
 use Carbon\Carbon;
 use Cart;
@@ -195,6 +196,7 @@ class ProductController extends Controller
             if (date('Y', \strtotime($request->date_published)) < $request->copyright) {
                 return \redirect()->back()->withInput($request->all())->withErrors('Date published cannot be less than the CopyrightYear !');
             }
+
             //Book insert
             $product = ProductModel::create([
                 'book_id' => $request->book_id,
@@ -202,7 +204,6 @@ class ProductController extends Controller
                 'cat_id' => $request->cat_id,
                 'pub_id' => $request->pub_id,
                 'series' => $series,
-                'auth_id' => $author,
                 'episode' => $request->episode,
                 'size' => $request->size_height . ' x ' . $request->size_width . ' cm',
                 'weight' => $request->weight,
@@ -215,6 +216,7 @@ class ProductController extends Controller
                 'numberOfPages' => $request->page_number,
                 'language' => $request->language,
                 'price' => $request->price,
+                'sup_id' => $request->sup_id,
                 'promotion_id' => $request->promotion,
                 'total' => $request->total,
                 'description' => $request->content,
@@ -222,7 +224,11 @@ class ProductController extends Controller
                 'img' => $request->img != null ? $file->store($request->img) : null,
                 'created_by' => Auth::user()->user_name,
             ]);
-
+            //Insert related author
+            foreach ($request->author as $value) {
+                $result = Author::where('name', $value)->first()->id;
+                $product->author()->attach($result);
+            }
             //Thumb insert 
             if ($request->thumb != null) {
                 foreach ($request->thumb as $key => $value) {
@@ -238,6 +244,8 @@ class ProductController extends Controller
                 }
             }
             DB::commit();
+            //Insert author related
+
             $request->session()->flash(
                 'infor_success',
                 '<div class="alert alert-primary" style="text-align: center;font-size: x-large;font-family: fangsong;"> 
@@ -264,6 +272,7 @@ class ProductController extends Controller
         $format = null;
         $translator = null;
         $series = null;
+        $flag = true;
 
         try {
             DB::beginTransaction();
@@ -322,13 +331,13 @@ class ProductController extends Controller
             $data->pub_id = $request->pub_id;
             $data->series = $series;
             $data->episode = $request->episode;
-            $data->auth_id = $author;
             $data->size = $request->size_height . ' x ' . $request->size_width . ' cm';
             $data->weight = $request->weight;
             $data->datePublished = $request->date_published;
             $data->copyrightYear = $request->copyright;
             $data->bookFormat = $format;
             $data->translator = $translator;
+            $data->sup_id = $request->sup_id;
             $data->serialNumber = $request->code;
             $data->numberOfPages = $request->page_number;
             $data->language = $request->language;
@@ -337,6 +346,16 @@ class ProductController extends Controller
             $data->total = $request->total;
             $data->description = $request->content;
             $data->modified_by = Auth::user()->user_name;
+            //Asyn author 
+            $auth_check = [];
+            $result = [];
+
+            $flag = $auth_check == $request->author;
+            foreach ($request->author as $value) {
+                $result[] = Author::where('name', $value)->first()->id;
+            }
+            $data->author()->sync($result);
+
             // Check file upload 
             $check_img_upload = $request->img != null ? true : false;
             $check_thumb_upload = $request->thumb != null ? true : false;
@@ -346,6 +365,7 @@ class ProductController extends Controller
                 $result = $file->update($request->img, $data->img);
                 $data->img = $result;
             }
+
             if ($check_thumb_upload) {
                 //Check book_thumb d
                 if ($data->thumb()->exists() == false) {
@@ -376,7 +396,7 @@ class ProductController extends Controller
                         );
                     }
                 }
-            } elseif ($data->isDirty() == false) {
+            } elseif ($data->isDirty() == false && $flag == true) {
                 $request->session()->flash(
                     'infor_mess',
                     '<div class="alert alert-primary" style="text-align: center;font-size: x-large;font-family: fangsong;"> 

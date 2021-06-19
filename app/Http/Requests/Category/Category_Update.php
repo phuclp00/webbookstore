@@ -24,11 +24,9 @@ class Category_Update extends FormRequest
     public function rules()
     {
         return [
-            'cat_id' => 'required',
-            'cat_name' => 'required',
-            'type' => 'required_without:new_type',
-            'new_type' => ['nullable', 'required_without:type', 'not_regex:/\W/', 'unique:book_type,name'],
-            'content' => ['required', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
+            'name' => ['required', 'not_regex:/[\s]{2,}|^[\s]/', 'max:255'],
+            'cat_group' => 'nullable',
+            'content' => ['nullable', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
         ];
     }
     public function messages()

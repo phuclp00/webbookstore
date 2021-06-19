@@ -13,8 +13,8 @@
           <b-col>
             <b-img
               class="thumb-book"
-              v-for="item in thumbnail"
-              :key="item"
+              v-for="(item, key) in thumbnail"
+              :key="key"
               :src="'/' + item.image"
               thumbnail
               fluid

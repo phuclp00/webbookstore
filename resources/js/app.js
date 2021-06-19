@@ -70,11 +70,11 @@ Vue.component('booklist-out-of-business', require('./components/admin/book/bookl
 Vue.component('publisher', require('./components/admin/publisher/publisher.vue').default);
 Vue.component('supplier', require('./components/admin/supplier/supplier.vue').default);
 Vue.component('category', require('./components/admin/category/category.vue').default);
+Vue.component('tags', require('./components/admin/tags/tags.vue').default);
 Vue.component('author', require('./components/admin/author/author.vue').default);
 Vue.component('series', require('./components/admin/series/series.vue').default);
 Vue.component('format', require('./components/admin/format/format.vue').default);
 Vue.component('translator', require('./components/admin/translator/translator.vue').default);
-Vue.component('booktype', require('./components/admin/booktype/booktype.vue').default);
 
 
 //Vendor

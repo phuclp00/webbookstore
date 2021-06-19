@@ -7,12 +7,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
+use Kalnoy\Nestedset\NodeTrait;
 
 class CategoryModel extends Model
 {
-    use HasFactory, Searchable, SoftDeletes;
+    use HasFactory;
+    use NodeTrait;
+    use SoftDeletes;
+    use Searchable {
+        Searchable::usesSoftDelete insteadof \Kalnoy\Nestedset\NodeTrait;
+    }
+
     protected $table = "category";
-    protected $primaryKey = "cat_id";
+    protected $primaryKey = "id";
     const UPDATED_AT = 'modified_at';
     protected $keyType = 'string';
     /**
@@ -21,9 +28,10 @@ class CategoryModel extends Model
      * @var array
      */
     protected $fillable = [
-        'cat_id',
         'parent_id',
-        'cat_name',
+        'name',
+        '_lft',
+        '_rgt',
         'type_id',
         'description',
         'created_by',
@@ -43,7 +51,7 @@ class CategoryModel extends Model
     ];
     public function getRouteKeyName()
     {
-        return 'cat_id';
+        return 'id';
     }
     public function isPublished()
     {
@@ -66,27 +74,30 @@ class CategoryModel extends Model
     {
         return $this->pub_name;
     }
-    public function child()
+    public function getLftName()
     {
-        return $this->hasMany(self::class, 'parent_id');
-    }
-    public function childrent()
-    {
-        return $this->child()->with('childrent');
-    }
-    public function parent()
-    {
-        return $this->belongsTo(self::class, 'cat_id');
-    }
-    public function root()
-    {
-        return $this->parent()->with('root');
-    }
-    public function books()
-    {
-        return $this->belongsToMany(ProductModel::class, 'book_category', 'cat_id', 'book_id');
+        return '_lft';
     }
 
+    public function getRgtName()
+    {
+        return '_rgt';
+    }
+
+    public function getParentIdName()
+    {
+        return 'parent_id';
+    }
+    // Specify parent id attribute mutator
+    public function setParentAttribute($value)
+    {
+        $this->setParentIdAttribute($value);
+    }
+
+    public function books()
+    {
+        return $this->hasMany(ProductModel::class, 'cat_id');
+    }
     public function listItems($params, $options, $stament = null, $number_stament = null)
     {
         //Tat debugbar
@@ -112,4 +123,21 @@ class CategoryModel extends Model
             return $result;
         }
     }
+    /* Mo hinh parent-child de quy
+    // public function child()
+    // {
+    //     return $this->hasMany(self::class, 'parent_id');
+    // }
+    // public function childrent()
+    // {
+    //     return $this->child()->with('childrent');
+    // }
+    // public function parent()
+    // {
+    //     return $this->belongsTo(self::class, 'id');
+    // }
+    // public function root()
+    // {
+    //     return $this->parent()->with('root');
+    // }--*/
 }

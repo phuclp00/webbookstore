@@ -24,9 +24,9 @@ class BooksFormatRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:author,pub_name',
+            'name' => ['required', 'unique:book_format,name', 'not_regex:/[\s]{2,}|^[\s]/]', 'max:255'],
             'img' => ['sometimes', 'image', 'max:10240 '],
-            'content' => ['required', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
+            'content' => ['nullable', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
         ];
     }
     public function messages()

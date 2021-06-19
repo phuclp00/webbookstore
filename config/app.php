@@ -187,7 +187,6 @@ return [
         Laravel\Scout\ScoutServiceProvider::class,
         App\Providers\GoogleDriveServiceProvider::class,
         Monarobase\CountryList\CountryListServiceProvider::class,
-
     ],
 
     /*
@@ -242,7 +241,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'ListLanguages' => PeterColes\Languages\LanguagesFacade::class,
         'Countries' => Monarobase\CountryList\CountryListFacade::class,
-        'Promocodes' => Gabievi\Promocodes\Facades\Promocodes::class
+        'Promocodes' => Gabievi\Promocodes\Facades\Promocodes::class,
     ],
 
 ];

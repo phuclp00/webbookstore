@@ -10,14 +10,13 @@
             <ul id="book" class="iq-submenu collapse " data-parent="#iq-sidebar-toggle">
                <li><a href="{{route('admin.books')}}"><i class="ri-book-2-line"></i>Book List</a></li>
                <li><a href="{{route('admin.category')}}"><i class="ri-list-check-2"></i>Category</a></li>
+               <li><a href="{{route('admin.tags')}}"><i class="ri-price-tag-3-line"></i>Tags</a></li>
                <li><a href="{{route('admin.publisher')}}"><i class="ri-file-user-line"></i>Publisher</a></li>
                <li><a href="{{route('admin.supplier')}}"><i class="ri-file-user-line"></i>Supplier</a></li>
                <li><a href="{{route('admin.author')}}"><i class="ri-file-user-line"></i>Author</a></li>
                <li><a href="{{route('admin.series')}}"><i class="ri-list-check-2"></i>Series</a></li>
                <li><a href="{{route('admin.format')}}"><i class="ri-book-2-line"></i>Format</a></li>
-               <li><a href="{{route('admin.type')}}"><i class="ri-book-2-line"></i>Type</a></li>
                <li><a href="{{route('admin.translator')}}"><i class="ri-file-user-line"></i>Translator</a></li>
-
             </ul>
          </li>
          <li>
@@ -55,6 +54,8 @@
                      <li><a href="{{route('admin.supplier.old')}}"><i class="ri-record-circle-line"></i>Supplier</a>
                      </li>
                      <li><a href="{{route('admin.category.old')}}"><i class="ri-record-circle-line"></i>Category</a>
+                     </li>
+                     <li><a href="{{route('admin.tags.old')}}"><i class="ri-price-tag-3-line"></i></i>Tags</a>
                      </li>
                      <li><a href="{{route('admin.author.old')}}"><i class="ri-record-circle-line"></i>Author</a></li>
                      <li><a href="{{route('admin.translator.old')}}"><i class="ri-record-circle-line"></i>Translator</a>

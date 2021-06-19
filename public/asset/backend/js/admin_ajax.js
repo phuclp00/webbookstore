@@ -76,13 +76,6 @@
         $(this).prop("readonly", false);
         $('#series').val("");
     });
-    $('#type').click(function() {
-        $('#new_type').prop("readonly", true).val("");
-    });
-    $('#new_type').click(function() {
-        $(this).prop("readonly", false);
-        $('#type').val("");
-    });
     $('#promo-button').click(function() {
         if ($('#promotion').prop("disabled") == false) {
             $('#promotion').prop("disabled", true).val("");

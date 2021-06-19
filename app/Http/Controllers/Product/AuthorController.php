@@ -7,6 +7,7 @@ use App\Http\Controllers\Store\ImagesController;
 use App\Http\Requests\Author\Author_Update;
 use App\Http\Requests\Author\AuthorRequest;
 use App\Models\Author;
+use App\Models\ProductModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,19 @@ use Exception;
 
 class AuthorController extends Controller
 {
+    public function index()
+    {
+        return  Author::all()->pluck('name');
+    }
+    public function show(Request $request)
+    {
+        return Author::find($request);
+    }
+    public function get_related(Request $request)
+    {
+        $book = ProductModel::find($request->book_id);
+        return $book->author;
+    }
     public function edit(Author_Update $request)
     {
         try {
@@ -59,11 +73,11 @@ class AuthorController extends Controller
                 'img' => $request->image != null ? $file->store($request->image, "author") : null,
                 'created_by' => Auth::user()->user_name,
             ]);
-            $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->name . ' Successfully !! </div>');
+            $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Add ' . $request->name . ' Successfully !! </div>');
             DB::commit();
             return \redirect()->route('admin.author');
         } catch (\Throwable $th) {
-            $request->session()->flash('infor_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->name . ' failed with error' . $th->getMessage() . 'Try Again !! </div>');
+            $request->session()->flash('infor_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Add ' . $request->name . ' failed with error' . $th->getMessage() . 'Try Again !! </div>');
             DB::rollBack();
             return \redirect()->back();
         }

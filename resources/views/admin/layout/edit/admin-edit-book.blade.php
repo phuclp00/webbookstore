@@ -42,11 +42,12 @@
                      <div class="form-group">
                         <label>Book Category:</label>
                         <select name="cat_id" class="form-control" id="exampleFormControlSelect1">
+                           <option selected="" disabled="">Group Category</option>
                            @foreach($cat as $data=>$item)
-                           @if($book->cat_id==$item->cat_id)
-                           <option value="{{$item->cat_id}}" selected>{{$item->cat_name}}</option>
+                           @if($book->cat_id==$item->id)
+                           <option value="{{$item->id}}" selected>{{$item->name}}</option>
                            @else
-                           <option value="{{$item->cat_id}}">{{$item->cat_name}}</option>
+                           <option value="{{$item->id}}">{{$item->name}}</option>
                            @endif
                            @endforeach
                         </select>
@@ -64,23 +65,18 @@
                         </select>
                      </div>
                      <div class="form-group">
-                        <label>Book Author:</label>
-                        <select id="author" name="author" class="form-control">
-                           <option selected="" disabled="">Book Author</option>
-                           @isset($auth)
-                           @foreach($auth as $data =>$item)
-                           @if($book->auth_id==$item->id)
+                        <label>Book Supplier:</label>
+                        <select name="sup_id" class="form-control" id="exampleFormControlSelect2">
+                           @foreach($sup as $data =>$item)
+                           @if($book->sup_id==$item->id)
                            <option value="{{$item->id}}" selected>{{$item->name}}</option>
                            @else
                            <option value="{{$item->id}}">{{$item->name}}</option>
                            @endif
                            @endforeach
-                           @endisset
                         </select>
-                        <label for="new_author" style="font-style: italic"> Add new author :</label>
-                        <input type="text" class="form-control" name="new_author" id="new_author"
-                           value="{{ old('new_author') }}" readonly>
                      </div>
+                     <input-tags type="author" old_value="{{$book->book_id}}"></input-tags>
                      <div class="form-group">
                         <label>Book Series:</label>
                         @if ($book->series !=null)

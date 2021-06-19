@@ -25,13 +25,13 @@ class ProductModel extends Model
         'description',
         'price',
         'img',
+        'cat_id',
         'pub_id',
         'sup_id',
         'weight',
         'episode',
         'series',
         'promotion_id',
-        'auth_id',
         'out_of_business',
         'datePublished',
         'copyrightYear',
@@ -58,6 +58,8 @@ class ProductModel extends Model
         'date_published' => 'date',
         'deleted_at' => 'datetime'
     ];
+    protected $touches = ['author', 'category', 'publisher','format', 'supplier','series','translator','tags'];
+
     // public function __construct()
     // {
     //     $this->storage = Redis::connection();
@@ -85,7 +87,7 @@ class ProductModel extends Model
     }
     public function category()
     {
-        return $this->belongsToMany(CategoryModel::class, "book_category", "book_id", "cat_id");
+        return $this->belongsTo(CategoryModel::class, "cat_id");
     }
     public function supplier()
     {
@@ -109,7 +111,11 @@ class ProductModel extends Model
     }
     public function author()
     {
-        return $this->belongsTo(Author::class, "auth_id");
+        return $this->belongsToMany(Author::class, 'book_author', 'book_id', 'auth_id');
+    }
+    public function tags()
+    {
+        return $this->belongsToMany(TagsModel::class, 'book_tags', 'book_id', 'tags_id');
     }
     public function translator()
     {

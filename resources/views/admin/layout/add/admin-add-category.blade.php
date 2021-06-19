@@ -18,20 +18,16 @@
                   <form action="{{route('admin.category.add')}}" method="POST">
                      @csrf
                      <div class="form-group">
-                        <label>Category ID:</label>
-                        <input type="text" name="cat_id" class="form-control" value="{{ old('cat_id') }}">
-                     </div>
-                     <div class="form-group">
                         <label>Category Name:</label>
-                        <input type="text" name="cat_name" class="form-control" value="{{ old('cat_name') }}">
+                        <input type="text" name="name" class="form-control" value="{{ old('name') }}">
                      </div>
                      <div class="form-group">
-                        <label>Book Type:</label>
-                        <select id="type" name="type" class="form-control">
-                           <option selected="" disabled="">Book Type</option>
-                           @isset($type)
-                           @foreach($type as $data =>$item)
-                           @if(old("type")==$item->id)
+                        <label>Group Category:</label>
+                        <select id="type" name="cat_group" class="form-control">
+                           <option selected="" disabled="">Group Category</option>
+                           @isset($group)
+                           @foreach($group as $data =>$item)
+                           @if(old('cat_group')==$item->id)
                            <option value="{{$item->id}}" selected>{{$item->name}}</option>
                            @else
                            <option value="{{$item->id}}">{{$item->name}}</option>
@@ -39,9 +35,6 @@
                            @endforeach
                            @endisset
                         </select>
-                        <label for="new_type" style="font-style: italic"> Add new type :</label>
-                        <input type="text" class="form-control" name="new_type" id="new_type"
-                           value="{{ old('new_type') }}" readonly>
                      </div>
                      <div class="form-group">
                         <label>Category Description:</label>
