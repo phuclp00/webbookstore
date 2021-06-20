@@ -58,7 +58,7 @@ class ProductModel extends Model
         'date_published' => 'date',
         'deleted_at' => 'datetime'
     ];
-    protected $touches = ['author', 'category', 'publisher','format', 'supplier','series','translator','tags'];
+    protected $touches = ['author', 'category', 'publisher', 'format', 'supplier', 'series', 'translator', 'tags'];
 
     // public function __construct()
     // {
@@ -119,7 +119,7 @@ class ProductModel extends Model
     }
     public function translator()
     {
-        return $this->belongsTo(Translator::class, "translator");
+        return $this->belongsToMany(Translator::class, "book_translator", "book_id", "trans_id");
     }
     public function lang()
     {

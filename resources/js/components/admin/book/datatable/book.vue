@@ -55,7 +55,7 @@
         <td v-else class="bg-secondary">Book Publisher is being updated</td>
         <!-- Author -->
         <td v-if="item.author != null">
-          {{ item.author.name }}
+          <p v-for="index in item.author" :key="index.id">{{ index.name }}</p>
         </td>
         <td v-else class="bg-warning">Book Author is being updated</td>
         <td>{{ item.price }}</td>

@@ -98,16 +98,5 @@
             $(this).removeClass("btn-danger").addClass("btn-primary").text("Not In Series");
         }
     });
-    $('#trans-button').click(function() {
-        if ($('#translator').prop("disabled") == false) {
-            $('#translator').prop("disabled", true).val("");
-            $('#new_translator').prop("disabled", true).val("");
-            $(this).removeClass("btn-primary").addClass("btn-danger").text("Enable Translator");
-        } else {
-            $('#translator').prop("disabled", false);
-            $('#new_translator').prop("disabled", false);
-            $(this).removeClass("btn-danger").addClass("btn-primary").text("Disable Translator");
-        }
-    });
 
 })(jQuery)

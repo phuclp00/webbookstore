@@ -14,6 +14,19 @@ use Exception;
 
 class TranslatorController extends Controller
 {
+    public function index()
+    {
+        return  Translator::all()->pluck('name');
+    }
+    public function show(Request $request)
+    {
+        return Translator::find($request);
+    }
+    public function get_related(Request $request)
+    {
+        $book = Translator::find($request->book_id);
+        return $book->translator;
+    }
     public function edit(Translator_Update $request)
     {
         try {

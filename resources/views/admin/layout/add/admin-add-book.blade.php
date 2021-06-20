@@ -183,7 +183,7 @@
                      @endforeach
                   </select>
                </div>
-               <div class="form-group">
+               {{-- <div class="form-group">
                   <label>Translator:</label>
                   <div class="input-group">
                      <select id="translator" name="translator" class="form-control">
@@ -206,7 +206,8 @@
                   <label for="new_translator" style="font-style: italic"> Add New Translator :</label>
                   <input type="text" class="form-control" id="new_translator" name="new_translator"
                      value="{{old('new_translator')}}" readonly>
-               </div>
+               </div> --}}
+               <input-tags type="translator" old_value="{{old('translator')}}"></input-tags>
                <div class="form-group">
                   <label>Book Image:</label>
                   <div class="custom-file">

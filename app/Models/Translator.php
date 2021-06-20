@@ -37,6 +37,6 @@ class Translator extends Model
     ];
     public function books()
     {
-        return $this->hasMany(ProductModel::class, 'translator');
+        return $this->belongsToMany(ProductModel::class, 'book_translator', 'id', 'trans_id');
     }
 }

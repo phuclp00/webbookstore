@@ -299,17 +299,6 @@ class ProductController extends Controller
             } else {
                 $format = $request->format;
             }
-
-            //Check translator from requet 
-            if ($request->translator == null && $request->new_translator != null) {
-                $translator = Translator::create([
-                    'name' => $request->new_translator,
-                    'about' => "New translator has been created by " . Auth::user()->user_name,
-                    'created_by' => Auth::user()->user_name
-                ])->id;
-            } else {
-                $translator = $request->translator;
-            }
             //Check series from requet 
             if ($request->series == null && $request->new_series != null) {
                 $series = BookSeries::create([
@@ -336,7 +325,6 @@ class ProductController extends Controller
             $data->datePublished = $request->date_published;
             $data->copyrightYear = $request->copyright;
             $data->bookFormat = $format;
-            $data->translator = $translator;
             $data->sup_id = $request->sup_id;
             $data->serialNumber = $request->code;
             $data->numberOfPages = $request->page_number;
@@ -346,16 +334,30 @@ class ProductController extends Controller
             $data->total = $request->total;
             $data->description = $request->content;
             $data->modified_by = Auth::user()->user_name;
-            //Asyn author 
-            $auth_check = [];
-            $result = [];
-
-            $flag = $auth_check == $request->author;
-            foreach ($request->author as $value) {
-                $result[] = Author::where('name', $value)->first()->id;
+            //Asyn author
+            $aut_check = [];
+            foreach ($data->author as $value) {
+                $aut_check[] = $value->name;
             }
-            $data->author()->sync($result);
-
+            $flag = $request->author == $aut_check ? true : false;
+            if (!$flag) {
+                foreach ($request->author as $value) {
+                    $result[] = Author::where('name', $value)->first()->id;
+                }
+                $data->author()->sync($result);
+            }
+            //Asyn translator 
+            $trans_check = [];
+            foreach ($data->translator as $value) {
+                $trans_check[] = $value->name;
+            }
+            $flag = $request->translator == $trans_check ? true : false;
+            if (!$flag) {
+                foreach ($request->translator as $value) {
+                    $result[] = Translator::where('name', $value)->first()->id;
+                }
+                $data->translator()->sync($result);
+            }
             // Check file upload 
             $check_img_upload = $request->img != null ? true : false;
             $check_thumb_upload = $request->thumb != null ? true : false;

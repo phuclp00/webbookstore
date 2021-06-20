@@ -21,9 +21,10 @@ import {
     IconsPlugin
 } from 'bootstrap-vue'
 import modal from "vue-js-modal"
-
-//import css files
-// import 'bootstrap/dist/css/bootstrap.css'
+import Vue2Filters from 'vue2-filters'
+Vue.use(Vue2Filters)
+    //import css files
+    // import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 // Install BootstrapVue
 Vue.use(BootstrapVue)
@@ -50,6 +51,7 @@ import 'datatables.net-buttons-bs4'
 import 'datatables.net-buttons/js/buttons.colVis.js'
 import 'datatables.net-buttons/js/buttons.html5.js'
 import 'datatables.net-buttons/js/buttons.print.js'
+import Vue from 'vue';
 // Vue.use(ElementUI, {
 //     size: Cookies.get('size') || 'medium', // set element-ui default size
 //     locale: enLang // 如果使用中文，无需设置，请删除

@@ -23,4 +23,10 @@ use Illuminate\Support\Facades\Http;
 
 Route::apiResource('category', 'Product\CategoryController');
 Route::apiResource('author', 'Product\AuthorController');
+Route::apiResource('translator', 'Product\TranslatorController');
+Route::apiResource('tags', 'Product\TranslatorController');
+
+//Optional route
 Route::get('author/book/{book_id}', 'Product\AuthorController@get_related');
+Route::get('translator/book/{book_id}', 'Product\TranslatorController@get_related');
+Route::get('tags/book/{book_id}', 'Product\TagsController@get_related');

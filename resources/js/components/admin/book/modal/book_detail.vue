@@ -140,8 +140,9 @@
                       >
                         <span class="font-size-20 pr-2 old-price">{{
                           data.price
+                            | currency("VND", 0, { symbolOnLeft: false })
                         }}</span>
-                        <span class="font-size-24 text-dark">{{
+                        <span class="font-size-24 text-primary">{{
                           data.promotion_price
                         }}</span>
                       </div>
@@ -155,8 +156,12 @@
                           mb-2
                         "
                       >
-                        <span class="font-size-24 text-dark">{{
+                        <span class="font-size-24 text-primary">{{
                           data.price
+                            | currency("đ", 0, {
+                              symbolOnLeft: false,
+                              spaceBetweenAmountAndSymbol: true,
+                            })
                         }}</span>
                       </div>
                       <div style="text-align: left">
@@ -178,12 +183,44 @@
                         <hr />
                         <div class="text-primary mb-4">
                           Author:
-                          <span v-if="data.author != null" class="text-body">{{
-                            data.author.name
-                          }}</span>
-                          <span v-else class="text-body"
-                            >This category is being updated</span
+                          <span
+                            v-if="
+                              data.author != null && data.translator.length > 0
+                            "
+                            class="text-body"
                           >
+                            <span
+                              v-for="(index, number) in data.author"
+                              :key="number"
+                              >{{
+                                (number != 0 ? ", " : "") + index.name
+                              }}</span
+                            >
+                          </span>
+                          <span v-else class="text-body"
+                            >This author is being updated</span
+                          >
+                        </div>
+                        <div class="text-primary mb-4">
+                          Translator:
+                          <span
+                            v-if="
+                              data.translator != null &&
+                              data.translator.length > 0
+                            "
+                            class="text-body"
+                          >
+                            <span
+                              v-for="(index, number) in data.translator"
+                              :key="number"
+                              >{{
+                                (number != 0 ? ", " : "") + index.name
+                              }}</span
+                            >
+                          </span>
+                          <span v-else class="text-body"
+                            >The translator is being updated
+                          </span>
                         </div>
                         <div class="text-primary mb-4">
                           Barcode:
@@ -199,6 +236,24 @@
                           <span v-else class="text-body"
                             >This category is being updated</span
                           >
+                        </div>
+                        <div class="text-primary mb-4">
+                          Book Tags:
+                          <span
+                            v-if="data.tags != null && data.tags.length > 0"
+                            class="text-body"
+                          >
+                            <span
+                              v-for="(index, number) in data.tags"
+                              :key="number"
+                              >{{
+                                (number != 0 ? ", " : "") + index.name
+                              }}</span
+                            >
+                          </span>
+                          <span v-else class="text-body"
+                            >The book tags is being updated
+                          </span>
                         </div>
                         <div class="text-primary mb-4">
                           Book Publisher:
@@ -269,17 +324,6 @@
                           }}</span>
                           <span v-else class="text-body"
                             >Book Series is being updated</span
-                          >
-                        </div>
-                        <div class="text-primary mb-4">
-                          Translator:
-                          <span
-                            v-if="data.translator != null"
-                            class="text-body"
-                            >{{ data.translator.name }}</span
-                          >
-                          <span v-else class="text-body"
-                            >Translator is being updated</span
                           >
                         </div>
                       </div>

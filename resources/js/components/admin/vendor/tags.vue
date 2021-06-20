@@ -1,8 +1,17 @@
+
 <template>
   <div>
+    <b-form-checkbox
+      v-if="this.type == 'translator'"
+      switch
+      size="lg"
+      v-model="disabled"
+      class="capitalize"
+      >Disable {{ this.type }}</b-form-checkbox
+    >
     <b-form-group
       :label="'Select Book ' + this.type"
-      id="capitalize"
+      class="capitalize"
       label-for="tags-component-select"
     >
       <!-- Prop `add-on-change` is needed to enable adding tags vie the `change` event -->
@@ -11,6 +20,7 @@
         v-model="value"
         size="lg"
         class="mb-2"
+        :disabled="disabled"
         :name="this.type + '[]'"
         add-on-change
         no-outer-focus
@@ -53,6 +63,7 @@ export default {
   data() {
     return {
       options: [],
+      disabled: false,
       value: [],
     };
   },
@@ -62,68 +73,45 @@ export default {
     },
   },
   methods: {
-    get_category() {
+    get_list(type) {
       axios
-        .get("/api/category")
+        .get("/api/" + type)
         .then((response) => {
           this.options = response.data;
-          console.log("Loading list category successfull !");
+          console.log("Loading list " + type + " successfull !");
         })
         .catch((err) => {
           console.log(
-            "Error while loading list category ! Check your connecting !"
+            "Error while loading list " + type + " ! Check your connecting !"
           );
         });
     },
-    get_tags() {},
-    // Optional : Author
-    get_list_author() {
+    get_id(type, id) {
       axios
-        .get("/api/author")
-        .then((response) => {
-          this.options = response.data;
-          console.log("Loading list author successfull !");
-        })
-        .catch((err) => {
-          console.log(
-            "Error while loading list author ! Check your connecting !"
-          );
-        });
-    },
-    get_author(id) {
-      axios
-        .get("/api/author/book/" + id)
+        .get("/api/" + type + "/book/" + id)
         .then((response) => {
           response.data.forEach((index) => {
             this.value.push(index.name);
           });
-          console.log("Loading author successfull !");
+          console.log("Loading " + type + " successfull !");
         })
         .catch((err) => {
-          console.log("Error while loading author ! Check your connecting !");
+          console.log(
+            "Error while loading " + type + " ! Check your connecting !"
+          );
         });
     },
   },
   created() {
-    switch (this.type) {
-      case "category":
-        this.get_category();
-        break;
-      case "tags":
-        this.get_tags();
-      case "author":
-        if (this.old_value != "") {
-          this.get_author(this.old_value);
-        }
-        this.get_list_author();
-      default:
-        break;
+    if (this.old_value != "") {
+      this.get_id(this.type, this.old_value);
     }
+    this.get_list(this.type);
   },
 };
 </script>
 <style scoped>
-#capitalize {
+.capitalize {
   text-transform: capitalize;
 }
 </style>

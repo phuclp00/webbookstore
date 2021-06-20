@@ -192,56 +192,9 @@
                            @endforeach
                         </select>
                      </div>
-                     <div class="form-group">
-                        <label>Translator:</label>
-                        @if ($book->translator !=null)
-                        <div class="input-group">
-                           <select id="translator" name="translator" class="form-control">
-                              <option selected="" disabled="">Translator</option>
-                              @isset($translator)
-                              @foreach($translator as $data =>$item)
-                              @if($book->translator==$item->id)
-                              <option value="{{$item->id}}" selected>{{$item->name}}</option>
-                              @else
-                              <option value="{{$item->id}}">{{$item->name}}</option>
-                              @endif
-                              @endforeach
-                              @endisset
-                           </select>
-                           <div class="input-group-append">
-                              <button class="btn btn-primary" type="button" id="trans-button">Disable
-                                 Translator</button>
-                           </div>
-                        </div>
-                        <label for="new_translator" style="font-style: italic"> Add New Translator :</label>
-                        <input type="text" class="form-control" id="new_translator" name="new_translator"
-                           value="{{old('new_translator')}}" readonly>
-                        @else
-                        <div class="input-group">
-                           <select id="translator" name="translator" class="form-control" disabled>
-                              <option selected="" disabled="">Translator</option>
-                              @isset($translator)
-                              @foreach($translator as $data =>$item)
-                              @if(old('translator')==$item->id)
-                              <option value="{{$item->id}}" selected>{{$item->name}}</option>
-                              @else
-                              <option value="{{$item->id}}">{{$item->name}}</option>
-                              @endif
-                              @endforeach
-                              @endisset
-                           </select>
-                           <div class="input-group-append">
-                              <button class="btn btn-danger" type="button" id="trans-button">Enable
-                                 Translator</button>
-                           </div>
-                        </div>
-                        <label for="new_translator" style="font-style: italic"> Add New Translator :</label>
-                        <input type="text" class="form-control" id="new_translator" name="new_translator"
-                           value="{{old('new_translator')}}" disabled>
-                        @endif
-
-
-                     </div>
+                     <input-tags type="translator" old_value="{{$book->book_id}}">
+                        <slot name="header"></slot>
+                     </input-tags>
                      <div class="form-group">
                         <label>Book Image:</label>
                         <div class="custom-file">

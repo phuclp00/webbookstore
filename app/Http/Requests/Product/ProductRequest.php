@@ -37,8 +37,7 @@ class ProductRequest extends FormRequest
             'new_series' => ['sometimes', 'required_without:series', 'nullable', 'not_regex:/[\s]{2,}|^[\s]/', 'unique:book_series,name'],
             'format' => 'required_without:new_format',
             'new_format' => ['nullable', 'required_without:format', 'not_regex:/[\s]{2,}|^[\s]/', 'unique:book_format,name'],
-            'translator' => 'sometimes|required_without:new_translator',
-            'new_translator' => ['sometimes', 'required_without:translator', 'not_regex:/[\s]{2,}|^[\s]/', 'unique:translator,name'],
+            'translator' => 'required',
             'page_number' => 'required|numeric|min:0',
             'date_published' => 'required|date_format:Y-m-d',
             'copyright' => ['required', 'numeric', 'min:0'],
@@ -57,13 +56,6 @@ class ProductRequest extends FormRequest
     }
     public function messages()
     {
-        return [
-            'copyright.digits_between' => 'Copyright must be a year',
-            'content.not_regex' => 'You can not write a script in this content',
-            'new_translator.not_regex' => 'Translator does not include special characters',
-            'new_author.not_regex' => 'Author does not include special characters',
-            'new_series.not_regex' => ' New Series does not include special characters',
-            'new_format.not_regex' => 'Format does not include special characters',
-        ];
+        return [];
     }
 }
