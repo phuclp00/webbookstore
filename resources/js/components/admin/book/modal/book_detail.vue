@@ -184,9 +184,7 @@
                         <div class="text-primary mb-4">
                           Author:
                           <span
-                            v-if="
-                              data.author != null && data.translator.length > 0
-                            "
+                            v-if="data.author != null && data.author.length > 0"
                             class="text-body"
                           >
                             <span

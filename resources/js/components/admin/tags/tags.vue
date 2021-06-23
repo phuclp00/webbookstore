@@ -1,81 +1,91 @@
 <template>
-  <table
-    id="datatable"
-    class="data-tables table table-striped table-bordered fixed"
-    style="width: 100%"
-  >
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Group Tags</th>
-        <th>Date Create</th>
-        <th>Modified By</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="value in data" :key="value.id">
-        <td>{{ value.id }}</td>
-        <td>{{ value.name }}</td>
-        <td>{{ find_parent_tags(value) }}</td>
-        <td>{{ datetime(value.created_at) }}</td>
-        <td>
-          {{ value.modified_by == "" ? value.created_by : value.modified_by }}
-        </td>
-        <td>
-          <div class="flex align-items-center list-user-action">
-            <a
-              class="bg-primary"
-              data-toggle="tooltip"
-              :data-text="value.id"
-              data-placement="top"
-              title="Detail"
-              data-original-title="Detail"
-              @click="showModal(value)"
-            >
-              <i class="ri-file-fill"></i
-            ></a>
-            <a
-              class="bg-primary option-edit"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="Edit"
-              data-original-title="Edit"
-              :href="'/admin/tags/tags-edit-view/' + value.id"
-              ><i class="ri-pencil-line"></i
-            ></a>
-            <a
-              v-if="value.deleted_at != null"
-              class="bg-primary option-restore"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="Restore"
-              data-original-title="Restore"
-              s
-              :href="'/admin/tags/tags-restore/' + value.id"
-              ><i class="fa fa-undo"></i
-            ></a>
-            <a
-              v-else
-              class="bg-primary option-delete"
-              data-toggle="tooltip"
-              data-placement="top"
-              title="Delete"
-              data-original-title="Delete"
-              s
-              :href="'/admin/tags/tags-delete/' + value.id"
-              ><i class="ri-delete-bin-line"></i
-            ></a>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-    <modal-tags :detail="data" ref="reference"></modal-tags>
-  </table>
+  <div>
+    <div class="form-group">
+      <group-input-tags ref="data"></group-input-tags>
+    </div>
+    <div class="form-group">
+      <table
+        id="datatable"
+        class="data-tables table table-striped table-bordered fixed"
+        style="width: 100%"
+      >
+        <thead>
+          <tr>
+            <th>Book ID</th>
+            <th>Book Name</th>
+            <th>Group Tags</th>
+            <th>Date Create</th>
+            <th>Modified By</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="value in data" :key="value.id">
+            <td>{{ value.id }}</td>
+            <td>{{ value.name }}</td>
+            <td>{{ find_parent_tags(value) }}</td>
+            <td>{{ datetime(value.created_at) }}</td>
+            <td>
+              {{
+                value.modified_by == "" ? value.created_by : value.modified_by
+              }}
+            </td>
+            <td>
+              <div class="flex align-items-center list-user-action">
+                <a
+                  class="bg-primary"
+                  data-toggle="tooltip"
+                  :data-text="value.id"
+                  data-placement="top"
+                  title="Detail"
+                  data-original-title="Detail"
+                  @click="showModal(value)"
+                >
+                  <i class="ri-file-fill"></i
+                ></a>
+                <a
+                  class="bg-primary option-edit"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Edit"
+                  data-original-title="Edit"
+                  :href="'/admin/tags/tags-edit-view/' + value.id"
+                  ><i class="ri-pencil-line"></i
+                ></a>
+                <a
+                  v-if="value.deleted_at != null"
+                  class="bg-primary option-restore"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Restore"
+                  data-original-title="Restore"
+                  s
+                  :href="'/admin/tags/tags-restore/' + value.id"
+                  ><i class="fa fa-undo"></i
+                ></a>
+                <a
+                  v-else
+                  class="bg-primary option-delete"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  title="Delete"
+                  data-original-title="Delete"
+                  s
+                  :href="'/admin/tags/tags-delete/' + value.id"
+                  ><i class="ri-delete-bin-line"></i
+                ></a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <modal-tags :detail="data" ref="reference"></modal-tags>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
+Vue.component("group-input-tags", require("./group/tags_input.vue").default);
 Vue.component("modal-tags", require("./modal/tags.vue").default);
 import moment from "moment";
 import { result } from "lodash";

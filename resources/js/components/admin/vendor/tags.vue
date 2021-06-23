@@ -10,7 +10,7 @@
       >Disable {{ this.type }}</b-form-checkbox
     >
     <b-form-group
-      :label="'Select Book ' + this.type"
+      :label="'Select ' + this.type"
       class="capitalize"
       label-for="tags-component-select"
     >
@@ -58,8 +58,9 @@
 </template>
 
 <script>
+import { remove } from "lodash";
 export default {
-  props: ["type", "old_value"],
+  props: ["type", "old_value", "status"],
   data() {
     return {
       options: [],
@@ -103,9 +104,13 @@ export default {
     },
   },
   created() {
-    if (this.old_value != "") {
+    if (this.old_value) {
       this.get_id(this.type, this.old_value);
     }
+    this.disabled = this.status == 1 ? true : false;
+    this.get_list(this.type);
+  },
+  updated() {
     this.get_list(this.type);
   },
 };

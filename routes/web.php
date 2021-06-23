@@ -14,6 +14,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Product\AuthorController;
 use App\Http\Controllers\Product\BooksFormatController;
 use App\Http\Controllers\Product\BooksTypeController;
+use App\Http\Controllers\Product\PromotionsController;
 use App\Http\Controllers\Product\SeriesController;
 use App\Http\Controllers\Product\SupplierController;
 use App\Http\Controllers\Product\TagsController;
@@ -244,20 +245,22 @@ Route::group(['prefix' => 'admin'], function () {
         //==========================================Tags==============================================================
         Route::prefix('tags')->group(function () {
             Route::get('/', [HomeController::class, 'tags_view'])->name('admin.tags');
-            //Category add view 
+            //Tags add view 
             Route::get('/tags-view-add', [HomeController::class, 'tags_add_view'])->name('admin.tags.add.view');
-            //Category add 
+            //Tags add 
             Route::post('/tags-add', [TagsController::class, 'add_tags'])->name('admin.tags.add');
-            //Category edit view
+            //Tags edit view
             Route::get('/tags-edit-view/{id}', [HomeController::class, 'tags_edit_view'])->name('admin.tags.edit.view');
-            //Category edit 
+            //Tags edit 
             Route::post('/tags-edit', [TagsController::class, 'tags_edit'])->name('admin.tags.edit');
-            //Category delete 
+            //Tags delete 
             Route::get('/tags-delete/{id}', [TagsController::class, 'tags_delete'])->name('admin.tags.delete');
-            //Category restore
+            //Tags restore
             Route::get('/tags-restore/{id}', [TagsController::class, 'restore'])->name('admin.tags.restore');
-            //Category list for type
+            //Tags list for type
             Route::get('/{id}', [TagsController::class, 'show']);
+            //Multiple Book Tags Add 
+            Route::post('/option/books-multiple', [TagsController::class, 'add_multi_book']);
         });
         //==========================================Book list==============================================================
         Route::prefix('books')->group(function () {
@@ -360,35 +363,38 @@ Route::group(['prefix' => 'admin'], function () {
             //Series restore
             Route::get('format-restore/{id}', [BooksFormatController::class, 'restore'])->name('admin.format.restore');
         });
-        //========================================== Series =============================================================
-        Route::prefix('series')->group(function () {
-            Route::get('/', [HomeController::class, 'series_view'])->name('admin.series');
-            //Series-add view
-            Route::get('series-add-view', [HomeController::class, 'series_add_view'])->name('admin.series.add.view');
-            //Series-add
-            Route::post('series-add', [SeriesController::class, 'add'])->name('admin.series.add');
-            //Series-edit view
-            Route::get('series-edit-view/{id}', [HomeController::class, 'series_edit_view'])->name('admin.series.edit.view');
-            //Series edit
-            Route::post('series-edit/{id}', [SeriesController::class, 'edit'])->name('admin.series.edit');
-            //Series delete
-            Route::get('series-delete/{id}', [SeriesController::class, 'delete'])->name('admin.series.delete');
-            //Series restore
-            Route::get('series-restore/{id}', [SeriesController::class, 'restore'])->name('admin.series.restore');
-        }); //========================================== Translator =============================================================
+        //========================================== Promotions =============================================================
+        Route::prefix('promotions')->group(function () {
+            Route::get('/', [HomeController::class, 'promotions_view'])->name('admin.promotions');
+            //Promotions-add view
+            Route::get('promotions-add-view', [HomeController::class, 'promotions_add_view'])->name('admin.promotions.add.view');
+            //Promotions-add
+            Route::post('promotions-add', [PromotionsController::class, 'add'])->name('admin.promotions.add');
+            //Promotions-edit view
+            Route::get('promotions-edit-view/{id}', [HomeController::class, 'promotions_edit_view'])->name('admin.promotions.edit.view');
+            //Promotions edit
+            Route::post('promotions-edit/{id}', [PromotionsController::class, 'edit'])->name('admin.promotions.edit');
+            //Promotions delete
+            Route::get('promotions-delete/{id}', [PromotionsController::class, 'delete'])->name('admin.promotions.delete');
+            //Promotions restore
+            Route::get('promotions-restore/{id}', [PromotionsController::class, 'restore'])->name('admin.promotions.restore');
+            //Multiple Promotions Product Add 
+            Route::post('/option/books-multiple', [PromotionsController::class, 'promotions']);
+        });
+        //========================================== Translator =============================================================
         Route::prefix('translator')->group(function () {
             Route::get('/', [HomeController::class, 'translator_view'])->name('admin.translator');
-            //Series-add view
+            //Translator-add view
             Route::get('translator-add-view', [HomeController::class, 'translator_add_view'])->name('admin.translator.add.view');
-            //Series-add
+            //Translator-add
             Route::post('translator-add', [TranslatorController::class, 'add'])->name('admin.translator.add');
-            //Series-edit view
+            //Translator-edit view
             Route::get('translator-edit-view/{id}', [HomeController::class, 'translator_edit_view'])->name('admin.translator.edit.view');
-            //Series edit
+            //Translator edit
             Route::post('translator-edit/{id}', [TranslatorController::class, 'edit'])->name('admin.translator.edit');
-            //Series delete
+            //Translator delete
             Route::get('translator-delete/{id}', [TranslatorController::class, 'delete'])->name('admin.translator.delete');
-            //Series restore
+            //Translator restore
             Route::get('translator-restore/{id}', [TranslatorController::class, 'restore'])->name('admin.translator.restore');
         });
         //================================ MANAGER USER================================================================//
@@ -418,12 +424,14 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::get('/suppliers', [HomeController::class, 'supplier_old_view'])->name('admin.supplier.old');
                 //Category-restore-list
                 Route::get('/category', [HomeController::class, 'category_old_view'])->name('admin.category.old');
-                //Category-restore-list
+                //Tags-restore-list
                 Route::get('/tags', [HomeController::class, 'tags_old_view'])->name('admin.tags.old');
                 //Category-restore-list
                 Route::get('/authors', [HomeController::class, 'author_old_view'])->name('admin.author.old');
                 //Series-restore-list
                 Route::get('/series', [HomeController::class, 'series_old_view'])->name('admin.series.old');
+                //Promotions-restore-list
+                Route::get('/promotions', [HomeController::class, 'promotions_old_view'])->name('admin.promotions.old');
                 //Translator-restore-list
                 Route::get('/translator', [HomeController::class, 'translator_old_view'])->name('admin.translator.old');
                 //Format-restore-list

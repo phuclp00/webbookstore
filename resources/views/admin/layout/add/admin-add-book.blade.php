@@ -192,83 +192,84 @@
                         @foreach($translator as $data =>$item)
                         @if(old('translator')==$item->id)
                         <option value="{{$item->id}}" selected>{{$item->name}}</option>
-                        @else
-                        <option value="{{$item->id}}">{{$item->name}}</option>
-                        @endif
-                        @endforeach
-                        @endisset
-                     </select>
-                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" id="trans-button">Disable
-                           Translator</button>
-                     </div>
-                  </div>
-                  <label for="new_translator" style="font-style: italic"> Add New Translator :</label>
-                  <input type="text" class="form-control" id="new_translator" name="new_translator"
-                     value="{{old('new_translator')}}" readonly>
-               </div> --}}
-               <input-tags type="translator" old_value="{{old('translator')}}"></input-tags>
-               <div class="form-group">
-                  <label>Book Image:</label>
-                  <div class="custom-file">
-                     <input id="picture" name="img" type="file" class="custom-file-input"
-                        onchange="javascript:showname_file()" accept="image/png, image/jpeg" value="{{old('img')}}">
-                     <label class="custom-file-label">Choose file</label>
-                  </div>
-                  <div id="file_name" class="btn-outline-danger"></div>
+               @else
+               <option value="{{$item->id}}">{{$item->name}}</option>
+               @endif
+               @endforeach
+               @endisset
+               </select>
+               <div class="input-group-append">
+                  <button class="btn btn-primary" type="button" id="trans-button">Disable
+                     Translator</button>
                </div>
-               <div class="form-group">
-                  <label>Book Thumbnail List:</label>
-                  <div class="custom-file">
-                     <input id="thump" type="file" name="thumb[]" class="custom-file-input"
-                        onchange="javascript:showlist_thumb()" accept="image/png, image/jpeg"
-                        value="{{ old('thumb[]') }}" multiple>
-                     <label class="custom-file-label">Choose file</label>
-                  </div>
-                  <div id="fileList" class="btn-outline-danger"></div>
+            </div>
+            <label for="new_translator" style="font-style: italic"> Add New Translator :</label>
+            <input type="text" class="form-control" id="new_translator" name="new_translator"
+               value="{{old('new_translator')}}" readonly>
+         </div> --}}
+         <input-tags type="translator" old_value="{{old('translator')}}"
+            status="{{old('translator')!=null?true:false}}"></input-tags>
+         <div class="form-group">
+            <label>Book Image:</label>
+            <div class="custom-file">
+               <input id="picture" name="img" type="file" class="custom-file-input"
+                  onchange="javascript:showname_file()" accept="image/png, image/jpeg" value="{{old('img')}}">
+               <label class="custom-file-label">Choose file</label>
+            </div>
+            <div id="file_name" class="btn-outline-danger"></div>
+         </div>
+         <div class="form-group">
+            <label>Book Thumbnail List:</label>
+            <div class="custom-file">
+               <input id="thump" type="file" name="thumb[]" class="custom-file-input"
+                  onchange="javascript:showlist_thumb()" accept="image/png, image/jpeg" value="{{ old('thumb[]') }}"
+                  multiple>
+               <label class="custom-file-label">Choose file</label>
+            </div>
+            <div id="fileList" class="btn-outline-danger"></div>
+         </div>
+         <div class="form-group">
+            <label>Price:</label>
+            <input type="number" name="price" type="text" class="form-control" value="{{ old('price') }}">
+         </div>
+         <div class="form-group">
+            <label>Promotions:</label>
+            <div class="input-group">
+               <select id="promotion" name="promotion" class="form-control">
+                  <option selected="" disabled="">Promotions</option>
+                  @isset($promotion)
+                  @foreach($promotion as $data =>$item)
+                  @if(old('promotion')==$item->id)
+                  <option value="{{$item->id}}" selected>{{$item->name}}</option>
+                  @else
+                  <option value="{{$item->id}}">{{$item->name}}</option>
+                  @endif
+                  @endforeach
+                  @endisset
+               </select>
+               <div class="input-group-append">
+                  <button class="btn btn-primary" type="button" id="promo-button">Disable
+                     Promotion</button>
                </div>
-               <div class="form-group">
-                  <label>Price:</label>
-                  <input type="number" name="price" type="text" class="form-control" value="{{ old('price') }}">
-               </div>
-               <div class="form-group">
-                  <label>Promotions:</label>
-                  <div class="input-group">
-                     <select id="promotion" name="promotion" class="form-control">
-                        <option selected="" disabled="">Promotions</option>
-                        @isset($promotion)
-                        @foreach($promotion as $data =>$item)
-                        @if(old('promotion')==$item->id)
-                        <option value="{{$item->id}}" selected>{{$item->name}}</option>
-                        @else
-                        <option value="{{$item->id}}">{{$item->name}}</option>
-                        @endif
-                        @endforeach
-                        @endisset
-                     </select>
-                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" id="promo-button">Disable
-                           Promotion</button>
-                     </div>
-                  </div>
-               </div>
-               <div class="form-group">
-                  <label>Total Number of Books:</label>
-                  <input id="total" name="total" type="number" class="form-control" min="0" value="{{ old('total') }}">
-               </div>
-               <div class="form-group">
-                  <label for="editor">Book Description:</label>
-                  <textarea class="form-control" rows="4" name="content" id="editor">{{ old('content') }}
-                        </textarea>
-               </div>
-               <button type="submit" class="btn btn-primary">Submit</button>
-               <button type="reset" class="btn btn-danger"
-                  onclick="document.getElementById('edit_form').reset(); return false;">Reset</button>
-               </form>
             </div>
          </div>
+         <div class="form-group">
+            <label>Total Number of Books:</label>
+            <input id="total" name="total" type="number" class="form-control" min="0" value="{{ old('total') }}">
+         </div>
+         <div class="form-group">
+            <label for="editor">Book Description:</label>
+            <textarea class="form-control" rows="4" name="content" id="editor">{{ old('content') }}
+                        </textarea>
+         </div>
+         <button type="submit" class="btn btn-primary">Submit</button>
+         <button type="reset" class="btn btn-danger"
+            onclick="document.getElementById('edit_form').reset(); return false;">Reset</button>
+         </form>
       </div>
    </div>
+</div>
+</div>
 </div>
 </div>
 @endsection

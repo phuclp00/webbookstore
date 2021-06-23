@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tags\Tags_Update;
 use App\Http\Requests\Tags\TagsRequest;
+use App\Models\ProductModel;
 use Illuminate\Http\Request;
 use App\Models\TagsModel as MainModel;
+use App\Models\TagsModel;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,18 +20,15 @@ class TagsController extends Controller
 
     public function index()
     {
-        $tags = MainModel::all()->toFlatTree()->pluck('name');
-        return $tags;
+        $tags = MainModel::whereisLeaf()->get();
+        foreach ($tags as $value) {
+            $result[] = $value->name;
+        }
+        return $result;
     }
     public function show(Request $request)
     {
-        $data = MainModel::where('id', $request->id)->get();
-        $items = [];
-        if (count($items) > 0) {
-            return  response()->json($items, 200, ["Content-type: application/json", "charset=utf-8"]);
-        } else {
-            return  response()->json("NOT FOUND", 404, ["Content-type: application/json", "charset=utf-8"]);
-        }
+        return MainModel::find($request->id);
     }
     public function add_tags(TagsRequest $request)
     {
@@ -90,7 +89,6 @@ class TagsController extends Controller
     {
         try {
             DB::beginTransaction();
-
             $data = MainModel::withTrashed()->where('id', $request->id)->first();
             if ($data->books()->exists() == false && $data->isLeaf()) {
                 $data->forceDelete();
@@ -139,6 +137,36 @@ class TagsController extends Controller
             $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Delete tags ' . $data->pub_name . 'Failed with error ' . $th->getMessage() . '</div>');
 
             return redirect()->back();
+        }
+    }
+    public function add_multi_book(Request $request)
+    {
+
+        try {
+            DB::beginTransaction();
+            $tags = [];
+
+            foreach ($request->tags as $tag) {
+                $tags[] = TagsModel::where('name', $tag)->first()->id;
+            }
+            foreach ($request->books as $book) {
+                \preg_match('/(?<id>.*):(?<name>.*)/', $book, $result);
+                $book_result = ProductModel::where('book_id', $result['id'])->first();
+                $book_result->tags()->sync($tags);
+            }
+            DB::commit();
+            return \response()->json([
+                "result" => TagsModel::all()->load('books'),
+                "mess" => "Tags added to the book was successfull !!",
+                "status" => "success"
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return \response()->json([
+                "result" => TagsModel::all()->load('books'),
+                "mess" => "Tags added to the book was failed with error : " . $th->getMessage() . "!!",
+                "status" => "danger"
+            ]);
         }
     }
 }

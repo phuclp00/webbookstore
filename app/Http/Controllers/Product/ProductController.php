@@ -28,40 +28,21 @@ use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
-        $id = $request->id;
-        $result = ProductModel::where("book_id", $id)->first();
-        $thumb = $result->thumb->first();
-        $arr_thumb = array();
-        if ($thumb != null) {
-            $i = 1;
-            while ($i < 9) {
-                $arr_thumb[] = $thumb["thumbnail_$i"] == null ? null : $thumb["thumbnail_$i"];
-                $i++;
+        $data = ProductModel::all();
+        $result_filter = $data->filter(function ($key, $value) {
+            if ($key->series()->exists()) {
+                return $key->book_name = $key->book_id . ': ' . $key->book_name . ' - Episode ' . $key->episode;
+            } else {
+                return $key->book_name = $key->book_id . ': ' . $key->book_name;
             }
-        }
-        return view('public.page.single-product', ["item" => $result, 'thumb' => $arr_thumb]);
+        });
+        return  $result_filter->pluck('book_name');
     }
-    public function show()
+    public function show(Request $request)
     {
-        $books = ProductModel::all();
-        // foreach ($books as $item => $data) {
-        //     $result[] = [
-        //         'book_id' => $data->book_id,
-        //         'book_name' => $data->book_name,
-        //         'img' => $data->img,
-        //         'publisher' => $data->publisher->pub_name,
-        //         'category' => $data->category->cat_name,
-        //         'author' => $data->author->name,
-        //         'promotion_price' => $data->promotion_price,
-        //         'price' => $data->price,
-        //         'rating' => $data->rating,
-        //         'serialNumber' => $data->serialNumber
-        //     ];
-        // }
-
-        return response()->json($books, 200);
+        return  ProductModel::find($request->id);
     }
     public function add_to_cart(Request $request)
     {
@@ -339,8 +320,8 @@ class ProductController extends Controller
             foreach ($data->author as $value) {
                 $aut_check[] = $value->name;
             }
-            $flag = $request->author == $aut_check ? true : false;
-            if (!$flag) {
+            $flag_auth = $request->author == $aut_check ? true : false;
+            if ($flag_auth == false) {
                 foreach ($request->author as $value) {
                     $result[] = Author::where('name', $value)->first()->id;
                 }
@@ -351,8 +332,8 @@ class ProductController extends Controller
             foreach ($data->translator as $value) {
                 $trans_check[] = $value->name;
             }
-            $flag = $request->translator == $trans_check ? true : false;
-            if (!$flag) {
+            $flag_trans = $request->translator == $trans_check ? true : false;
+            if ($flag_trans == false) {
                 foreach ($request->translator as $value) {
                     $result[] = Translator::where('name', $value)->first()->id;
                 }
@@ -398,7 +379,8 @@ class ProductController extends Controller
                         );
                     }
                 }
-            } elseif ($data->isDirty() == false && $flag == true) {
+            }
+            if ($data->isDirty() == false && $flag_trans == true && $flag_auth == true) {
                 $request->session()->flash(
                     'infor_mess',
                     '<div class="alert alert-primary" style="text-align: center;font-size: x-large;font-family: fangsong;"> 
@@ -407,8 +389,10 @@ class ProductController extends Controller
                         Please check it or return back if you dont want to update this book ! 
                     </div>'
                 );
+                DB::rollBack();
                 return redirect()->back();
             }
+
             $request->session()->flash(
                 'infor_success',
                 '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> 

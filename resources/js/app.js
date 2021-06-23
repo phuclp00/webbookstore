@@ -57,7 +57,10 @@ import Vue from 'vue';
 //     locale: enLang // 如果使用中文，无需设置，请删除
 // });
 
+//Vendor
+Vue.component('select-options', require('./components/admin/vendor/select.vue').default);
 Vue.component('input-tags', require('./components/admin/vendor/tags.vue').default);
+Vue.component('input-tags-search', require('./components/admin/vendor/tags_search.vue').default);
 Vue.component('thumbnail-list', require('./components/admin/vendor/thumbnail.vue').default);
 
 
@@ -75,6 +78,7 @@ Vue.component('category', require('./components/admin/category/category.vue').de
 Vue.component('tags', require('./components/admin/tags/tags.vue').default);
 Vue.component('author', require('./components/admin/author/author.vue').default);
 Vue.component('series', require('./components/admin/series/series.vue').default);
+Vue.component('promotions', require('./components/admin/promotions/promotions.vue').default);
 Vue.component('format', require('./components/admin/format/format.vue').default);
 Vue.component('translator', require('./components/admin/translator/translator.vue').default);
 

@@ -192,7 +192,8 @@
                            @endforeach
                         </select>
                      </div>
-                     <input-tags type="translator" old_value="{{$book->book_id}}">
+                     <input-tags type="translator" old_value="{{$book->book_id}}"
+                        status="{{$book->translator!=null?true:false}}">
                         <slot name="header"></slot>
                      </input-tags>
                      <div class="form-group">

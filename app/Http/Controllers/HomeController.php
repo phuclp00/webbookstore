@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\SilderController;
 use App\Http\Controllers\Product\CategoryController;
 use App\Models\Author;
+use App\Models\BookPromotions;
 use App\Models\BookSeries;
 use App\Models\BooksFormat;
 use App\Models\CategoryModel;
@@ -372,6 +373,26 @@ class HomeController extends Controller
     {
         $data = BookSeries::withTrashed()->where('id', $request->id)->first();
         return view('admin.layout.edit.admin-edit-series', ['data' => $data]);
+    } 
+    //Promotions 
+    public function promotions_view()
+    {
+        $data = BookPromotions::all()->load('books');
+        return view('admin.layout.show.admin-promotions', ['data' => $data]);
+    }
+    public function promotions_old_view()
+    {
+        $data = BookPromotions::onlyTrashed()->with('books')->get();
+        return view('admin.layout.show.old.admin-promotions', ['data' => $data]);
+    }
+    public function promotions_add_view()
+    {
+        return view('admin.layout.add.admin-add-promotions');
+    }
+    public function promotions_edit_view(Request $request)
+    {
+        $data = BookPromotions::withTrashed()->where('id', $request->id)->first();
+        return view('admin.layout.edit.admin-edit-promotions', ['data' => $data]);
     }
     //Format 
     public function format_view()
