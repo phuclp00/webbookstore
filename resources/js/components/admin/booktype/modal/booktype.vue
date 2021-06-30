@@ -173,17 +173,35 @@
                                     >
                                       <span class="pr-1 old-price">{{
                                         item.price
+                                          | currency("đ", 0, {
+                                            symbolOnLeft: false,
+                                            spaceBetweenAmountAndSymbol: true,
+                                          })
                                       }}</span>
                                       <h6>
-                                        <b>{{ item.promotion_price }}</b>
+                                        <b>{{
+                                          item.promotion_price
+                                            | currency("đ", 0, {
+                                              symbolOnLeft: false,
+                                              spaceBetweenAmountAndSymbol: true,
+                                            })
+                                        }}</b>
                                       </h6>
                                     </div>
                                     <div
                                       v-else
-                                      class="price d-flex align-items-center"
+                                      class="price align-items-center"
                                     >
                                       <h6>
-                                        <b>{{ item.price }}</b>
+                                        <span>
+                                          <b>{{
+                                            item.price
+                                              | currency("đ", 0, {
+                                                symbolOnLeft: false,
+                                                spaceBetweenAmountAndSymbol: true,
+                                              })
+                                          }}</b>
+                                        </span>
                                       </h6>
                                     </div>
                                   </div>

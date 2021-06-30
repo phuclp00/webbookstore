@@ -71,7 +71,7 @@
         </td>
       </tr>
     </tbody>
-    <modal-category :detail="data" ref="reference"></modal-category>
+    <modal-category :detail="data[0]" ref="reference"></modal-category>
   </table>
 </template>
 

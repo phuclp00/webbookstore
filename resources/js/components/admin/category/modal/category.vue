@@ -89,11 +89,7 @@
                 <div class="col-md-12">
                   <b-tabs>
                     <!-- General -->
-                    <b-tab
-                      no-body
-                      title="General"
-                      @click="loading_books(data.id)"
-                    >
+                    <b-tab no-body title="General">
                       <div
                         class="
                           iq-card iq-card-block iq-card-stretch iq-card-height
@@ -110,16 +106,14 @@
                         ></div>
                         <div class="iq-header-title">
                           <h3 class="card-title mb-0">
-                            The Books Belong To The Category: "{{
-                              data.name
-                            }}"
+                            The Books Belong To The Category: "{{ data.name }}"
                           </h3>
                         </div>
                         <b-overlay :show="check" rounded="sm">
                           <div class="iq-card-body">
-                            <div class="row" v-if="list.length > 0">
+                            <div class="row" v-if="data.books.length > 0">
                               <div
-                                v-for="item in list"
+                                v-for="item in data.books"
                                 :key="item.book_id"
                                 class="col-sm-6 col-md-4 col-lg-3"
                               >
@@ -157,7 +151,8 @@
                                         </a>
                                         <div class="view-book">
                                           <a
-                                            href="/admin/books"
+                                            href="#"
+                                            @click="showModal(item)"
                                             class="btn btn-sm btn-white"
                                             >View Book</a
                                           >
@@ -199,21 +194,35 @@
                                         >
                                           <span class="pr-1 old-price">{{
                                             item.price
+                                              | currency("đ", 0, {
+                                                symbolOnLeft: false,
+                                                spaceBetweenAmountAndSymbol: true,
+                                              })
                                           }}</span>
                                           <h6>
-                                            <b>{{ item.promotion_price }}</b>
+                                            <b>{{
+                                              item.promotion_price
+                                                | currency("đ", 0, {
+                                                  symbolOnLeft: false,
+                                                  spaceBetweenAmountAndSymbol: true,
+                                                })
+                                            }}</b>
                                           </h6>
                                         </div>
                                         <div
                                           v-else
-                                          class="
-                                            price
-                                            d-flex
-                                            align-items-center
-                                          "
+                                          class="price align-items-center"
                                         >
                                           <h6>
-                                            <b>{{ item.price }}</b>
+                                            <span>
+                                              <b>{{
+                                                item.price
+                                                  | currency("đ", 0, {
+                                                    symbolOnLeft: false,
+                                                    spaceBetweenAmountAndSymbol: true,
+                                                  })
+                                              }}</b>
+                                            </span>
                                           </h6>
                                         </div>
                                       </div>
@@ -223,7 +232,9 @@
                               </div>
                             </div>
                             <div v-else>
-                              <p>{{ mess }}</p>
+                              <p>
+                                Oops! There are no books in {{ data.name }} !!
+                              </p>
                             </div>
                           </div>
                         </b-overlay>
@@ -231,11 +242,10 @@
                     </b-tab>
                     <!-- Optinal children category -->
                     <b-tab
-                      no-body
-                      v-for="index in data.children"
-                      :title="index.name"
-                      :key="index.id"
-                      @click="loading_books(index.id)"
+                      v-for="child in data.descendants"
+                      :key="child.id"
+                      :title="child.name"
+                      @click="load(child)"
                     >
                       <div
                         class="
@@ -253,16 +263,14 @@
                         ></div>
                         <div class="iq-header-title">
                           <h3 class="card-title mb-0">
-                            The Books Belong To The Category: "{{
-                              index.name
-                            }}"
+                            The Books Belong To The Category: "{{ child.name }}"
                           </h3>
                         </div>
                         <b-overlay :show="check" rounded="sm">
-                          <div class="iq-card-body">
-                            <div class="row" v-if="list.length > 0">
+                           <div class="iq-card-body">
+                            <div class="row" v-if="child.books.length > 0">
                               <div
-                                v-for="item in list"
+                                v-for="item in child.books"
                                 :key="item.book_id"
                                 class="col-sm-6 col-md-4 col-lg-3"
                               >
@@ -300,7 +308,8 @@
                                         </a>
                                         <div class="view-book">
                                           <a
-                                            href="/admin/books"
+                                            href="#"
+                                            @click="showModal(item)"
                                             class="btn btn-sm btn-white"
                                             >View Book</a
                                           >
@@ -342,21 +351,35 @@
                                         >
                                           <span class="pr-1 old-price">{{
                                             item.price
+                                              | currency("đ", 0, {
+                                                symbolOnLeft: false,
+                                                spaceBetweenAmountAndSymbol: true,
+                                              })
                                           }}</span>
                                           <h6>
-                                            <b>{{ item.promotion_price }}</b>
+                                            <b>{{
+                                              item.promotion_price
+                                                | currency("đ", 0, {
+                                                  symbolOnLeft: false,
+                                                  spaceBetweenAmountAndSymbol: true,
+                                                })
+                                            }}</b>
                                           </h6>
                                         </div>
                                         <div
                                           v-else
-                                          class="
-                                            price
-                                            d-flex
-                                            align-items-center
-                                          "
+                                          class="price align-items-center"
                                         >
                                           <h6>
-                                            <b>{{ item.price }}</b>
+                                            <span>
+                                              <b>{{
+                                                item.price
+                                                  | currency("đ", 0, {
+                                                    symbolOnLeft: false,
+                                                    spaceBetweenAmountAndSymbol: true,
+                                                  })
+                                              }}</b>
+                                            </span>
                                           </h6>
                                         </div>
                                       </div>
@@ -366,7 +389,9 @@
                               </div>
                             </div>
                             <div v-else>
-                              <p>{{ mess }}</p>
+                              <p>
+                                Oops! There are no books in {{ data.name }} !!
+                              </p>
                             </div>
                           </div>
                         </b-overlay>
@@ -379,12 +404,20 @@
           </div>
         </div>
       </div>
+      <book
+        v-if="book != null"
+        name="books"
+        :detail="book"
+        ref="reference"
+      ></book>
     </div>
   </modal>
 </template>
 <script>
 import moment from "moment";
+import book from "../../book/modal/book_detail.vue";
 export default {
+  components: { book },
   props: ["detail"],
   data() {
     return {
@@ -392,12 +425,25 @@ export default {
       check: true,
       list: [],
       mess: "",
+      book: [],
     };
   },
   methods: {
     show_model: function (item) {
       this.$modal.show("catlisher_detail");
-      this.loading_books(item.id);
+      // Khong su dung api call nen khong can xai
+      //this.loading_books(item.id);
+      this.check = false;
+      item.descendants.forEach((element) => {
+        if (element.books.length > 0) {
+          element.books.forEach((book) => {
+            let checked = item.books.includes(book) ? false : true;
+            if (checked) {
+              item.books.push(book);
+            }
+          });
+        }
+      });
       return (this.data = item);
     },
     moment: function () {
@@ -424,6 +470,28 @@ export default {
           this.mess = "NOT FOUND";
           this.list = [];
         });
+    },
+    load(item) {
+      let result = [];
+      this.$parent.category.forEach((cat) => {
+        if (cat.name === item.name) {
+          return (result = cat);
+        }
+      });
+      result.descendants.forEach((element) => {
+        if (element.books.length > 0) {
+          element.books.forEach((book) => {
+            let checked = item.books.includes(book) ? false : true;
+            if (checked) {
+              item.books.push(book);
+            }
+          });
+        }
+      });
+    },
+    showModal(item) {
+      this.book = item;
+      this.$refs.reference.show_model(item);
     },
   },
 };

@@ -374,6 +374,9 @@ export default {
       return moment();
     },
   },
+  created() {
+    this.data = this.detail;
+  },
 };
 </script>
 

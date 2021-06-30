@@ -192,10 +192,16 @@
                            @endforeach
                         </select>
                      </div>
-                     <input-tags type="translator" old_value="{{$book->book_id}}"
-                        status="{{$book->translator!=null?true:false}}">
+                     @if ($book->translator !=null)
+                     <input-tags type="translator" old_value="{{$book->book_id}}" status="1">
                         <slot name="header"></slot>
                      </input-tags>
+                     @else
+                     <input-tags type="translator" old_value="{{$book->book_id}}" status="0">
+                        <slot name="header"></slot>
+                     </input-tags>
+                     @endif
+
                      <div class="form-group">
                         <label>Book Image:</label>
                         <div class="custom-file">
@@ -230,12 +236,22 @@
                   <label>Price:</label>
                   <input name="price" type="text" class="form-control" value="{{$book->price}}">
                </div>
-               @if ($book->promotion_price!=null)
+               @if ($book->promotion_id!=null)
                <div class="form-group">
                   <label>Promotion Price:</label>
                   <div class="input-group">
-                     <input id="promotion" name="promotion" type="text" class="form-control"
-                        value="{{ $book->promotion_price }}">
+                     <select id="promotion" name="promotion" class="form-control">
+                        <option selected="" disabled="">Promotions</option>
+                        @isset($promotion)
+                        @foreach($promotion as $data =>$item)
+                        @if($book->promotion_id==$item->id)
+                        <option value="{{$item->id}}" selected>{{$item->name}}</option>
+                        @else
+                        <option value="{{$item->id}}">{{$item->name}}</option>
+                        @endif
+                        @endforeach
+                        @endisset
+                     </select>
                      <div class="input-group-append">
                         <button class="btn btn-primary" type="button" id="promo-button">Disable
                            Promotion</button>
@@ -246,7 +262,18 @@
                <div class="form-group">
                   <label>Promotion Price:</label>
                   <div class="input-group">
-                     <input id="promotion" name="promotion" type="text" class="form-control" value="" disabled>
+                     <select id="promotion" name="promotion" class="form-control">
+                        <option selected="" disabled="">Promotions</option>
+                        @isset($promotion)
+                        @foreach($promotion as $data =>$item)
+                        @if(old('promotion')==$item->id)
+                        <option value="{{$item->id}}" selected>{{$item->name}}</option>
+                        @else
+                        <option value="{{$item->id}}">{{$item->name}}</option>
+                        @endif
+                        @endforeach
+                        @endisset
+                     </select>
                      <div class="input-group-append">
                         <button class="btn btn-danger" type="button" id="promo-button">Enable
                            Promotion</button>

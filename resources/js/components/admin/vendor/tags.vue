@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       options: [],
-      disabled: false,
+      disabled: this.status == "0" ? true : false,
       value: [],
     };
   },
@@ -107,7 +107,6 @@ export default {
     if (this.old_value) {
       this.get_id(this.type, this.old_value);
     }
-    this.disabled = this.status == 1 ? true : false;
     this.get_list(this.type);
   },
   updated() {

@@ -21,6 +21,7 @@ class AuthorController extends Controller
     }
     public function show(Request $request)
     {
+        
         return Author::find($request);
     }
     public function get_related(Request $request)

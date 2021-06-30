@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Store\ImagesController;
 use App\Http\Requests\Translator\Translator_Update;
 use App\Http\Requests\Translator\TranslatorRequest;
+use App\Models\ProductModel;
 use App\Models\Translator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ class TranslatorController extends Controller
     }
     public function get_related(Request $request)
     {
-        $book = Translator::find($request->book_id);
+        $book = ProductModel::find($request->book_id);
         return $book->translator;
     }
     public function edit(Translator_Update $request)

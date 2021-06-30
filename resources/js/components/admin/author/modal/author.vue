@@ -12,7 +12,12 @@
         <div class="col-md-12">
           <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div
-              class="iq-card-header d-flex justify-content-between align-items-center"
+              class="
+                iq-card-header
+                d-flex
+                justify-content-between
+                align-items-center
+              "
             >
               <h4 class="card-title mb-0">Author Information Preview</h4>
             </div>
@@ -23,7 +28,12 @@
                     <!-- Image -->
                     <div class="col-md-4">
                       <div
-                        class="iq-card-transparent iq-card-block iq-card-stretch iq-card-height"
+                        class="
+                          iq-card-transparent
+                          iq-card-block
+                          iq-card-stretch
+                          iq-card-height
+                        "
                       >
                         <div class="row align-items-center">
                           <div class="col">
@@ -55,7 +65,12 @@
                     <!-- Content -->
                     <div class="col-md-8">
                       <div
-                        class="iq-card-transparent iq-card-block iq-card-stretch iq-card-height"
+                        class="
+                          iq-card-transparent
+                          iq-card-block
+                          iq-card-stretch
+                          iq-card-height
+                        "
                       >
                         <div class="iq-card-body p-0">
                           <p style="text-align: right">
@@ -111,7 +126,13 @@
                     class="iq-card iq-card-block iq-card-stretch iq-card-height"
                   >
                     <div
-                      class="iq-card-header d-flex justify-content-between align-items-center position-relative"
+                      class="
+                        iq-card-header
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                        position-relative
+                      "
                     ></div>
                     <div class="iq-header-title">
                       <h3 class="card-title mb-0">
@@ -126,12 +147,23 @@
                           class="col-sm-6 col-md-4 col-lg-3"
                         >
                           <div
-                            class="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent"
+                            class="
+                              iq-card
+                              iq-card-block
+                              iq-card-stretch
+                              iq-card-height
+                              browse-bookcontent
+                            "
                           >
                             <div class="iq-card-body p-0">
                               <div class="d-flex align-items-center">
                                 <div
-                                  class="col-6 p-0 position-relative image-overlap-shadow"
+                                  class="
+                                    col-6
+                                    p-0
+                                    position-relative
+                                    image-overlap-shadow
+                                  "
                                 >
                                   <a href="javascript:void();"
                                     ><img
@@ -148,7 +180,8 @@
                                   </a>
                                   <div class="view-book">
                                     <a
-                                      href="/admin/books"
+                                      href="#"
+                                      @click="showModal(item)"
                                       class="btn btn-sm btn-white"
                                       >View Book</a
                                     >
@@ -176,17 +209,32 @@
                                   >
                                     <span class="pr-1 old-price">{{
                                       item.price
+                                        | currency("đ", 0, {
+                                          symbolOnLeft: false,
+                                          spaceBetweenAmountAndSymbol: true,
+                                        })
                                     }}</span>
                                     <h6>
-                                      <b>{{ item.promotion_price }}</b>
+                                      <b>{{
+                                        item.promotion_price
+                                          | currency("đ", 0, {
+                                            symbolOnLeft: false,
+                                            spaceBetweenAmountAndSymbol: true,
+                                          })
+                                      }}</b>
                                     </h6>
                                   </div>
-                                  <div
-                                    v-else
-                                    class="price d-flex align-items-center"
-                                  >
+                                  <div v-else class="price align-items-center">
                                     <h6>
-                                      <b>{{ item.price }}</b>
+                                      <span>
+                                        <b>{{
+                                          item.price
+                                            | currency("đ", 0, {
+                                              symbolOnLeft: false,
+                                              spaceBetweenAmountAndSymbol: true,
+                                            })
+                                        }}</b>
+                                      </span>
                                     </h6>
                                   </div>
                                 </div>
@@ -206,18 +254,27 @@
           </div>
         </div>
       </div>
+      <book
+        v-if="book != null"
+        name="books"
+        :detail="book"
+        ref="reference"
+      ></book>
     </div>
   </modal>
 </template>
 
 <script>
 import moment from "moment";
+import book from "../../book/modal/book_detail.vue";
 export default {
   props: ["detail"],
+  components: { book },
   data() {
     return {
       data: this.detail,
       index: 1,
+      book: [],
     };
   },
   methods: {
@@ -227,6 +284,10 @@ export default {
     },
     moment: function () {
       return moment();
+    },
+    showModal(item) {
+      this.book = item;
+      this.$refs.reference.show_model(item);
     },
   },
 };

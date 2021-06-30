@@ -153,12 +153,49 @@ class HomeController extends Controller
     //Category
     public function category_view()
     {
-        $result = CategoryModel::all()->toFlatTree();
+        $result = CategoryModel::all()->load([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.author',
+            'books.lang'
+
+        ])->toFlatTree();
+        $result->filter(function ($value) {
+            return $value->descendants->load(
+                'books.thumb',
+                'books.category',
+                'books.tags',
+                'books.format',
+                'books.series',
+                'books.publisher',
+                'books.supplier',
+                'books.translator',
+                'books.author',
+                'books.lang'
+            );
+        });
         return view('admin.layout.show.admin-category', ['cat_list' => $result]);
     }
     public function category_old_view()
     {
-        $result = CategoryModel::onlyTrashed()->get();
+        $result = CategoryModel::onlyTrashed()->with([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author',
+        ])->get();
         return view('admin.layout.show.old.admin-category', ['cat_list' => $result]);
     }
     public function category_add_view()
@@ -175,12 +212,34 @@ class HomeController extends Controller
     //Tags
     public function tags_view()
     {
-        $result = TagsModel::all()->toFlatTree();
+        $result = TagsModel::all()->load([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ])->toFlatTree();
         return view('admin.layout.show.admin-tags', ['cat_list' => $result]);
     }
     public function tags_old_view()
     {
-        $result = TagsModel::onlyTrashed()->get();
+        $result = TagsModel::onlyTrashed()->with([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ])->get();
         return view('admin.layout.show.old.admin-tags', ['cat_list' => $result]);
     }
     public function tags_add_view()
@@ -237,6 +296,7 @@ class HomeController extends Controller
         $translator = Translator::all();
         $sup = SupplierModel::all();
         $series = BookSeries::all();
+        $promotions = BookPromotions::all();
         return view(
             'admin.layout.add.admin-add-book',
             [
@@ -248,6 +308,7 @@ class HomeController extends Controller
                 'language' => $lang,
                 'translator' => $translator,
                 'series' => $series,
+                'promotion' => $promotions
             ]
         );
     }
@@ -261,6 +322,7 @@ class HomeController extends Controller
         $translator = Translator::all();
         $sup = SupplierModel::all();
         $series = BookSeries::all();
+        $promotions = BookPromotions::all();
         $result = ProductModel::withTrashed()
             ->where('book_id', $request->book_id)
             ->with('thumb')
@@ -291,18 +353,42 @@ class HomeController extends Controller
                 'height' => $height,
                 'width' => $width,
                 'series' => $series,
+                'promotion' => $promotions
+
             ]
         );
     }
     //Publisher 
     public function publisher_view(Request $request)
     {
-        $result = PublisherModel::all()->load('books.thumb');
+        $result = PublisherModel::all()->load([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ]);
         return view('admin.layout.show.admin-publisher', ['pub_list' => $result]);
     }
     public function publisher_old_view(Request $request)
     {
-        $result = PublisherModel::onlyTrashed()->with('books')->get();
+        $result = PublisherModel::onlyTrashed()->with([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ])->get();
         return view('admin.layout.show.old.admin-publisher', ['pub_list' => $result]);
     }
     public function add_publisher_view()
@@ -322,7 +408,18 @@ class HomeController extends Controller
     }
     public function supplier_old_view(Request $request)
     {
-        $result = SupplierModel::onlyTrashed()->with('books')->get();
+        $result = SupplierModel::onlyTrashed()->with([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ])->get();
         return view('admin.layout.show.old.admin-supplier', ['sub_list' => $result]);
     }
     public function add_supplier_view()
@@ -337,12 +434,34 @@ class HomeController extends Controller
     //Author 
     public function author_view()
     {
-        $data = Author::all()->load('books');
+        $data = Author::all()->load([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ]);
         return view('admin.layout.show.admin-author', ['data' => $data]);
     }
     public function author_old_view()
     {
-        $data = Author::onlyTrashed()->with('books')->get();
+        $data = Author::onlyTrashed()->with([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ])->get();
         return view('admin.layout.show.old.admin-author', ['data' => $data]);
     }
     public function author_add_view()
@@ -357,12 +476,34 @@ class HomeController extends Controller
     //Series 
     public function series_view()
     {
-        $data = BookSeries::all()->load('books');
+        $data = BookSeries::all()->load([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ]);
         return view('admin.layout.show.admin-series', ['data' => $data]);
     }
     public function series_old_view()
     {
-        $data = BookSeries::onlyTrashed()->with('books')->get();
+        $data = BookSeries::onlyTrashed()->with([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ])->get();
         return view('admin.layout.show.old.admin-series', ['data' => $data]);
     }
     public function series_add_view()
@@ -373,16 +514,38 @@ class HomeController extends Controller
     {
         $data = BookSeries::withTrashed()->where('id', $request->id)->first();
         return view('admin.layout.edit.admin-edit-series', ['data' => $data]);
-    } 
+    }
     //Promotions 
     public function promotions_view()
     {
-        $data = BookPromotions::all()->load('books');
+        $data = BookPromotions::all()->load([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ]);
         return view('admin.layout.show.admin-promotions', ['data' => $data]);
     }
     public function promotions_old_view()
     {
-        $data = BookPromotions::onlyTrashed()->with('books')->get();
+        $data = BookPromotions::onlyTrashed()->with([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ])->get();
         return view('admin.layout.show.old.admin-promotions', ['data' => $data]);
     }
     public function promotions_add_view()
@@ -397,12 +560,34 @@ class HomeController extends Controller
     //Format 
     public function format_view()
     {
-        $data = BooksFormat::all()->load('books');
+        $data = BooksFormat::all()->load([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ]);
         return view('admin.layout.show.admin-format', ['data' => $data]);
     }
     public function format_old_view()
     {
-        $data = BooksFormat::onlyTrashed()->with('books')->get();
+        $data = BooksFormat::onlyTrashed()->with([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ])->get();
         return view('admin.layout.show.old.admin-format', ['data' => $data]);
     }
     public function format_add_view()
@@ -417,12 +602,34 @@ class HomeController extends Controller
     //Translator 
     public function translator_view()
     {
-        $data = Translator::all()->load('books');
+        $data = Translator::all()->load([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ]);
         return view('admin.layout.show.admin-translator', ['data' => $data]);
     }
     public function translator_old_view()
     {
-        $data = Translator::onlyTrashed()->with('books')->get();
+        $data = Translator::onlyTrashed()->with([
+            'books.thumb',
+            'books.category',
+            'books.tags',
+            'books.format',
+            'books.series',
+            'books.publisher',
+            'books.supplier',
+            'books.translator',
+            'books.lang',
+            'books.author'
+        ])->get();
         return view('admin.layout.show.old.admin-translator', ['data' => $data]);
     }
     public function translator_add_view()
