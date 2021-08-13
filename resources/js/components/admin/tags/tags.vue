@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form-group">
-      <group-input-tags ref="data"></group-input-tags>
+      <group-tags ref="data"></group-tags>
     </div>
     <div class="form-group">
       <table
@@ -11,8 +11,8 @@
       >
         <thead>
           <tr>
-            <th>Book ID</th>
-            <th>Book Name</th>
+            <th>Tags ID</th>
+            <th>Tags Name</th>
             <th>Group Tags</th>
             <th>Date Create</th>
             <th>Modified By</th>
@@ -85,10 +85,9 @@
 </template>
 
 <script>
-Vue.component("group-input-tags", require("./group/tags_input.vue").default);
+Vue.component("group-tags", require("./group/tags_input.vue").default);
 Vue.component("modal-tags", require("./modal/tags.vue").default);
 import moment from "moment";
-import { result } from "lodash";
 export default {
   props: ["data", "router", "delete"],
   components: { moment },
@@ -111,7 +110,7 @@ export default {
       this.$refs.modal.hide();
     },
     find_parent_tags(item) {
-      result = "Root";
+     let result = "Root";
       this.tags.forEach((element) => {
         if (item.parent_id == element.id) {
           result = element.name;

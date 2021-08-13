@@ -15,6 +15,8 @@ use App\Events\User\UserRegisted;
 use App\Http\Resources\User;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -23,14 +25,15 @@ class LoginController extends Controller
     private $pathViewController = 'public.page.my-account';
     public function show_login()
     {
-        return view('public.page.my-account');
+        return view('client.sections.user.login-register');
     }
-    public function Login(Request $request)
+    public function login(Request $request)
     {
         try {
             $result = $request->only('email', 'password');
             $option = $request->remember == "on" ? true : false;
-            if (Auth::guard('web')->attempt(
+
+            if (Auth::attempt(
                 [
                     'email' => $result['email'],
                     'password' => $result['password'],
@@ -39,43 +42,67 @@ class LoginController extends Controller
                 $remember = $option
             )) {
                 $request->session()->regenerate();
-                $request->session()->flash('infor_success', 'Login Success  ! Wellcome to Bookstore !');
-                return redirect()->route('home');
+                Auth::user()->status = 1;
+                Auth::user()->save();
+                return \response()->json([
+                    'status' => 'success',
+                    'mess' => 'Đăng nhập thành công !'
+                ]);
             } else {
-                $request->session()->flash('infor_warning', 'Login Failed  ! Please Try Again !');
-                return redirect()->back();
+                return \response()->json([
+                    'status' => 'danger',
+                    'mess' => 'Sai email hoặc mật khẩu !'
+                ]);
             }
         } catch (Exception $e) {
-            $request->session()->flash('infor_warning', 'Login Failed  ! Please Try Again !' . $e->getMessage());
-            return redirect()->back();
+            return \response()->json([
+                'status' => 'danger',
+                'mess' => 'Đăng nhập thất bại, liên hệ bộ phận CSKH để được hỗ trợ!'
+            ]);
         }
     }
     public function log_out(Request $request)
     {
+        Auth::user()->status = 0;
+        Auth::user()->save();
         Auth::logout();
+        $request->session()->flush();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->back();
     }
-    public function Register(Request $request)
+    public function register(Request $request)
     {
-        $data = new UserModel();
-        $data_request = $request->only('username_register', 'password_register', 'email_register');
+        $data_request = $request->only('username', 'password', 'email');
         try {
-            $user = UserModel::create([
-                'user_name' => $data_request['username_register'],
-                'password' => $data_request['password_register'],
-                'email' => $data_request['email_register'],
+            DB::beginTransaction();
+            $check = UserModel::where('email', $request->email)->first();
+            if ($check != null) {
+                return \response()->json([
+                    'status' => 'danger',
+                    'mess' => 'Email này đã được đăng ký trước đó !'
+                ]);
+            }
+            UserModel::create([
+                'user_name' => $data_request['username'],
+                'password' => $data_request['password'],
+                'email' => $data_request['email'],
                 'level' => 'user',
+                'membership_id' => 1,
+                'refresh_token' => Str::random(60),
                 'status' => 1,
-                'created_by' => $data_request['username_register']
+                'created_by' => $data_request['username']
             ]);
-           // event(new UserRegisted($user));
-            $request->session()->flash('infor_success', "Your account has been created successfully !");
-            return redirect()->back();
+            DB::commit();
+            return \response()->json([
+                'status' => 'success',
+                'mess' => 'Đăng kí thành công !'
+            ]);
         } catch (Exception $e) {
-            $request->session()->flash('infor_warning', "Can't create an account, Please try again !");
-            return \redirect()->back();
+            DB::rollBack();
+            return \response()->json([
+                'status' => 'danger',
+                'mess' => 'Đăng kí thất bại !' . $e->getMessage()
+            ]);
         }
     }
     //Admin Account Controller 
@@ -95,7 +122,8 @@ class LoginController extends Controller
             $user->password = $request->password;
             $user->email = $request->email;
             $user->level = $request->level;
-            $user->status = "active";
+            $user->status = 0;
+            $user->refresh_token = Str::random(60);
             $user->save();
             $user->createToken('Laravel Personal Access Client')->accessToken;
             $request->session()->flash('info_warning', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Create account ' . $request->username . ' Successfully !! </div>');
@@ -112,6 +140,8 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $user = $loginRequest->user();
             $user->createToken('Laravel Personal Access Client')->accessToken;
+            $user->status = 1;
+            $user->save();
             //$token = $tokenResult->token;
             //Option remember
             // if ($loginRequest->remember_me) {
@@ -133,6 +163,8 @@ class LoginController extends Controller
 
         // $token = $request->user()->token();
         // $token->revoke();
+        Auth::user()->status = 0;
+        Auth::user()->save();
         Auth::logout();
 
         $request->session()->invalidate();

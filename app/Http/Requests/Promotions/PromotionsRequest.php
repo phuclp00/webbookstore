@@ -24,9 +24,10 @@ class PromotionsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'unique:promotions,name', 'not_regex:/[\s]{2,}|^[\s]/'],
+            'name' => ['required', 'unique:promotions,name', 'not_regex:/[\s]{2,}|^[\s]/', 'unique:promotions'],
             'percent' => ['required', 'numeric', 'between:5,99'],
-            'date_expired' => ['required', 'date_format:"Y-m-d\TH:i"', 'after:date_format:"H:i"'],
+            'date_started' => ['required', 'date_format:"Y-m-d\TH:i"', 'after:' . now()],
+            'date_expired' => ['required', 'date_format:"Y-m-d\TH:i"', 'after:date_started'],
             'content' => ['nullable', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
         ];
     }

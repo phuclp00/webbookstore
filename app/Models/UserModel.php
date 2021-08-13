@@ -10,14 +10,19 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use App\Events\User\UserRegisted;
+use BeyondCode\Vouchers\Models\Voucher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Prophecy\Doubler\Generator\Node\ReturnTypeNode;
 use Laravel\Scout\Searchable;
 use Laravel\Sanctum\HasApiTokens;
 use Gabievi\Promocodes\Traits\Rewardable;
+use BeyondCode\Vouchers\Traits\CanRedeemVouchers;
+use Illuminate\Support\Str;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use function PHPUnit\Framework\returnSelf;
 
-class UserModel extends Authenticatable
+class UserModel extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -26,7 +31,7 @@ class UserModel extends Authenticatable
     use TwoFactorAuthenticatable;
     use Searchable;
     use SoftDeletes;
-    use Rewardable;
+    use CanRedeemVouchers;
     //DEFINED DATABASE TABLE
     protected $table = "user_account";
     protected $primaryKey = "user_id";
@@ -45,6 +50,7 @@ class UserModel extends Authenticatable
         'membership_id',
         'level',
         'status',
+        'refresh_token',
         'remember_token',
         'email_verified_at',
         'deleted_by',
@@ -82,12 +88,19 @@ class UserModel extends Authenticatable
     protected static $logAttributesToIgnore = ['remember_token'];
     protected static $ignoreChangedAttributes = ['remember_token'];
 
-    protected $dispatchesEvents = [
-        'created' => UserRegisted::class,
-    ];
+    protected $touches = ['rating', 'membership'];
+
+    public function searchableAs()
+    {
+        return 'user_account';
+    }
     public function getRouteKeyName()
     {
         return 'user_id';
+    }
+    public function getScoutKey()
+    {
+        return $this->user_id;
     }
     public function isPublished()
     {
@@ -117,6 +130,14 @@ class UserModel extends Authenticatable
     {
         return $this->hasMany(Notifications::class, 'notifiable_id', 'user_id');
     }
+    public function address()
+    {
+        return $this->hasMany(UserAddress::class, 'user_id')->withTrashed();
+    }
+    public function phone()
+    {
+        return $this->hasMany(UserPhone::class, 'user_id');
+    }
     public function posts()
     {
         return $this->hasMany(Post::class);
@@ -125,6 +146,14 @@ class UserModel extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+    public function points()
+    {
+        return $this->hasMany(PointsLog::class, 'user_id');
+    }
+    public function membership()
+    {
+        return $this->belongsTo(Membership::class, 'membership_id');
+    }
     public function getLevel()
     {
         return $this->level;
@@ -132,5 +161,21 @@ class UserModel extends Authenticatable
     public function is_admin()
     {
         return $this->level == "admin" ? true : false;
+    }
+    public function vouchers()
+    {
+        return $this->hasMany(Voucher::class, "model_id");
+    }
+    public function social_account()
+    {
+        return $this->hasMany(SocialAccount::class, 'user_id');
+    }
+    public function rating()
+    {
+        return $this->belongsToMany(ProductModel::class, 'ratings', 'user_id', 'book_id');
+    }
+    public function favorite()
+    {
+        return $this->belongsToMany(ProductModel::class, 'favorite', 'user_id', 'book_id');
     }
 }

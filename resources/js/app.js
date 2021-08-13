@@ -39,7 +39,7 @@ Vue.use(modal, {
         resizable: true
     }
 })
-
+import moment from "moment";
 import 'jszip'
 import pdfMake from 'pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
@@ -51,11 +51,19 @@ import 'datatables.net-buttons-bs4'
 import 'datatables.net-buttons/js/buttons.colVis.js'
 import 'datatables.net-buttons/js/buttons.html5.js'
 import 'datatables.net-buttons/js/buttons.print.js'
-import Vue from 'vue';
-// Vue.use(ElementUI, {
-//     size: Cookies.get('size') || 'medium', // set element-ui default size
-//     locale: enLang // 如果使用中文，无需设置，请删除
-// });
+
+import VueFormWizard from 'vue-form-wizard'
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+Vue.use(VueFormWizard)
+
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
+    // Vue.use(ElementUI, {
+    //     size: Cookies.get('size') || 'medium', // set element-ui default size
+    //     locale: enLang // 如果使用中文，无需设置，请删除
+    // });
 
 //Vendor
 Vue.component('select-options', require('./components/admin/vendor/select.vue').default);
@@ -81,10 +89,14 @@ Vue.component('series', require('./components/admin/series/series.vue').default)
 Vue.component('promotions', require('./components/admin/promotions/promotions.vue').default);
 Vue.component('format', require('./components/admin/format/format.vue').default);
 Vue.component('translator', require('./components/admin/translator/translator.vue').default);
-
+Vue.component('orders', require('./components/admin/orders/orders.vue').default);
+Vue.component('rating', require('./components/admin/ratings/ratings.vue').default);
+Vue.component('toplist-table', require('./components/admin/dashboard/toplist').default);
 
 //Vendor
 Vue.component('date-picker', require('./components/admin/vendor/datepicker.vue').default);
+Vue.component('chart', require('./components/admin/vendor/chart').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -92,4 +104,20 @@ Vue.component('date-picker', require('./components/admin/vendor/datepicker.vue')
  */
 const app = new Vue({
     el: '#app',
+    methods: {
+        makeToast(variant, mess) {
+            this.$bvToast.toast(mess, {
+                title: "Messege feeback :",
+                variant: variant,
+                solid: true,
+            });
+        },
+        truncate: function(text, length, suffix) {
+            if (text.length > length) {
+                return text.substring(0, length) + suffix;
+            } else {
+                return text;
+            }
+        },
+    },
 });

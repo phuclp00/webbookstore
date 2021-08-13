@@ -139,8 +139,7 @@
                         v-if="data.promotion_price != null"
                       >
                         <span class="font-size-20 pr-2 old-price">{{
-                          data.price
-                            | currency("VND", 0, { symbolOnLeft: false })
+                          data.price | currency("đ", 0, { symbolOnLeft: false })
                         }}</span>
                         <span class="font-size-24 text-primary">{{
                           data.promotion_price
@@ -173,12 +172,17 @@
                         <div class="mb-3 d-block">
                           <span class="text-primary mb-4">Rating :</span>
                           <span class="font-size-20 text-warning">
-                            <i class="fa fa-star mr-1"></i>
-                            <i class="fa fa-star mr-1"></i>
-                            <i class="fa fa-star mr-1"></i>
-                            <i class="fa fa-star mr-1"></i>
-                            <i class="fa fa-star"></i>
+                            <i
+                              v-for="index in 5"
+                              :key="index"
+                              :class="[
+                                index > data.rate
+                                  ? 'fa fa-star-o '
+                                  : 'fa fa-star',
+                              ]"
+                            ></i>
                           </span>
+                          <span>({{ data.rate }} /5 rating)</span>
                         </div>
                         <hr />
                         <div class="text-primary mb-4">

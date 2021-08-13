@@ -3,6 +3,7 @@
 namespace App\Notifications\User;
 
 use App\Models\UserModel;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,6 +12,8 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class UserRegistedNotification extends Notification
 {
+    use Queueable;
+
     public  $user;
     /**
      * Create a new notification instance.
@@ -31,22 +34,6 @@ class UserRegistedNotification extends Notification
     public function via($notifiable)
     {
         return ['database', 'broadcast'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        //$url =url('/user/'.$this->user->user_id);
-        return (new MailMessage)
-            ->greeting('Hello !')
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
     }
 
     /**

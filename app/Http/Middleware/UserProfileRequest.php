@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+
 namespace App\Http\Middleware;
+
 use Illuminate\Support\Facades\Auth;
 
 use Closure;
@@ -18,8 +20,8 @@ class UserProfileRequest
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check()==null){
-            return \redirect()->route('login');
+        if ($request->token != Auth::user()->refresh_token) {
+            return \redirect()->back();
         }
         return $next($request);
     }

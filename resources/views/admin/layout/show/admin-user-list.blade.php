@@ -8,11 +8,9 @@
 
             @include('post.create')
             <div class="iq-card-body">
-               <datatable-userlist :userlist={{$users}}></datatable-userlist>
-
+               <datatable-userlist :users="{{$users}}" :guest="{{$guest}}" user_type="'User Account List'">
+               </datatable-userlist>
             </div>
-            {{-- {{ $result->links('admin.pagination.simple'),["paginator"=>$result]}} --}}
-
          </div>
       </div>
    </div>

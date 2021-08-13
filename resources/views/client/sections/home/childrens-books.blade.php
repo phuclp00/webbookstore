@@ -1,9 +1,13 @@
 <section class="section-margin">
     <div class="container">
         <div class="section-title section-title--bordered">
-            <h2>CHILDREN’S BOOKS</h2>
+            {{-- <h2>CHILDREN’S BOOKS</h2> --}}
+            <div class="ModuleContent"><img
+                    src="https://nhasachphuongnam.com/images/promo/217/01_Banner_thong_bao_mua_dich_890x396__2_.jpg"
+                    alt="">
+            </div>
         </div>
-        <div class="product-slider product-list-slider slider-border-single-row sb-slick-slider" data-slick-setting='{
+        {{-- <div class="product-slider product-list-slider slider-border-single-row sb-slick-slider" data-slick-setting='{
                                             "autoplay": true,
                                             "autoplaySpeed": 8000,
                                             "slidesToShow":3,
@@ -138,6 +142,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </section>

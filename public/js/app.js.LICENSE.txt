@@ -68,8 +68,8 @@ https://github.com/nodeca/pako/blob/master/LICENSE
  */
 
 /*!
- * Vue.js v2.6.12
- * (c) 2014-2020 Evan You
+ * Vue.js v2.6.14
+ * (c) 2014-2021 Evan You
  * Released under the MIT License.
  */
 
@@ -87,23 +87,15 @@ https://github.com/nodeca/pako/blob/master/LICENSE
  * Date: 2021-03-02T17:08Z
  */
 
-/*!
- * vue-strap 2.0.2
- * http://wffranco.github.io/vue-strap/
- * Compiled using Vue 2.2.6
- */
-
-/*! @source http://purl.eligrey.com/github/classList.js/blob/master/classList.js */
-
 /*! Bootstrap integration for DataTables' Buttons
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
 
-/*! Buttons for DataTables 1.7.0
+/*! Buttons for DataTables 1.7.1
  * ©2016-2021 SpryMedia Ltd - datatables.net/license
  */
 
-/*! DataTables 1.10.24
+/*! DataTables 1.10.25
  * ©2008-2021 SpryMedia Ltd - datatables.net/license
  */
 
@@ -115,7 +107,7 @@ https://github.com/nodeca/pako/blob/master/LICENSE
 
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
-/*! pdfmake v0.1.71, @license MIT, @link http://pdfmake.org */
+/*! pdfmake v0.1.72, @license MIT, @link http://pdfmake.org */
 
 /**
  * @license

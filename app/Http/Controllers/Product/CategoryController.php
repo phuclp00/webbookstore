@@ -7,18 +7,60 @@ use App\Http\Requests\Category\Category_Update;
 use App\Http\Requests\Category\CategoryRequest;
 use Illuminate\Http\Request;
 use App\Models\CategoryModel as MainModel;
+use App\Models\CategoryModel;
+use App\Models\ProductModel;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
-    private $subpatchViewController = '.page';
-    private $pathViewController = 'public.';
     public function list_category()
     {
-        $items = MainModel::all();
-        view()->share('list_category', $items);
+        $category = Cache::remember('category.all', now()->addHours(1), function () {
+            return CategoryModel::get()->toTree();
+        });
+        view()->share('list_category', $category);
+    }
+    public function product_list()
+    {
+        return Cache::remember('category.books.all', \now()->addHours(1), function () {
+            $result = CategoryModel::whereIsRoot()->with('descendants')->with([
+                'books.thumb',
+                'books.category',
+                'books.tags',
+                'books.format',
+                'books.series',
+                'books.publisher',
+                'books.supplier',
+                'books.translator',
+                'books.author',
+                'books.lang',
+                'books.promotion'
+            ])->get();
+            $result->filter(function ($value) {
+                return $value->descendants->load(
+                    'books.thumb',
+                    'books.category',
+                    'books.tags',
+                    'books.format',
+                    'books.series',
+                    'books.publisher',
+                    'books.supplier',
+                    'books.translator',
+                    'books.author',
+                    'books.lang',
+                    'books.promotion'
+                );
+            });
+            $result->filter(function ($value) {
+                foreach ($value->descendants as $child) {
+                    $value->books[] = $child->books()->orderBy('created_at', 'DESC')->get()->take(7);
+                }
+            });
+            return $result;
+        });
     }
     public function top_list_category()
     {
@@ -52,6 +94,7 @@ class CategoryController extends Controller
                 'created_by' => Auth::user()->user_name
             ]);
             DB::commit();
+            CategoryModel::fixTree();
             $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Add ' . $request->name . ' Successfully !! </div>');
             return \redirect()->back();
         } catch (Exception $e) {
@@ -88,6 +131,7 @@ class CategoryController extends Controller
                 return \redirect()->back();
             }
             DB::commit();
+            CategoryModel::fixTree();
             $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Edit ' . $request->name . ' Successfully !! </div>');
             return \redirect()->route('admin.category');
         } catch (Exception $e) {
@@ -117,6 +161,7 @@ class CategoryController extends Controller
                 return \redirect()->back();
             }
             DB::commit();
+            CategoryModel::fixTree();
             return redirect()->back();
         } catch (Exception $e) {
             $request->session()->flash('info_warning', '<div class="alert alert-danger" style="text-align: center;font-size: x-large;font-family: fangsong;"> Delete  category ' . $request->name . 'Failed with error ' . $e->getMessage() .  '</div>');
@@ -142,6 +187,7 @@ class CategoryController extends Controller
             $data->restore();
             $request->session()->flash('infor_success', '<div class="alert alert-success" style="text-align: center;font-size: x-large;font-family: fangsong;"> Restore category ' . $data->name . ' Successfully !! </div>');
             DB::commit();
+            CategoryModel::fixTree();
             return redirect()->back();
         } catch (\Throwable $th) {
             DB::rollBack();

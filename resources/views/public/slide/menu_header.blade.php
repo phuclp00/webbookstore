@@ -102,43 +102,7 @@
                     <li class="setting__bar__icon"><a class="setting__active" href="#"></a>
                         <div class="searchbar__content setting__block">
                             <div class="content-inner">
-                                <div class="switcher__account">
-                                    @if(Auth::check())
-                                    @if(Auth::user()->user_detail->img !=null)
-                                    <img src="{{asset('images/user_profile/'.Auth::user()->user_detail->img)}}"
-                                        class="avatar"
-                                        style="margin:0px auto;vertical-align: middle; width: 100px;height: 100px;border-radius:50%;"
-                                        alt="avatar">
-                                    @else
-                                    <img src="{{asset('images/users/user_default.svg')}}" class="avatar"
-                                        style="margin:0px auto;vertical-align: middle; width: 50px;height: 50px;border-radius:50%;"
-                                        alt="avatar">
-                                    @endif
-                                    <h3 class="account__title">Xin chào</h3>
-                                    <h5>{{Auth::user()->user_name==null?Auth::user()->email:Auth::user()->user_name}}
-                                    </h5>
-                                    <div class="switcher-currency">
-                                        <strong class="label switcher-label">
-                                            <span>My Account</span>
-                                        </strong>
-                                        <div class="switcher-options">
-                                            <div class="switcher-currency-trigger">
-                                                <div class="setting__menu">
 
-                                                    <span><a href="{{route('user.account.view')}}">My Account</a></span>
-                                                    <span><a href="#">My Wishlist</a></span>
-                                                    <span><a href="{{route('log_out')}}">Logout</a></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @else
-                                    <ul>
-                                        <li><a href="{{route('login')}}">Sign In</a></li>
-                                        <li><a href="{{route('login')}}">Create An Account</a></li>
-                                    </ul>
-                                    @endif
-                                </div>
                                 {{-- <div class="switcher-currency">
                                     <strong class="label switcher-label">
                                         <span>Currency</span>

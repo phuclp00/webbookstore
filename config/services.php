@@ -32,7 +32,11 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_API'),
         'client_secret' => env('GOOGLE_CLIENT_SECRECT'),
-        'redirect' => 'http://localhost:8000/auth/google/callback',
+        'redirect' => 'http://booksto.tk/auth/google/callback',
     ],
-
+    'facebook' => [
+        'client_id' => env('FACEBOOK_APP_ID'),
+        'client_secret' => env('FACEBOOK_APP_SECRET'),
+        'redirect' => env('FACEBOOK_APP_CALLBACK_URL'),
+    ],
 ];

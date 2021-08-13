@@ -8,7 +8,6 @@
         <b-row>
           <b-col>
             <input-tags type="books" ref="books"></input-tags>
-
             <input-tags-search type="tags" ref="tags"></input-tags-search>
             <b-form-group>
               <b-button

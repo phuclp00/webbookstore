@@ -37,7 +37,7 @@
               <div class="">
                 <img
                   class="avatar-40 rounded"
-                  :src="'../images/user/01.jpg'"
+                  :src="'../images/users/user_default.svg'"
                   alt=""
                 />
               </div>
@@ -57,7 +57,7 @@
                     :auto-update="60"
                   ></timeago
                 ></small>
-                <p class="mb-0">95 MB</p>
+                <!-- <p class="mb-0">{{notification.read_at==null?"Unread":"Read"}}</p> -->
               </div>
             </div>
           </a>
@@ -81,15 +81,15 @@ export default {
   props: ["user", "unreads"],
   data() {
     return {
-      allNotifications: [],
       unreadNotifications: [],
       number: 5,
+      allNotifications: [],
     };
   },
   mounted() {},
   methods: {
     markAllRead() {
-      axios.get("../mark-all-read/" + this.user.user_id).then((response) => {
+      axios.get("/my-account/mark-all-read/" + this.user.user_id).then((response) => {
         this.unreadNotifications = [];
         this.allNotifications = response.data.notifications;
       });
@@ -105,14 +105,14 @@ export default {
     },
     marAsRead(id) {
       axios
-        .get("../mark-as-read/" + this.user.user_id + "/" + id)
+        .get("/my-account/mark-as-read/" + this.user.user_id + "/" + id)
         .then((response) => {
           this.allNotifications = response.data.notifications;
         });
     },
   },
   watch: {
-    allNotifications(val) {
+    allNotifications() {
       this.unreadNotifications = this.allNotifications.filter(
         (notification) => {
           return notification.read_at == null;
@@ -124,8 +124,8 @@ export default {
   created() {
     document.addEventListener("scroll", this.onScroll);
     document.addEventListener("click", this.click);
-    this.allNotifications = this.user.notifications;
 
+    this.allNotifications = this.user.notifications;
     this.unreadNotifications = this.allNotifications.filter((notification) => {
       return notification.read_at == null;
     });

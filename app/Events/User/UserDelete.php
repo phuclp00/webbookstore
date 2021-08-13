@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\User;
+namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserTracker implements ShouldBroadcast
+class Order
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -19,10 +19,9 @@ class UserTracker implements ShouldBroadcast
      *
      * @return void
      */
-    public $user;
-    public function __construct($user)
+    public function __construct()
     {
-        $this->user = $user;
+        //
     }
 
     /**
@@ -32,14 +31,6 @@ class UserTracker implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('user');
-    }
-    public function broadcastWith()
-    {
-        $extra = [
-            'name' => $this->user->user_name,
-            'email' => $this->user->email
-        ];
-        return \array_merge($this->user->toArray(), $extra);
+        return new PrivateChannel('channel-name');
     }
 }

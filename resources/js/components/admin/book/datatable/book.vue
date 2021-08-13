@@ -5,12 +5,12 @@
         <th style="width: 5%">Id</th>
         <th style="width: 10%">Book Image</th>
         <th style="width: 15%">Book Name</th>
-        <th style="width: 10%">Code</th>
-        <th style="width: 10%">Category</th>
-        <th style="width: 10%">Publisher</th>
-        <th style="width: 10%">Author</th>
+        <th style="width: 10%">View</th>
+        <th style="width: 10%">Sales</th>
+        <th style="width: 10%">Created</th>
+        <th style="width: 10%">Modified</th>
         <th style="width: 10%">Price</th>
-        <th style="width: 10%">Promotions Type</th>
+        <th style="width: 10%">Promotions</th>
         <th style="width: 5%">Rating</th>
         <th style="width: 5%">Action</th>
       </tr>
@@ -42,31 +42,38 @@
             alt=" Default Image Book "
           />
         </td>
-        <td v-if="item.series == null">{{ item.book_name }}</td>
-        <td v-else>{{ item.book_name + " - Episode " + item.episode }}</td>
-        <td>{{ item.serialNumber }}</td>
-        <!-- Category -->
-        <td v-if="item.category != null">
-          {{ item.category.name }}
+        <td>{{ item.book_name }}</td>
+        <td>
+          <span class="font-size-20 badge iq-bg-primary">{{
+            item.view != null ? item.view : 0
+          }}</span>
         </td>
-        <td v-else class="bg-info">Book Category is being updated</td>
-        <!-- Publisher -->
-        <td v-if="item.publisher != null">{{ item.publisher.name }}</td>
-        <td v-else class="bg-secondary">Book Publisher is being updated</td>
-        <!-- Author -->
-        <td v-if="item.author != null">
-          <p v-for="index in item.author" :key="index.id">{{ index.name }}</p>
+        <td>
+          <span class="font-size-20 badge iq-bg-danger">{{
+            item.sales != null ? item.sales : 0
+          }}</span>
         </td>
-        <td v-else class="bg-warning">Book Author is being updated</td>
-        <td>{{ item.price }}</td>
+        <td>{{ datetime(item.created_at) }}</td>
+        <td>{{ datetime(item.modified_at) }}</td>
+        <td>
+          {{
+            item.price
+              | currency("đ", 0, {
+                symbolOnLeft: false,
+                spaceBetweenAmountAndSymbol: true,
+              })
+          }}
+        </td>
         <td style="color: red">
           {{
             item.promotion == null
               ? "Without any promotions yet"
-              : item.promotion.type
+              : item.promotion.name
           }}
         </td>
-        <td>{{ item.rating }}</td>
+        <td>
+          <span class="text-warning">{{ load_avg(item.rating) }}/5</span>
+        </td>
         <td>
           <div class="flex align-items-center list-user-action">
             <a
@@ -134,12 +141,12 @@
         <th style="width: 5%">Id</th>
         <th style="width: 10%">Book Image</th>
         <th style="width: 15%">Book Name</th>
-        <th style="width: 10%">Code</th>
-        <th style="width: 10%">Category</th>
-        <th style="width: 10%">Publisher</th>
-        <th style="width: 10%">Author</th>
+        <th style="width: 10%">View</th>
+        <th style="width: 10%">Sales</th>
+        <th style="width: 10%">Created</th>
+        <th style="width: 10%">Modified</th>
         <th style="width: 10%">Price</th>
-        <th style="width: 10%">Sale</th>
+        <th style="width: 10%">Promotions</th>
         <th style="width: 5%">Rating</th>
         <th style="width: 5%">Action</th>
       </tr>
@@ -149,14 +156,32 @@
 </template>
 <script>
 Vue.component("modal-book", require("../modal/book_detail.vue").default);
+import moment from "moment";
+
 export default {
   props: ["books", "router"],
   methods: {
+    datetime(date) {
+      return moment(date, "YYYY-MM-DD").format("DD/MM/YYYY");
+    },
+    timeago(date) {
+      return moment(date).startOf("hours").fromNow();
+    },
     showModal(item) {
       this.$refs.reference.show_model(item);
     },
     hideModal() {
       this.$refs.modal.hide();
+    },
+    load_avg(rating) {
+      if (rating.length == 0) {
+        return 0;
+      }
+      let rate = 0;
+      rating.forEach((data) => {
+        return (rate += data.pivot.rating);
+      });
+      return rate / rating.length;
     },
   },
   created() {

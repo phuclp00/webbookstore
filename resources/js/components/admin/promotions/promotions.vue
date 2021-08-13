@@ -11,6 +11,7 @@
           <th>ID</th>
           <th>Name</th>
           <th>Percentage Discount</th>
+          <th>Date Started</th>
           <th>Date Expired</th>
           <th>Date Create</th>
           <th>Modified By</th>
@@ -23,9 +24,16 @@
           <td>{{ value.name }}</td>
           <td>{{ value.percent + " %" }}</td>
           <td>
-            {{ value.date_expired }}
+            <span> {{ value.date_started }} </span>
+            <p v-if="value.date_started < moment()" class="bg-primary">
+              Started
+            </p>
+            <p v-else class="bg-info">Waiting</p>
+          </td>
+          <td>
+            <span> {{ value.date_expired }} </span>
             <p v-if="value.date_expired > moment()" class="bg-primary">
-              On Going
+              On Ready
             </p>
             <p v-else class="bg-danger">Expried</p>
           </td>
@@ -88,6 +96,7 @@
 
 <script>
 import moment from "moment";
+import { now } from "lodash";
 Vue.component(
   "group-input-tags",
   require("./group/promotion_group.vue").default
@@ -106,7 +115,7 @@ export default {
       return moment(date, "YYYY-MM-DD").format("DD/MM/YYYY");
     },
     moment() {
-      return moment().format("YYYY-MM-DD H:i:s");
+      return moment().format("YYYY-MM-DD H:m:s");
     },
     timeago(date) {
       return moment(date).startOf("hours").fromNow();

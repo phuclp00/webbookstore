@@ -1,4 +1,4 @@
-<section class="section-margin">
+{{-- <section class="section-margin">
     <h2 class="sr-only">Promotion Section</h2>
     <div class="container">
         <div class="promo-wrapper promo-type-four">
@@ -18,4 +18,4 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}

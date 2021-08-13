@@ -102,7 +102,7 @@
                         <input type="text" class="form-control" name="new_series" id="new_series"
                            value="{{ old('new_series') }}" readonly>
                         <label for="episode"> Number of episode: </label>
-                        <input type="number" name="episode" id="episode" class="form-control small-box"
+                        <input type="number" name="episode" id="episode" class="form-control small-box" step="0.1"
                            value="{{$book->episode}}">
                         @else
                         <div class="input-group">
@@ -144,9 +144,6 @@
                            @endforeach
                            @endisset
                         </select>
-                        <label for="new_format" style="font-style: italic"> Add new book format :</label>
-                        <input type="text" class="form-control" name="new_format" id="new_format"
-                           value="{{old('new_format')}}" readonly>
                      </div>
                      <div class="form-group">
                         <label>Number Of Pages:</label>
@@ -192,7 +189,7 @@
                            @endforeach
                         </select>
                      </div>
-                     @if ($book->translator !=null)
+                     @if ($book->translator->count()>0)
                      <input-tags type="translator" old_value="{{$book->book_id}}" status="1">
                         <slot name="header"></slot>
                      </input-tags>

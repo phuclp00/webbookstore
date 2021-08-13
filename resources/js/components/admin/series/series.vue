@@ -18,7 +18,7 @@
       <tr v-for="value in series" :key="value.id">
         <td>{{ value.id }}</td>
         <td>{{ value.name }}</td>
-        <td v-if="value.image == null || value.image == 'undefined'">
+        <td v-if="value.image == null || value.image == ''">
           <img
             src="/images/books/default.jpg"
             class="img-fluid avatar-100 rounded"
@@ -35,7 +35,7 @@
         <td>{{ datetime(value.created_at) }}</td>
         <td>
           {{ value.modified_by == null ? value.created_by : value.modified_by }}
-        </td> 
+        </td>
         <td>
           <div class="flex align-items-center list-user-action">
             <a

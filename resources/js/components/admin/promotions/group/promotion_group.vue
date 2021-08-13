@@ -93,7 +93,7 @@ export default {
         return this.makeToast("danger", "Select Promotions Is Required");
       } else {
         axios
-          .post("./promotions/option/books-multiple", {
+          .post("/admin/promotions/option/books-multiple", {
             type: this.selected + ": " + books,
             promotions: promotions,
           })

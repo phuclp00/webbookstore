@@ -26,18 +26,18 @@
                   class="ripple rippleEffect"></span><i class="las la-user-tie iq-arrow-left"></i><span>User</span><i
                   class="ri-arrow-right-s-line iq-arrow-right"></i></a>
             <ul id="userinfo" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
-               <li><a href="{{route('admin.users')}}"><i class="las la-th-list"></i>User List</a></li>
-               <li><a href="{{route('admin.users')}}"><i class="las la-th-list"></i>Guest List</a></li>
+               <li><a href="{{route('admin.users')}}"><i class="las la-th-list"></i>Manage User</a></li>
+               <li><a href="{{route('admin.users.admin')}}"><i class="las la-th-list"></i>Admin Account</a></li>
+               <li><a href="{{route('admin.users.rating')}}"><i class="las la-th-list"></i>Manage Rating</a></li>
             </ul>
          </li>
          <li>
-            <a href="#account" class="iq-waves-effect" data-toggle="collapse" aria-expanded="false"><span
-                  class="ripple rippleEffect"></span><i class="las la-user-tie iq-arrow-left"></i><span>Account</span><i
+            <a href="#order" class="iq-waves-effect" data-toggle="collapse" aria-expanded="false"><span
+                  class="ripple rippleEffect"></span><i class="las la-receipt"></i><span>Orders</span><i
                   class="ri-arrow-right-s-line iq-arrow-right"></i></a>
-            <ul id="account" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
-               <li><a href="{{route('admin.users')}}"><i class="las la-th-list"></i>User List</a></li>
-               <li><a href="{{route('admin.users')}}"><i class="las la-th-list"></i>Admin List</a></li>
-               <li><a href="{{route('admin.register')}}"><i class="las la-plus-circle"></i>Create Account</a></li>
+            <ul id="order" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle" style="">
+               <li><a href="{{route('admin.orders.ongoing.show')}}"><i class="las la-th-list"></i>OnGoing</a></li>
+               <li><a href="{{route('admin.orders.complete.show')}}"><i class="las la-th-list"></i>Complete</a></li>
             </ul>
          </li>
          <li>
@@ -73,9 +73,11 @@
                      </li>
                   </ul>
                </li>
-               <li><a href="#"><i class="ri-record-circle-line"></i>Order</a></li>
-               <li><a href="#"><i class="ri-record-circle-line"></i>Guest</a></li>
-               <li><a href="{{route('admin.account.old')}}"><i class="ri-record-circle-line"></i>Account</a></li>
+               <li><a href="{{route('admin.orders.old')}}"><i class="ri-record-circle-line"></i>Order</a></li>
+               <li><a href="{{route('admin.users.account.old')}}"><i class="ri-record-circle-line"></i>User List</a>
+               </li>
+               <li><a href="{{route('admin.users.admin.old')}}"><i class="ri-record-circle-line"></i>Admin Account</a>
+               </li>
             </ul>
          </li>
          <li><a href="{{route('folder')}}"><i class="fa fa-folder"></i>Folder Manager</a></li>

@@ -9,7 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
-        "algolia/algoliasearch-client-php": "^2.7",
+        "algolia/algoliasearch-client-php": "^3.0",
         "beyondcode/laravel-vouchers": "^2.0",
         "beyondcode/laravel-websockets": "^1.11",
         "bumbummen99/shoppingcart": "^3.0",
@@ -19,11 +19,11 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "google/apiclient": "^2.0",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.3",
         "inertiajs/inertia-laravel": "^0.2.4",
         "intervention/image": "^2.5",
         "kalnoy/nestedset": "^6.0",
-        "kjmtrue/vietnam-zone": "^1.0",
+        "laravel/cashier": "^13.3",
         "laravel/fortify": "^1.7",
         "laravel/framework": "^8.12",
         "laravel/jetstream": "^1.6",
@@ -36,7 +36,6 @@
         "league/flysystem-aws-s3-v3": "~1.0",
         "league/flysystem-cached-adapter": "^1.1",
         "livewire/livewire": "^2.0",
-        "monarobase/country-list": "^3.2",
         "nao-pon/flysystem-google-drive": "~1.1",
         "petercoles/multilingual-language-list": "^1.16",
         "predis/predis": "^1.1",
@@ -45,6 +44,7 @@
         "tightenco/ziggy": "^0.9.4",
         "twbs/bootstrap": "5.0.0-beta1",
         "unisharp/laravel-filemanager": "^2.2",
+        "vanthao03596/laravel-hanhchinhvn": "^1.1",
         "zgabievi/promocodes": "^8.1"
     },
     "require-dev": {

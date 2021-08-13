@@ -6,38 +6,22 @@
                                                                 "autoplay": true,
                                                                 "autoplaySpeed": 8000,
                                                                 "slidesToShow": 1,
-                                                                "dots":true
-                                                                }'>
-                    <div class="single-slide bg-image" data-bg="image/bg-images/home-2-slider-2.jpg">
+                                                                "dots":true}'>
+
+                    @foreach ($hero_item as $image )
+                    <div class="single-slide bg-image" data-bg="{{asset('images/bg-image/'.$image->thumb)}}">
                         <div class="home-content pl--30">
                             <div class="row">
                                 <div class="col-lg-7">
-                                    <span class="title-mid">Book Mockup</span>
-                                    <h2 class="h2-v2">Hardcover.</h2>
-                                    <p>Cover up front of book and
-                                        <br>leave summary</p>
-                                    <a href="shop-grid.html" class="btn btn-outlined--primary">
+                                    {!!$image->description!!}
+                                    <a href="{{$image->link}}" class="btn btn-outlined--primary">
                                         Shop Now
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="single-slide bg-image" data-bg="image/bg-images/home-2-slider-1.jpg">
-                        <div class="home-content pl--30">
-                            <div class="row">
-                                <div class="col-lg-7">
-                                    <span class="title-mid">Book Mockup</span>
-                                    <h2 class="h2-v2">Hardcover.</h2>
-                                    <p>Cover up front of book and
-                                        <br>leave summary</p>
-                                    <a href="shop-grid.html" class="btn btn-outlined--primary">
-                                        Shop Now
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

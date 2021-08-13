@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import { remove } from "lodash";
 export default {
   props: ["type", "old_value", "status"],
   data() {
@@ -107,10 +106,14 @@ export default {
     if (this.old_value) {
       this.get_id(this.type, this.old_value);
     }
-    this.get_list(this.type);
+    if (this.type) {
+      this.get_list(this.type);
+    }
   },
   updated() {
-    this.get_list(this.type);
+    if (this.type) {
+      this.get_list(this.type);
+    }
   },
 };
 </script>

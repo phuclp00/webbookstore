@@ -30,9 +30,15 @@
                            value="{{old('percent')}}" placeholder="Enter percentage discount at leats 5, maximum 99 ">
                      </div>
                      <div class="form-group">
+                        <label for="percent">Date Started</label>
+                        <input type="datetime-local" name="date_started" id="date_started"
+                           class="form-control small-box" value="{{old('date_started')}}"
+                           placeholder="Choose when the promotion period starts....">
+                     </div>
+                     <div class="form-group">
                         <label for="date_expired">Date Expired</label>
                         <input type="datetime-local" name="date_expired" id="date_expired"
-                           class="form-control small-box" min="5" max="99" value="{{old('date_expired')}}"
+                           class="form-control small-box" value="{{old('date_expired')}}"
                            placeholder="Choose a discount expiration date from now">
                      </div>
                      <div class="form-group">

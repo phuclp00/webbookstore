@@ -17,7 +17,6 @@ class CategoryModel extends Model
     use Searchable {
         Searchable::usesSoftDelete insteadof \Kalnoy\Nestedset\NodeTrait;
     }
-
     protected $table = "category";
     protected $primaryKey = "id";
     const UPDATED_AT = 'modified_at';
@@ -49,9 +48,17 @@ class CategoryModel extends Model
         'deleted_at' => 'datetime'
 
     ];
+    public function searchableAs()
+    {
+        return 'category';
+    }
     public function getRouteKeyName()
     {
         return 'id';
+    }
+    public function getScoutKey()
+    {
+        return $this->id;
     }
     public function isPublished()
     {
@@ -64,15 +71,33 @@ class CategoryModel extends Model
     public function toSearchableArray()
     {
         $array = $this->toArray();
+        $array['books'] =
+            $this->books->map(function ($data) {
+                return $data["book_name"];
+            })->toArray();
+        // $array['children'] =
+        //     $this->descendants->map(function ($data) {
+        //         return $data["name"];
+        //     })->toArray();
+        // $array['parent'] =
+        //     $this->ancestors->map(function ($data) {
+        //         return $data["name"];
+        //     })->toArray();
+        $array['categories']['level10'] = 'Books';
+        foreach (CategoryModel::defaultOrder()->ancestorsAndSelf($this->id) as $key => $value) {
+            $first = $key;
+            $last = $key + 1;
+            $array['categories']['level1' . $last] = $array['categories']['level1' . $first] . " > " . $value->name;
+        }
         return $array;
     }
     protected function makeAllSearchableUsing($query)
     {
-        return $query->with('book');
+        return $query->with('books');
     }
     public function getname()
     {
-        return $this->pub_name;
+        return $this->name;
     }
     public function getLftName()
     {
@@ -93,36 +118,11 @@ class CategoryModel extends Model
     {
         $this->setParentIdAttribute($value);
     }
-
     public function books()
     {
         return $this->hasMany(ProductModel::class, 'cat_id');
     }
-    public function listItems($params, $options, $stament = null, $number_stament = null)
-    {
-        //Tat debugbar
-        //\Debugbar::disable();
-        $result = null;
-        if ($options['task'] == "special-list-items-total") {
-            $result          =   ProductModel::where($params, $stament, $number_stament)->get("total");
-            return $result;
-        }
-        if ($options['task'] == "admin-list-items") {
-            $result          =   CategoryModel::all();
-            return $result;
-        }
-        if ($options['task'] == "frontend-list-items") {
-            $result          = CategoryModel::all();
-            return $result;
-        }
-        if ($options['task'] == "top-list-items") {
-            $result =
-                CategoryModel::orderBy('total', 'DESC')
-                ->limit($number_stament)
-                ->get();
-            return $result;
-        }
-    }
+
     /* Mo hinh parent-child de quy
     // public function child()
     // {

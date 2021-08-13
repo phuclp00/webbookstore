@@ -6,7 +6,7 @@
     :height="'auto'"
     :width="'80%'"
     :style="'z-index:1000'"
-    @closed="hideModal"
+    @closed="hideModal()"
   >
     <div class="container-fluid">
       <div class="row">
@@ -161,26 +161,21 @@
                                       <div class="col-6">
                                         <div class="mb-2">
                                           <h5 class="mb-1">
-                                            {{ item.book_name }}
+                                            {{
+                                              $root.truncate(
+                                                item.book_name,
+                                                50,
+                                                "..."
+                                              )
+                                            }}
                                           </h5>
-                                          <p
-                                            class="
-                                              font-size-13
-                                              line-height
-                                              mb-1
-                                            "
-                                          >
-                                            {{ item.book }}
-                                          </p>
                                           <div class="d-block line-height">
                                             <span
-                                              class="font-size-11 text-warning"
+                                              class="font-size-11 text-primary"
+                                              v-for="author in item.author"
+                                              :key="author.id"
                                             >
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
+                                              {{ author.name + " " }}
                                             </span>
                                           </div>
                                         </div>
@@ -267,7 +262,7 @@
                           </h3>
                         </div>
                         <b-overlay :show="check" rounded="sm">
-                           <div class="iq-card-body">
+                          <div class="iq-card-body">
                             <div class="row" v-if="child.books.length > 0">
                               <div
                                 v-for="item in child.books"
@@ -318,26 +313,21 @@
                                       <div class="col-6">
                                         <div class="mb-2">
                                           <h5 class="mb-1">
-                                            {{ item.book_name }}
+                                            {{
+                                              $root.truncate(
+                                                item.book_name,
+                                                50,
+                                                "..."
+                                              )
+                                            }}
                                           </h5>
-                                          <p
-                                            class="
-                                              font-size-13
-                                              line-height
-                                              mb-1
-                                            "
-                                          >
-                                            {{ item.book }}
-                                          </p>
                                           <div class="d-block line-height">
                                             <span
-                                              class="font-size-11 text-warning"
+                                              class="font-size-11 text-primary"
+                                              v-for="author in item.author"
+                                              :key="author.id"
                                             >
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
-                                              <i class="fa fa-star"></i>
+                                              {{ author.name + " " }}
                                             </span>
                                           </div>
                                         </div>
@@ -416,6 +406,7 @@
 <script>
 import moment from "moment";
 import book from "../../book/modal/book_detail.vue";
+import { values } from "lodash";
 export default {
   components: { book },
   props: ["detail"],
@@ -434,16 +425,6 @@ export default {
       // Khong su dung api call nen khong can xai
       //this.loading_books(item.id);
       this.check = false;
-      item.descendants.forEach((element) => {
-        if (element.books.length > 0) {
-          element.books.forEach((book) => {
-            let checked = item.books.includes(book) ? false : true;
-            if (checked) {
-              item.books.push(book);
-            }
-          });
-        }
-      });
       return (this.data = item);
     },
     moment: function () {
@@ -456,7 +437,7 @@ export default {
       }, 1000);
     },
     hideModal() {
-      return (this.list = []), (this.show = true), (this.mess = "");
+      return (this.data = this.detail), (this.show = true), (this.mess = "");
     },
     get_list_books(id) {
       console.log("Loading ......");
@@ -478,21 +459,23 @@ export default {
           return (result = cat);
         }
       });
-      result.descendants.forEach((element) => {
-        if (element.books.length > 0) {
-          element.books.forEach((book) => {
-            let checked = item.books.includes(book) ? false : true;
-            if (checked) {
-              item.books.push(book);
-            }
-          });
-        }
-      });
     },
     showModal(item) {
       this.book = item;
       this.$refs.reference.show_model(item);
     },
+  },
+
+  beforeUpdate() {
+    this.data.descendants.forEach((element) => {
+      if (element.books.length > 0) {
+        element.books.forEach((book) => {
+          if (this.data.books.includes(book) == false) {
+            this.data.books.push(book);
+          }
+        });
+      }
+    });
   },
 };
 </script>

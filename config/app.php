@@ -173,7 +173,6 @@ return [
         PeterColes\Languages\LanguagesServiceProvider::class,
         Gabievi\Promocodes\PromocodesServiceProvider::class,
 
-
         /*
          * Application Service Providers...
          */
@@ -186,7 +185,8 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
         App\Providers\GoogleDriveServiceProvider::class,
-        Monarobase\CountryList\CountryListServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
+
     ],
 
     /*
@@ -240,8 +240,9 @@ return [
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'ListLanguages' => PeterColes\Languages\LanguagesFacade::class,
-        'Countries' => Monarobase\CountryList\CountryListFacade::class,
         'Promocodes' => Gabievi\Promocodes\Facades\Promocodes::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+
     ],
 
 ];

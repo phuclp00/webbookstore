@@ -2,9 +2,11 @@
 
 namespace App\Console;
 
+use App\Models\BookPromotions;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use \Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Cache;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,7 +28,22 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-
+        $schedule->call(function () {
+            $data = BookPromotions::all();
+            $flag = false;
+            foreach ($data as $value) {
+                if ($value->date_expired <= now()) {
+                    $flag = true;
+                    $value->books()->update(['promotion_id' => null]);
+                }
+            }
+            if ($flag) {
+                Cache::forget('category.books.all');
+                Cache::forget('product.flashsale');
+            }
+        })->description('Check Promotion Expired')->hourly()
+            ->emailOutputTo('locdo255@gmail.com')
+            ->emailOutputOnFailure('locdo255@gmail.com');
         // Auto start queue without php artisan queue:work on sever 
         $schedule->command('queue:restart')
             ->everyFiveMinutes();

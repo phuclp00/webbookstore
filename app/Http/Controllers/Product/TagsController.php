@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 class TagsController extends Controller
 {
-    private $subpatchViewController = '.page';
-    private $pathViewController = 'public.';
-
     public function index()
     {
         $tags = MainModel::whereisLeaf()->get();
@@ -28,7 +25,12 @@ class TagsController extends Controller
     }
     public function show(Request $request)
     {
-        return MainModel::find($request->id);
+        try {
+            $tags = MainModel::find($request->id)->load('books.author');
+            return \response(['status' => 'success', 'data' => $tags->books, 'mess' => "Loading book success"]);
+        } catch (\Throwable $th) {
+            return \response(['status' => 'danger', 'mess' => "Loading book failed with error" . $th->getMessage()]);
+        }
     }
     public function add_tags(TagsRequest $request)
     {

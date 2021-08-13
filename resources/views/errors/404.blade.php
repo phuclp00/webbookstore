@@ -1,33 +1,15 @@
-﻿@extends('master')
-	@section('content')
-	@include('public.slide.slide_header')
-		<!-- Start Error Area -->
-		<section class="page_error section-padding--lg bg--white">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="error__inner text-center">
-							<div class="error__logo">
-								<a href="#"><img src="{{asset('images/others/404.png')}}" alt="error images"></a>
-							</div>
-							<div class="error__content">
-								<h2>error - not found</h2>
-								<p>It looks like you are lost! Try searching here</p>
-								<div class="search_form_wrapper">
-									<form action="#">
-										<div class="form__box">
-											<input type="text" placeholder="Search...">
-											<button><i class="fa fa-search"></i></button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
+﻿<div class="wrapper">
+	<div class="container p-0">
+		<div class="row no-gutters height-self-center">
+			<div class="col-sm-12 text-center align-self-center">
+				<div class="iq-error position-relative">
+					<img src="images/error/404.png" class="img-fluid iq-error-img" alt="">
+					<h2 class="mb-0 mt-4">Oops! This Page is Not Found.</h2>
+					<p>The requested page dose not exist.</p>
+					<a class="btn btn-primary mt-3" href="{{route('home')}}"><i class="ri-home-4-line"></i>Back to
+						Home</a>
 				</div>
 			</div>
-		</section>
-		<!-- End Error Area -->
-	@endsection
-
-		
+		</div>
+	</div>
+</div>

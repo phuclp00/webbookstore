@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\SlideModel as MainModel;
+use App\Models\SlideModel;
 
 class SilderController extends Controller
 {
-    private $pathViewController = 'admin.slider';
-    private $controller_name    = 'slider';
+
 
     public function __construct()
     {
@@ -16,11 +15,8 @@ class SilderController extends Controller
     }
     public function slide_homepage()
     {
-        $mainModel =  new MainModel();
-        $slide_items = $mainModel->listItems(null,['task'=>"frontend-list-items"]);
-        
-         view()->share('slide_items', $slide_items);
-        
+        $data = SlideModel::all();
+        view()->share('hero_item', $data);
     }
     public function form(Request $request)
     {

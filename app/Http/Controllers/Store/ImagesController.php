@@ -47,7 +47,7 @@ class ImagesController extends Controller
 
         $folder = $option == null ? "books" : $option;
         //File extension
-        $ext = $request->getClientOriginalExtension();
+        $ext = $request->extension();
         //Rename file 
         $path = "images/$folder/$this->folder/" . md5($request->getClientOriginalName()) . "." . $ext;
         // Resize file
@@ -66,7 +66,7 @@ class ImagesController extends Controller
             $this->trash($file_old);
         };
         //File extension
-        $ext = $file_new->getClientOriginalExtension();
+        $ext = $file_new->extension();
         //Rename file 
         $path = "images/$folder/$this->folder/" . md5($file_new->getClientOriginalName()) . "." . $ext;
         // Resize file

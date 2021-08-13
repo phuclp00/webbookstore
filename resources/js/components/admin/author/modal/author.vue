@@ -43,10 +43,9 @@
                                 <a href="javascript:void(0);">
                                   <img
                                     v-if="
-                                      data.image == null ||
-                                      data.image == 'undefined'
+                                      data.image == null || data.image == ''
                                     "
-                                    src="/images/books/default.jpg"
+                                    src="/images/users/user_default.svg"
                                     alt="Book Image"
                                   />
                                   <img
@@ -189,17 +188,22 @@
                                 </div>
                                 <div class="col-6">
                                   <div class="mb-2">
-                                    <h5 class="mb-1">{{ item.book_name }}</h5>
-                                    <p class="font-size-13 line-height mb-1">
-                                      {{ item.book }}
-                                    </p>
+                                    <h5 class="mb-1">
+                                      {{
+                                        $root.truncate(
+                                          item.book_name,
+                                          50,
+                                          "..."
+                                        )
+                                      }}
+                                    </h5>
                                     <div class="d-block line-height">
-                                      <span class="font-size-11 text-warning">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
+                                      <span
+                                        class="font-size-11 text-primary"
+                                        v-for="author in item.author"
+                                        :key="author.id"
+                                      >
+                                        {{ author.name + " " }}
                                       </span>
                                     </div>
                                   </div>

@@ -19,6 +19,7 @@ class BookPromotions extends Model
         'percent',
         'content',
         'date_expired',
+        'date_started',
         'description',
         'created_by',
         'modified_by',

@@ -12,7 +12,12 @@
         <div class="col-md-12">
           <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
             <div
-              class="iq-card-header d-flex justify-content-between align-items-center"
+              class="
+                iq-card-header
+                d-flex
+                justify-content-between
+                align-items-center
+              "
             >
               <h4 class="card-title mb-0">Translator Information Preview</h4>
             </div>
@@ -23,7 +28,12 @@
                     <!-- Image -->
                     <div class="col-md-4">
                       <div
-                        class="iq-card-transparent iq-card-block iq-card-stretch iq-card-height"
+                        class="
+                          iq-card-transparent
+                          iq-card-block
+                          iq-card-stretch
+                          iq-card-height
+                        "
                       >
                         <div class="row align-items-center">
                           <div class="col">
@@ -36,7 +46,8 @@
                                       data.image == null ||
                                       data.image == 'undefined'
                                     "
-                                    src="/images/books/default.jpg"
+                                    src="/images/users/user_default.svg"
+                                    class="img-fluid w-100 rounded"
                                     alt="Book Image"
                                   />
                                   <img
@@ -55,7 +66,12 @@
                     <!-- Content -->
                     <div class="col-md-8">
                       <div
-                        class="iq-card-transparent iq-card-block iq-card-stretch iq-card-height"
+                        class="
+                          iq-card-transparent
+                          iq-card-block
+                          iq-card-stretch
+                          iq-card-height
+                        "
                       >
                         <div class="iq-card-body p-0">
                           <p style="text-align: right">
@@ -111,7 +127,13 @@
                     class="iq-card iq-card-block iq-card-stretch iq-card-height"
                   >
                     <div
-                      class="iq-card-header d-flex justify-content-between align-items-center position-relative"
+                      class="
+                        iq-card-header
+                        d-flex
+                        justify-content-between
+                        align-items-center
+                        position-relative
+                      "
                     ></div>
                     <div class="iq-header-title">
                       <h3 class="card-title mb-0">
@@ -126,12 +148,23 @@
                           class="col-sm-6 col-md-4 col-lg-3"
                         >
                           <div
-                            class="iq-card iq-card-block iq-card-stretch iq-card-height browse-bookcontent"
+                            class="
+                              iq-card
+                              iq-card-block
+                              iq-card-stretch
+                              iq-card-height
+                              browse-bookcontent
+                            "
                           >
                             <div class="iq-card-body p-0">
                               <div class="d-flex align-items-center">
                                 <div
-                                  class="col-6 p-0 position-relative image-overlap-shadow"
+                                  class="
+                                    col-6
+                                    p-0
+                                    position-relative
+                                    image-overlap-shadow
+                                  "
                                 >
                                   <a href="javascript:void();"
                                     ><img
@@ -156,17 +189,22 @@
                                 </div>
                                 <div class="col-6">
                                   <div class="mb-2">
-                                    <h5 class="mb-1">{{ item.book_name }}</h5>
-                                    <p class="font-size-13 line-height mb-1">
-                                      {{ item.book }}
-                                    </p>
+                                    <h5 class="mb-1">
+                                      {{
+                                        $root.truncate(
+                                          item.book_name,
+                                          50,
+                                          "..."
+                                        )
+                                      }}
+                                    </h5>
                                     <div class="d-block line-height">
-                                      <span class="font-size-11 text-warning">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
+                                      <span
+                                        class="font-size-11 text-primary"
+                                        v-for="author in item.author"
+                                        :key="author.id"
+                                      >
+                                        {{ author.name + " " }}
                                       </span>
                                     </div>
                                   </div>
@@ -176,17 +214,32 @@
                                   >
                                     <span class="pr-1 old-price">{{
                                       item.price
+                                        | currency("đ", 0, {
+                                          symbolOnLeft: false,
+                                          spaceBetweenAmountAndSymbol: true,
+                                        })
                                     }}</span>
                                     <h6>
-                                      <b>{{ item.promotion_price }}</b>
+                                      <b>{{
+                                        item.promotion_price
+                                          | currency("đ", 0, {
+                                            symbolOnLeft: false,
+                                            spaceBetweenAmountAndSymbol: true,
+                                          })
+                                      }}</b>
                                     </h6>
                                   </div>
-                                  <div
-                                    v-else
-                                    class="price d-flex align-items-center"
-                                  >
+                                  <div v-else class="price align-items-center">
                                     <h6>
-                                      <b>{{ item.price }}</b>
+                                      <span>
+                                        <b>{{
+                                          item.price
+                                            | currency("đ", 0, {
+                                              symbolOnLeft: false,
+                                              spaceBetweenAmountAndSymbol: true,
+                                            })
+                                        }}</b>
+                                      </span>
                                     </h6>
                                   </div>
                                 </div>

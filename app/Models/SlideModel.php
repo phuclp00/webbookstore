@@ -10,24 +10,7 @@ class SlideModel extends Model
     //DEFINED DATABASE TABLE
     protected $table = "slider";
     protected $primaryKey = "id";
-    const CREATED_AT = 'created';
-    const UPDATED_AT = 'modified';
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'modified_at';
     public $timestamps = false;
-
-    //FUNCTION
-
-    public function listItems($params, $options)
-    {
-        //Tat debugbar
-        //\Debugbar::disable();
-        $result = null;
-        if ($options['task'] == "admin-list-items") {
-            $result          =   SlideModel::all();
-        }
-        if ($options['task'] == "frontend-list-items") {
-            $result          = SlideModel::all();
-        }
-        return $result;
-    }
- 
 }

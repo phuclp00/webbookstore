@@ -8,12 +8,8 @@ use App\Http\Controllers\SilderController;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
-use App\Models\Sanctum\PersonalAccessToken;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\Sanctum;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,16 +30,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $list_items_product = (new ShopController)->all_list_view();
-        $list_items_categoy = (new CategoryController)->list_category();
-        $top_item_category = (new CategoryController)->top_list_category();
-        $slide_items = (new SilderController)->slide_homepage();
-
         date_default_timezone_set('Asia/Ho_Chi_Minh');
-
         Schema::defaultStringLength(255);
         Paginator::useBootstrap();
 
+        (new ShopController)->all_list_view();
+        (new CategoryController)->list_category();
+        (new CategoryController)->top_list_category();
+        (new SilderController)->slide_homepage();
         Validator::extend('date_multi_format', function ($attribute, $value, $formats) {
             // iterate through all formats
             foreach ($formats as $format) {
@@ -58,13 +52,6 @@ class AppServiceProvider extends ServiceProvider
             }
             // value did not match any of the provided formats, so return false=validation failed
             return false;
-        });
-
-        //Debug sql 
-        DB::listen(function ($sql) {
-            Log::info($sql->sql);
-            Log::info($sql->bindings);
-            Log::info($sql->time);
         });
     }
 }

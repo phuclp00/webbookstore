@@ -21,9 +21,9 @@
       <tr v-for="value in publishers" :key="value.id">
         <td>{{ value.id }}</td>
         <td>{{ value.name }}</td>
-        <td v-if="value.image == null || value.image == 'undefined'">
+        <td v-if="value.image == null || value.image == ''">
           <img
-            src="/images/books/default.jpg"
+            src="/images/users/user_default.svg"
             class="img-fluid avatar-100 rounded"
             alt="publisher-profile"
           />

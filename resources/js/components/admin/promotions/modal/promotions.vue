@@ -150,42 +150,69 @@
                                     >
                                   </div>
                                 </div>
-                                <div class="col-6">
-                                  <div class="mb-2">
-                                    <h5 class="mb-1">{{ item.book_name }}</h5>
-                                    <p class="font-size-13 line-height mb-1">
-                                      {{ item.book }}
-                                    </p>
-                                    <div class="d-block line-height">
-                                      <span class="font-size-11 text-warning">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div
-                                    v-if="item.promotion_price != null"
-                                    class="price d-flex align-items-center"
-                                  >
-                                    <span class="pr-1 old-price">{{
-                                      item.price
-                                    }}</span>
-                                    <h6>
-                                      <b>{{ item.promotion_price }}</b>
-                                    </h6>
-                                  </div>
-                                  <div
-                                    v-else
-                                    class="price d-flex align-items-center"
-                                  >
-                                    <h6>
-                                      <b>{{ item.price }}</b>
-                                    </h6>
-                                  </div>
-                                </div>
+                                  <div class="col-6">
+                                        <div class="mb-2">
+                                          <h5 class="mb-1">
+                                            {{
+                                              $root.truncate(
+                                                item.book_name,
+                                                50,
+                                                "..."
+                                              )
+                                            }}
+                                          </h5>
+                                          <div class="d-block line-height">
+                                            <span
+                                              class="font-size-11 text-primary"
+                                              v-for="author in item.author"
+                                              :key="author.id"
+                                            >
+                                              {{ author.name + " " }}
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div
+                                          v-if="item.promotion_price != null"
+                                          class="
+                                            price
+                                            d-flex
+                                            align-items-center
+                                          "
+                                        >
+                                          <span class="pr-1 old-price">{{
+                                            item.price
+                                              | currency("đ", 0, {
+                                                symbolOnLeft: false,
+                                                spaceBetweenAmountAndSymbol: true,
+                                              })
+                                          }}</span>
+                                          <h6>
+                                            <b>{{
+                                              item.promotion_price
+                                                | currency("đ", 0, {
+                                                  symbolOnLeft: false,
+                                                  spaceBetweenAmountAndSymbol: true,
+                                                })
+                                            }}</b>
+                                          </h6>
+                                        </div>
+                                        <div
+                                          v-else
+                                          class="price align-items-center"
+                                        >
+                                          <h6>
+                                            <span>
+                                              <b>{{
+                                                item.price
+                                                  | currency("đ", 0, {
+                                                    symbolOnLeft: false,
+                                                    spaceBetweenAmountAndSymbol: true,
+                                                  })
+                                              }}</b>
+                                            </span>
+                                          </h6>
+                                        </div>
+                                      </div>
                               </div>
                             </div>
                           </div>

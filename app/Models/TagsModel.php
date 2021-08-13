@@ -96,7 +96,7 @@ class TagsModel extends Model
 
     public function books()
     {
-        return $this->belongsToMany(ProductModel::class, 'book_tags', 'id', 'id');
+        return $this->belongsToMany(ProductModel::class, 'book_tags', 'tags_id', 'book_id');
     }
 
     /* Mo hinh parent-child de quy

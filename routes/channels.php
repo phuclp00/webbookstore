@@ -19,6 +19,12 @@ use Illuminate\Support\Facades\Auth;
 Broadcast::channel('App.Models.UserModel.{id}', function ($user, $id) {
     return true;
 });
+Broadcast::channel('App.Models.Order.{id}', function ($user, $id) {
+    return true;
+});
 Broadcast::channel('user-registed', function ($user) {
+    return true;
+});
+Broadcast::channel('order-complete', function ($user) {
     return true;
 });

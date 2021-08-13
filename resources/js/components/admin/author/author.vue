@@ -20,7 +20,7 @@
         <td>{{ value.name }}</td>
         <td v-if="value.image == null || value.image == 'undefined'">
           <img
-            src="/images/books/default.jpg"
+            src="/images/users/user_default.jpg"
             class="img-fluid avatar-100 rounded"
             alt="author-profile"
           />

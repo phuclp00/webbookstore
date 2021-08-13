@@ -24,12 +24,12 @@ class Promotions_Update extends FormRequest
      */
     public function rules()
     {
-        $current_date = Carbon::now()->format('Y-m-d\TH:i');
         return [
             'id' => 'required',
             'name' => ['required', 'not_regex:/[\s]{2,}|^[\s]/'],
             'percent' => ['required', 'numeric', 'between:5,99'],
-            'date_expired' => ['required', 'date_format:"Y-m-d\TH:i"', 'after:date_format:"H:i"'],
+            'date_started' => ['required', 'date_format:"Y-m-d\TH:i"', 'after:' . now()],
+            'date_expired' => ['required', 'date_format:"Y-m-d\TH:i"', 'after:date_started'],
             'content' => ['nullable', 'not_regex:/<\?php(.+?)\?>|<script\b[^>]*>[\s\S]*?<\/script\b[^>]*>/'],
         ];
     }
