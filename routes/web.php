@@ -181,6 +181,7 @@ Route::group(['prefix' => 'shop'], function () {
     Route::post('/product/check-role-review', [ShopController::class, 'check_role_review']);
     Route::post('/product/check-rating-review', [ShopController::class, 'check_rating']);
     Route::post('/product/rating', [ProductController::class, 'rating'])->middleware('auth.basic');
+    Route::delete('/product/rating{id}', [RatingController::class, 'user_delete_rating']);
 });
 //====================================== - ACCOUNT ========================================================//
 
@@ -200,6 +201,7 @@ Route::group(['prefix' => 'my-account', 'middleware' => ['auth.basic']], functio
     Route::post('/address-remove', [UserController::class, 'address_delete']);
     Route::post('/address-add', [UserController::class, 'address_add']);
     Route::post('/phone-set-default', [UserController::class, 'set_default_phone']);
+    Route::delete('/phone-delete={number}', [UserController::class, 'phone_delete']);
     Route::post('password/update', [UserController::class, 'update_password']);
 
     //Favorite
@@ -218,6 +220,7 @@ Route::group(['prefix' => 'my-account', 'middleware' => ['auth.basic']], functio
 
     //Orther
     Route::post('/orders', [OrderController::class, 'show_order']);
+    Route::get('total-used', [UserController::class, 'total_money_used']);
     Route::post('/logout', [LoginController::class, 'log_out'])->name('login.logout');
 });
 //===================================ADMIN ===========================================================================//

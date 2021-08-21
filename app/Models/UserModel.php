@@ -132,7 +132,7 @@ class UserModel extends Authenticatable implements MustVerifyEmail
     }
     public function address()
     {
-        return $this->hasMany(UserAddress::class, 'user_id')->withTrashed();
+        return $this->hasMany(UserAddress::class, 'user_id');
     }
     public function phone()
     {

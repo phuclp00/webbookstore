@@ -129,7 +129,7 @@ class PromotionsController extends Controller
             $promotion = Promotions::where('name', $request->promotions)->first();
             \preg_match('/(?<type>\w*):(?<data>.*)/', $request->type, $type);
             event(new PromotionStart($promotion, $type, Auth::user()));
-            $time_remaining = now() < $promotion->date_started ? now()->diffInMinutes($promotion->date_started) : "On Ready Now !";
+            $time_remaining = now() < $promotion->date_started ? now()->diffInMinutes($promotion->date_started) . " minutes !" : "On Ready Now !";
             return \response()->json([
                 "result" => Promotions::all(),
                 "mess" => "Promotions added to the book was successfull ! Waiting timne to start the remaining promotion :" . $time_remaining,

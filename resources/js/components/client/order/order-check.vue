@@ -24,20 +24,23 @@
             <div class="order-complete-message text-center m-md-5">
               <h2>Kết quả hiện thị cho đơn hàng :{{ order.id }}</h2>
               <p>Trạng thái đơn hàng : {{ order.status.name }}</p>
-              <button
-                class="btn btn-outline-danger"
-                v-if="order.status.percent <= 70"
-                @click="showModal()"
-              >
-                Yêu cầu hủy đơn hàng
-              </button>
-              <button
-                class="btn btn-outline-danger"
-                v-if="order.status.percent == 100"
-                @click="showModal()"
-              >
-                Trả hàng
-              </button>
+              <div v-if="check_status(order)">
+                <button
+                  class="btn btn-outline-danger"
+                  v-if="order.status.percent <= 70"
+                  @click="showModal()"
+                >
+                  Yêu cầu hủy đơn hàng
+                </button>
+                <button
+                  class="btn btn-outline-danger"
+                  v-if="order.status.percent == 100"
+                  @click="showModal()"
+                >
+                  Trả hàng
+                </button>
+              </div>
+
               <b-progress
                 :value="order.status.percent"
                 :variant="set_status(order.status.percent)"
@@ -189,6 +192,7 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   data() {
     return {
@@ -209,6 +213,12 @@ export default {
   },
   computed: {},
   methods: {
+    check_status(order) {
+      let time = moment().diff(order.created_at, "days");
+      let complete = order.status.percent;
+      if (complete == 100 && time > 7) return false;
+      return true;
+    },
     find() {
       this.loading = true;
       axios.get("/order-finding/" + this.value).then((response) => {

@@ -45,7 +45,7 @@ class VoucherCreateNotification_toAdmin extends Notification
     {
         return [
             'thread' => $this->user->user_id,
-            'data' => 'User:' . $this->user->email . ' received voucher code ' . $this->voucher->code . ' successfully'
+            'data' => 'User:' . $this->user->email . ' received voucher code ' . $this->voucher[0]->code . ' successfully'
         ];
     }
     public function toBroadcast($notifiable)

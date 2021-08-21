@@ -52,7 +52,7 @@ class OrderCancelNotification extends Notification
     {
         return [
             'thread' => $this->order->id,
-            'data' => 'Order ' . $this->order->id . ' has been cancelled by' . $this->order->modified_by . '!'
+            'data' => 'Đơn hàng ' . $this->order->id . ' của bạn vừa bị hủy bởi' . $this->order->deleted_by . '! Vui lòng liên hệ bộ phận CSKH để biết thêm chi tiết !'
         ];
     }
 

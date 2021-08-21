@@ -10,6 +10,7 @@ use App\Models\Guest;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\Models\UserAddress;
+use App\Models\UserModel;
 use BeyondCode\Vouchers\Facades\Vouchers;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -26,20 +27,28 @@ class PaypalController extends Controller
             $cart = $request->cart;
             $voucher = $request->voucher != null ? Vouchers::check($request->voucher) : null;
             DB::beginTransaction();
-            $shipping = UserAddress::create([
-                'address_line_1' => Arr::get($data, 'purchase_units.0.shipping.address.address_line_1'),
-                'address_line_2' => Arr::get($data, 'purchase_units.0.shipping.address.address_line_2'),
-                'wards' => null,
-                'district' => Arr::get($data, 'purchase_units.0.shipping.address.admin_area_2'),
-                'city' => Arr::get($data, 'purchase_units.0.shipping.address.admin_area_1'),
-                'country' => Arr::get($data, 'purchase_units.0.shipping.address.country_code'),
-                'zip_code' => Arr::get($data, 'purchase_units.0.shipping.address.postal_code'),
-            ]);
+
             if (Auth::check()) {
                 $user = Auth::user();
-                $shipping->user_id = Auth::user()->user_id;
-                $shipping->save();
+                $shipping = $user->address()->firstOrCreate([
+                    'address_line_1' => strtolower(trim(Arr::get($data, 'purchase_units.0.shipping.address.address_line_1'))),
+                    'address_line_2' => strtolower(trim(Arr::get($data, 'purchase_units.0.shipping.address.address_line_2'))),
+                    'wards' => null,
+                    'district' => (trim(Arr::get($data, 'purchase_units.0.shipping.address.admin_area_2'))),
+                    'city' => (trim(Arr::get($data, 'purchase_units.0.shipping.address.admin_area_1'))),
+                    'country' => (trim(Arr::get($data, 'purchase_units.0.shipping.address.country_code'))),
+                    'zip_code' => (trim(Arr::get($data, 'purchase_units.0.shipping.address.postal_code'))),
+                ]);
             } else {
+                $shipping = UserAddress::create([
+                    'address_line_1' => Arr::get($data, 'purchase_units.0.shipping.address.address_line_1'),
+                    'address_line_2' => Arr::get($data, 'purchase_units.0.shipping.address.address_line_2'),
+                    'wards' => null,
+                    'district' => Arr::get($data, 'purchase_units.0.shipping.address.admin_area_2'),
+                    'city' => Arr::get($data, 'purchase_units.0.shipping.address.admin_area_1'),
+                    'country' => Arr::get($data, 'purchase_units.0.shipping.address.country_code'),
+                    'zip_code' => Arr::get($data, 'purchase_units.0.shipping.address.postal_code'),
+                ]);
                 $user = Guest::firstorCreate([
                     'full_name' => strtolower(trim(Arr::get($data, 'purchase_units.0.shipping.name.full_name'))),
                     'ip_address' => $request->ip(),

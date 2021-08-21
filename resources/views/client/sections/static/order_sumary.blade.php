@@ -20,7 +20,14 @@
             <div class="col-12">
                 <div class="order-complete-message text-center">
                     <h1>Cảm Ơn Bạn Đã Mua Hàng !</h1>
-                    <p>Đơn hàng của bạn đã được đặt thành công và đang chờ xác nhận.</p>
+                    @if ($order->deleted_at)
+                    <p class="text-danger">Đơn hàng này đã bị hủy, vui lòng liên hệ bộ phận chăm sóc khách hàng
+                        để được tư vấn !</p>
+                    @elseif ($order->status->percent <100) <p>Đơn hàng của bạn đã được đặt thành công và đang chờ xác
+                        nhận.</p>
+                        @else
+                        <p>Đơn hàng của bạn đã hoàn thành ! ^^</p>
+                        @endif
                 </div>
                 <ul class="order-details-list">
                     <li>Mã Đơn Hàng: <strong>{{$order->id}}</strong></li>
@@ -35,24 +42,35 @@
                         </b>
                     </li>
                     <li>Số điện thoại : <b>{{$phone}}</b></li>
+                    <li>Email: <b>{{$email}}</b></li>
                 </ul>
                 <h3 class="order-table-title">Chi Tiết Đơn Hàng</h3>
                 <div class="table-responsive">
                     <table class="table order-details-table">
                         <thead>
                             <tr>
-                                <th>Sản Phẩm</th>
-                                <th>Số Tiền</th>
+                                <th>Danh Sách Chi Tiết</th>
+                                <th>Giá Tiền</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody><?php $stt=1?>
                             @foreach ($order->books as $item )
                             <tr>
                                 <td>
-                                    <a href="single-product.html">{{$item->book_name}}</a>
-                                    <strong>× {{$item->pivot->quantity}}</strong>
+                                    <ul>
+                                        <li><a href="{{asset('shop/'.$item->book_name)}}">Sản phẩm {{$stt++}}:
+                                                {{$item->book_name}}</a>
+                                            <strong>× SL: {{$item->pivot->quantity}}</strong></li>
+                                        <li>
+                                            <small class="text-danger">Lưu ý: Giá của sản phẩm là giá bán hiện tại
+                                                của cửa hàng và không
+                                                ảnh
+                                                hưởng đến giá trị của đơn hàng</small>
+                                        </li>
+                                    </ul>
                                 </td>
-                                <td><span>{{number_format($item->price,0,".",".")}} đ</span></td>
+                                <td><span>{{number_format($item->promotion?$item->price - ($item->price *($item->promotion->percent/100)):$item->price,0,".",".")}}
+                                        đ</span></td>
 
                             </tr>
                             @endforeach
@@ -64,7 +82,7 @@
                             </td>
                             </tr> --}}
                             <tr>
-                                <th>Hình Thức Vận Chuyển: {{$order->shipping->method}}</th>
+                                <th>Hình Thức Vận Chuyển: <b>{{$order->shipping->method}}</b></th>
                                 <td>{{number_format($order->shipping->price,0,".",".")}} đ</td>
                             </tr>
                             @if ($order->voucher_id !=null)
@@ -78,7 +96,7 @@
                             @endif
 
                             <tr>
-                                <th>Tổng:</th>
+                                <th>Tổng giá trị thực của đơn hàng :</th>
                                 <td><span>{{number_format($order->final_price,0,".",".")}} đ</span>
                                 </td>
                             </tr>

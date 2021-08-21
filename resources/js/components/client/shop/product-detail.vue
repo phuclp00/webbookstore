@@ -273,30 +273,39 @@
                 <div class="avatar">
                   <img
                     :src="
-                      '/' +
-                      (rating.image != null
+                      rating.image != null
                         ? rating.image
-                        : 'images/users/user_default.svg')
+                        : '/images/users/user_default.svg'
                     "
                     :alt="rating.user_name"
                   />
                 </div>
                 <div class="text">
-                  <div class="rating-block mb--15">
-                    <span
-                      v-for="index in 5"
-                      :key="index"
-                      :class="
-                        index > rating.pivot.rating
-                          ? 'ion-android-star-outline'
-                          : ' ion-android-star-outline star_on'
-                      "
-                    ></span>
+                  <div class="row">
+                    <div class="col rating-block mb--15">
+                      <span
+                        v-for="index in 5"
+                        :key="index"
+                        :class="
+                          index > rating.pivot.rating
+                            ? 'ion-android-star-outline'
+                            : ' ion-android-star-outline star_on'
+                        "
+                      ></span>
+                    </div>
+                    <div class="col">
+                      <a
+                        href="javascript:void(0)"
+                        @click="deleted_rating(rating.pivot.id)"
+                        class="float-right text-danger"
+                        >X</a
+                      >
+                    </div>
                   </div>
                   <h5 class="author">
                     {{ rating.email }} –
                     <span class="font-weight-400">{{
-                      rating.pivot.created_at
+                      $root.datetime(rating.pivot.created_at)
                     }}</span>
                   </h5>
                   <h6 class="font-weight-bold">{{ rating.pivot.title }}</h6>
@@ -434,6 +443,15 @@ export default {
     },
   },
   methods: {
+    deleted_rating(id) {
+      axios.delete("/shop/product/rating" + id).then((response) => {
+        this.$root.makeToast(response.data.status, response.data.mess);
+
+        if (response.data.status == "success") {
+          window.location.reload();
+        }
+      });
+    },
     check_quantity() {
       if (this.quantity < 1) {
         this.quantity = 1;

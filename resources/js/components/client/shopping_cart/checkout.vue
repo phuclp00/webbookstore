@@ -256,6 +256,16 @@ export default {
               "Kiểm tra lại số lượng sản phẩm trong giỏ hàng của bạn ! Vui lòng Liên hệ bộ phận CSKH để được giải đáp thắc mắc !"
             );
           }
+          if(this.user){
+ if (this.user.phone.length == 0) {
+            check = false;
+            return this.$root.makeToast(
+              "danger",
+              "Tài khoản này vẫn chưa có sđt mặc định, vui lòng cập nhật số điện thoại của bạn trước khi đặt hàng!"
+            );
+          }
+          }
+      
         });
         if (check) {
           axios

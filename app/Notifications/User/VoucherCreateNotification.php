@@ -58,7 +58,7 @@ class VoucherCreateNotification extends Notification
     {
         return [
             'thread' => $this->user->user_id,
-            'data' => 'Bạn vừa nhận được 1 mã giảm giá :' . $this->voucher->code . 'từ quản trị viên !'
+            'data' => 'Bạn vừa nhận được 1 mã giảm giá :' . $this->voucher[0]->code . 'từ quản trị viên !'
         ];
     }
     public function toBroadcast($notifiable)

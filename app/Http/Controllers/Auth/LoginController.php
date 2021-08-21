@@ -16,6 +16,7 @@ use App\Http\Resources\User;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 class LoginController extends Controller
@@ -32,7 +33,6 @@ class LoginController extends Controller
         try {
             $result = $request->only('email', 'password');
             $option = $request->remember == "on" ? true : false;
-
             if (Auth::attempt(
                 [
                     'email' => $result['email'],

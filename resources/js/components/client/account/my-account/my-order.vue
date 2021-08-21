@@ -5,15 +5,15 @@
       <table class="table table-bordered">
         <thead class="thead-light">
           <tr>
-            <th>No</th>
-            <th>Voucher Used</th>
-            <th>Shipping Method</th>
-            <th>Payment Method</th>
-            <th>Status</th>
-            <th>Final Price</th>
-            <th>Note</th>
-            <th>Created At</th>
-            <th>Action</th>
+            <th>Mã đơn</th>
+            <th>Mã khuyến mãi</th>
+            <th>Hình thức vận chuyển</th>
+            <th>Hình thức thanh toán</th>
+            <th>Tình Trạng</th>
+            <th>Tổng Tiền</th>
+            <th>Ghi chú</th>
+            <th>Ngày tạo</th>
+            <th>Thao tác</th>
           </tr>
         </thead>
         <tbody>
@@ -21,11 +21,11 @@
             <td>{{ order.id }}</td>
             <td>
               <span v-if="order.vouchers == null"
-                >This order not use voucher</span
+                >Đơn hàng này không sử dụng mã khuyến mãi</span
               >
-              <span v-else
+              <span v-else class="text-danger"
                 >{{ order.vouchers.code }} <br />
-                {{ order.vouchers.data.percent }} % discount</span
+                Giảm giá: {{ order.vouchers.data.percent }} %</span
               >
             </td>
             <td>{{ order.shipping.method }}</td>
@@ -39,7 +39,9 @@
             <td>{{ order.note }}</td>
             <td>{{ $root.datetime(order.created_at) }}</td>
             <td>
-              <a :href="'/order-summary/order=' + order.id" class="btn">View</a>
+              <a :href="'/order-summary/order=' + order.id" class="btn"
+                >Xem chi tiết</a
+              >
             </td>
           </tr>
         </tbody>
@@ -72,4 +74,8 @@ export default {
 </script>
 
 <style>
+.table-responsive {
+  overflow-y: auto;
+  max-height: 750px;
+}
 </style>

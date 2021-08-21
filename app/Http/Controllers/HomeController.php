@@ -145,7 +145,7 @@ class HomeController extends Controller
         return view($this->pathViewController . $this->subpatchViewController  . '.blog');
     }
     public function blogdetail_view()
-{
+    {
         return view($this->pathViewController . $this->subpatchViewController  . '.blog-details');
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////

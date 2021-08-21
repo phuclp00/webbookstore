@@ -80,15 +80,14 @@ class OrderController extends Controller
             DB::beginTransaction();
             if (Auth::check()) {
                 $user = Auth::user();
-                $shipping = UserAddress::firstorCreate([
-                    'user_id' => Auth::user()->user_id,
-                    'address_line_1' => $request->address_line_1,
-                    'address_line_2' => $request->address_line_2,
-                    'wards' => $str = ltrim(($request->wards), '0'),
-                    'district' => ltrim($request->district, '0'),
-                    'city' => ltrim($request->city, '0'),
+                $shipping = $user->address()->firstOrCreate([
+                    'address_line_1' => \strtolower(trim($request->address_line_1)),
+                    'address_line_2' => \strtolower(trim($request->address_line_2)),
+                    'wards'  => \strtolower(trim($request->wards)),
+                    'district' => \strtolower(trim($request->district)),
+                    'city' => \strtolower(trim($request->city)),
                     'country' => "VN",
-                    'zip_code' => $request->zipcode,
+                    'zip_code' => \strtolower(trim($request->zipcode)),
                 ]);
             } else {
                 $shipping = UserAddress::create([
@@ -176,11 +175,18 @@ class OrderController extends Controller
     {
         $order = Order::find($request->id);
         if ($order) {
-            event(new RequestCancelOrder($order, $request->mess));
-            return \response([
-                'status' => 'success',
-                'mess' => 'Yêu cầu được gửi thành công !'
-            ]);
+            if ($order->status->percent == 100 && now()->diffInDays($order->created_at) > 7) {
+                return \response([
+                    'status' => 'danger',
+                    'mess' => 'Đã quá thời hạn đổi trả hàng, nếu có thắc mắc nào vui lòng liên hệ bộ phận CSKH !'
+                ]);
+            } else {
+                event(new RequestCancelOrder($order, $request->mess));
+                return \response([
+                    'status' => 'success',
+                    'mess' => 'Yêu cầu được gửi thành công !'
+                ]);
+            }
         } else
             return \response([
                 'status' => 'danger',
@@ -189,21 +195,37 @@ class OrderController extends Controller
     }
     public function summary(Request $request)
     {
-        $order = Order::find($request->order_id)->load('address.get_districts', 'address.get_wards', 'address.get_city', 'address.user.phone', 'address.guest');
-        $phone = Auth::check() ? $order->address->user->phone[0]->number : $order->address->guest[0]->phone;
-        $order->address->guest;
-        return view('client.sections.static.order_sumary', ['order' => $order, 'phone' => $phone]);
+        $order = Order::withTrashed()->find($request->order_id)->load('address.get_districts', 'address.get_wards', 'address.get_city', 'address.user.phone', 'address.guest');
+        $phone = $order->address->user ? $order->address->user->phone[0]->number : $order->address->guest[0]->phone;
+        $email = $order->address->user ? $order->address->user->email : $order->address->guest[0]->email;
+        return view('client.sections.static.order_sumary', ['order' => $order, 'phone' => $phone, 'email' => $email]);
+        #Check account login //
+        // $user = Auth::user();
+        // if ($user) {
+        //     $order = Order::withTrashed()->find($request->order_id)->load('address.get_districts', 'address.get_wards', 'address.get_city', 'address.user.phone', 'address.guest');
+        //     if ($order->address->user->refresh_token == $user->refresh_token) {
+        //         $phone = Auth::check() ? $order->address->user->phone[0]->number : $order->address->guest[0]->phone;
+        //         $order->address->guest;
+        //         return view('client.sections.static.order_sumary', ['order' => $order, 'phone' => $phone]);
+        //     } else {
+        //         return view('errors.404');
+        //     }
+        // } else {
+        //     return view('errors.404');
+        // }
     }
     //Admin
     public function show_order(Request $request)
     {
         try {
-            $orderlist = [];
+            $orderlist = new Collection();
             $data = UserModel::withTrashed()->find($request->id);
             $address = $data->address()->withTrashed()->get();
             foreach ($address as $value) {
                 if ($value->orders->count() > 0)
-                    $orderlist = new Collection($value->orders->load('vouchers', 'shipping', 'status', 'payment'));
+                    foreach ($value->orders as $order) {
+                        $orderlist[] = $order->load('vouchers', 'shipping', 'status', 'payment');
+                    }
             }
             return \response([
                 'status' => 'success',
@@ -255,7 +277,7 @@ class OrderController extends Controller
         $orderlist = new Collection();
         $check = Order::withTrashed()->get();
         $orders = $check->filter(function ($data) {
-            return $data->address->user_id != null;
+            return ($data->address->user);
         });
         foreach ($orders as  $order) {
             $orderlist[] = [

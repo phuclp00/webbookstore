@@ -10,7 +10,7 @@
         @change="apply_address(selected)"
         name="address-list"
       >
-        Địa chỉ số {{ key }}
+        Địa chỉ số {{ ++key }}
       </b-form-radio>
       <address class="h2 font-weight-bold">
         {{ address }}
@@ -150,22 +150,27 @@ export default {
       this.city = "";
       this.zipcode = "";
       return (this.address =
-        address_selected.address_line_1 +
+        (address_selected.address_line_1 == null
+          ? ""
+          : "Địa chỉ cụ thể: " + address_selected.address_line_1) +
         ", " +
-        address_selected.address_line_2 +
-        ", " +
+        (address_selected.address_line_2 == null
+          ? ""
+          : " " + address_selected.address_line_2 + ", ") +
         (address_selected.get_wards == null
-          ? address_selected.wards
-          : address_selected.get_wards.name) +
-        ", " +
+          ? address_selected.wards == null
+            ? ""
+            : "Phường/xã: " + address_selected.wards + ", "
+          : "Phường/xã: " + address_selected.get_wards.name + ", ") +
         (address_selected.get_districts == null
-          ? address_selected.district
-          : address_selected.get_districts.name) +
+          ? "Quận/huyện: " + address_selected.district
+          : "Quận/huyện: " + address_selected.get_districts.name) +
         ",  " +
         (address_selected.get_city == null
-          ? address_selected.city
-          : address_selected.get_city.name) +
+          ? "Thành phố/tỉnh: " + address_selected.city
+          : "Thành phố/tỉnh: " + address_selected.get_city.name) +
         ", " +
+        "Mã bưu chính: " +
         address_selected.zip_code);
     },
     check() {

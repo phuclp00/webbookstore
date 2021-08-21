@@ -3,7 +3,7 @@
         <div class="section-title section-title--bordered">
             {{-- <h2>CHILDREN’S BOOKS</h2> --}}
             <div class="ModuleContent"><img
-                    src="https://nhasachphuongnam.com/images/promo/217/01_Banner_thong_bao_mua_dich_890x396__2_.jpg"
+                    src="https://nhasachphuongnam.com/images/promo/214/B%C3%A9_ngh%E1%BB%89_h%C3%A8_s%E1%BB%9Bm_1180x200-min.png"
                     alt="">
             </div>
         </div>

@@ -21,18 +21,16 @@ use Illuminate\Support\Facades\Notification;
 class OrderCompleteNotification implements ShouldQueue
 {
 
-    public $order;
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct()
     {
-        $this->order = $order;
     }
 
-    public function handle(OrderComplete $event)
+    public function handle($event)
     {
         $customer = $event->user;
         $voucher = null;
@@ -41,7 +39,7 @@ class OrderCompleteNotification implements ShouldQueue
         //Create voucher if customer spend over 50k 
         if ($order->final_price > 50000) {
             $voucher = Vouchers::create(
-                $event->order,
+                $customer,
                 1,
                 [
                     'from' => 'Booksto',

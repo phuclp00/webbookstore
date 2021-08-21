@@ -131,7 +131,7 @@
                                             <tr>
                                                 <td
                                                     style="width: 55%; font-size: 14px; line-height: 18px; color: #666666;">
-                                                    {{{$order->address->district.', '.$order->address->wards . " , ".$order->address->city}}}
+                                                    {{{($order->address->get_districts?$order->address->get_districts->name:$order->address->district).', '.($order->address->get_wards?$order->address->get_wards->name:$order->address->wards) . " , ".($order->address->get_city?$order->address->get_city->name:$order->address->city)}}}
                                                 </td>
                                             </tr>
                                             <tr>

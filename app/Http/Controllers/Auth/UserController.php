@@ -177,10 +177,12 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-            $old = Auth::user()->address;
+            $old = Auth::user()->load(['address' => function ($query) {
+                $query->withTrashed();
+            }]);
             $new = UserAddress::create([
-                "address_line_1" => $request->address_line_1,
-                "address_line_2" => $request->address_line_2,
+                "address_line_1" => strtolower(trim($request->address_line_1)),
+                "address_line_2" => strtolower(trim($request->address_line_2)),
                 "user_id" => Auth::user()->user_id,
                 "wards" => $request->wards,
                 "district" => $request->district,
@@ -188,7 +190,7 @@ class UserController extends Controller
                 "zip_code" => $request->zipcode
             ]);
             //Check duplicate
-            foreach ($old as $value) {
+            foreach ($old->address as $value) {
                 if (
                     $value->address_line_1 == $new->address_line_1 &&
                     $value->address_line_2 == $new->address_line_2 &&
@@ -197,8 +199,16 @@ class UserController extends Controller
                     $value->city == $new->city &&
                     $value->zip_code == $new->zip_code
                 ) {
-                    DB::rollBack();
-                    return \response(['status' => 'danger', 'mess' => 'Thêm địa chỉ thất bại ! Trông có vẻ như bạn đã có địa chỉ này trong hệ thống!']);
+                    if ($value->deleted_at) {
+                        DB::rollBack();
+                        $value->restore();
+                        DB::commit();
+                        $data = UserAddress::where('user_id', Auth::user()->user_id)->with('get_wards', 'get_city', 'get_districts')->get();
+                        return \response(['status' => 'success', 'data' => $data, 'mess' => 'Thêm địa chỉ thành công !Tuy nhiên trông có vẻ như bạn đã từng xóa địa chỉ này trước đây và chúng tôi đã khôi phục lại cho bạn !']);
+                    } else {
+                        DB::rollBack();
+                        return \response(['status' => 'danger', 'mess' => 'Thêm địa chỉ thất bại ! Trông có vẻ như bạn đã có địa chỉ này trong hệ thống!']);
+                    }
                 }
             }
             $data = UserAddress::where('user_id', Auth::user()->user_id)->with('get_wards', 'get_city', 'get_districts')->get();
@@ -225,6 +235,7 @@ class UserController extends Controller
             DB::commit();
             return \response(['status' => 'success', 'data' => $data, 'mess' => 'Xóa địa chỉ thành công !']);
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             DB::rollBack();
             return \response(['status' => 'danger', 'mess' => 'Xóa địa chỉ thất bại ! Liên hệ bộ phận CSKH để biết thêm chi tiết !']);
         }
@@ -262,28 +273,44 @@ class UserController extends Controller
             $user = Auth::user();
             if ($request->name != "") {
                 $user->user_name = $request->name;
+                $user->save();
             }
             if ($request->email != "")
                 $user->email = $request->email;
+            $user->save();
             if ($request->current_phone != "") {
                 $data = UserPhone::where('number', $request->phone)->first();
                 $data->number = $request->current_phone;
                 $data->save();
             }
             if ($request->new_phone != "") {
-                $check_phone = UserPhone::where('number', $request->new_phone);
+                $check_phone = UserPhone::where('number', $request->new_phone)->first();
                 if ($check_phone) {
                     return \response(['status' => 'danger', 'mess' => 'Cập nhật tài khoản thất bại ! Số điện thoại đã tồn tại trong hệ thống !']);
                 }
                 $user->phone()->create(['number' => $request->new_phone]);
                 $user->modified_by = Auth::user()->user_name;
                 $user->push();
+                $user->save();
             }
             DB::commit();
             return \response(['status' => 'success', 'mess' => 'Cập nhật tài khoản thành công!']);
         } catch (\Throwable $th) {
             DB::rollBack();
             return \response(['status' => 'danger', 'mess' => 'Cập nhật tài khoản thất bại !' . $th->getMessage()]);
+        }
+    }
+    public function phone_delete($number)
+    {
+        $user = Auth::user();
+        if ($user) {
+            foreach ($user->phone as $phone) {
+                if ($phone->number == $number) {
+                    $phone->delete();
+                    return \response(['status' => 'success', 'mess' => 'Xóa số điện thoại thành công !']);
+                }
+            }
+            return \response(['status' => 'danger', 'mess' => 'Xóa số điện thoại thất bại, có vẻ như trong tài khoản của bạn không có số này !']);
         }
     }
     public function delete_user($id)
@@ -528,6 +555,24 @@ class UserController extends Controller
             DB::rollBack();
             return \response(['status' => 'danger', 'data' => [], 'mess' => 'Cập nhật thất bại ' . $th->getMessage()]);
         }
+    }
+    public function total_money_used()
+    {
+        $user = Auth::user()->load(['address' => function ($query) {
+            $query->withTrashed();
+        }]);
+        $money = 0;
+        if ($user) {
+            foreach ($user->address as $address) {
+                if ($address->orders->count() > 0)
+                    foreach ($address->orders as $order) {
+                        if ($order->status->percent == 100) {
+                            $money += $order->final_price;
+                        }
+                    }
+            }
+        }
+        return \response(['user' => $user->user_name, 'total_used' => $money]);
     }
     //Admin
     public function show(Request $request)

@@ -13,6 +13,26 @@ class RatingController extends Controller
     {
         return Rating::all()->load('book', 'user');
     }
+
+    public function user_delete_rating($id)
+    {
+        try {
+            DB::beginTransaction();
+            $rate = Rating::find($id);
+            $user = Auth::user();
+            if ($rate->user->refresh_token == $user->refresh_token) {
+                $rate->forceDelete();
+                DB::commit();
+                return \response(['status' => 'success', 'data' => $this->index(), 'mess' => 'Bạn đã xóa đánh giá cho sản phẩm này! Hãy đánh giá lại nếu bạn yêu thích sản phẩm này nhé !']);
+            } else {
+                return \response(['status' => 'danger', 'mess' => 'Bạn không thể xóa đánh giá này !']);
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return \response(['status' => 'danger', 'mess' => 'Xóa đánh giá cho sản phẩm này không thành công !']);
+        }
+    }
+    //Admin
     public function delete($id, $mess)
     {
         try {

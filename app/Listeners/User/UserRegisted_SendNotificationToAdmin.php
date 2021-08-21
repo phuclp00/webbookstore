@@ -38,8 +38,8 @@ class UserRegisted_SendNotificationToAdmin implements ShouldQueue
         $user = $event->user;
         $result = UserModel::where('level', '=', 'admin')->get();
         if ($result != null) {
-            foreach ($result as $user) {
-                $user->notify(new UserRegistedNotification($user));
+            foreach ($result as $admin) {
+                $admin->notify(new UserRegistedNotification($user));
             }
         }
     }

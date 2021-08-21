@@ -18,6 +18,11 @@ class UserPhone extends Model
         'deleted_by',
         'modified_by'
     ];
+    protected $casts = [
+        'modified_at' => 'datetime',
+        'created_at'  => 'datetime',
+        'deleted_at' => 'datetime'
+    ];
     public function user()
     {
         return $this->belongsTo(UserModel::class, 'user_id');

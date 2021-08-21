@@ -43,18 +43,19 @@ class TestController extends Controller
     {
 
         #ORder finding
+        $user = UserModel::where('email', 'locdo255@gmail.com')->first();
 
-        $order = Order::find('28973353MN302304X');
-
+        dd($user->address[0]->get_districts);
         #Promotion
         $promotion = BookPromotions::all()->first();
-        \event(new PromotionStart($promotion,));
+        // \event(new PromotionStart($promotion));
 
-
+        $product = ProductModel::where('book_name', 'Mẹ Hỏi Bé Trả Lời 3-4 Tuổi (Tái Bản 2019)')->first();
+        dd($product->rating);
         #time difff
 
         $date =  Carbon::create($promotion->date_started)->diff(\now());
-        $second = \now()->diffInSeconds($promotion->date_started);
+        $second = \now()->diffInDays($promotion->created_at);
         dd($second);
         #Update sales for each book
 

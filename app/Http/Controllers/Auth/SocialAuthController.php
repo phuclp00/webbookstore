@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Socialite, Auth, Redirect, Session, URL;
+use Illuminate\Support\Facades\Auth as AuthLaravel;
 use Illuminate\Support\Str;
 
 
@@ -17,23 +18,25 @@ class SocialAuthController extends Controller
 {
     public function redirect($social)
     {
-        return Socialite::driver($social)->stateless()->redirect()->getTargetUrl();
+        return Socialite::driver($social)->stateless()->redirect();
     }
 
     public function callback($social)
     {
         $user = SocialAccountService::createOrGetUser(Socialite::driver($social)->stateless()->user(), $social);
         auth()->login($user);
+        AuthLaravel::user()->status = 1;
+        AuthLaravel::user()->save();
         return redirect()->to('/home');
     }
 
     public function redirectToProvider($provider)
     {
-        if (!Session::has('pre_url')) {
-            Session::put('pre_url', URL::previous());
-        } else {
-            if (URL::previous() != URL::to('login')) Session::put('pre_url', URL::previous());
-        }
+        // if (!Session::has('pre_url')) {
+        //     Session::put('pre_url', URL::previous());
+        // } else {
+        //     if (URL::previous() != URL::to('login')) Session::put('pre_url', URL::previous());
+        // }
         return Socialite::driver($provider)->redirect();
     }
 
@@ -49,6 +52,8 @@ class SocialAuthController extends Controller
         $authUser = $this->findOrCreateUser($user, $provider);
         if ($authUser) {
             Auth::login($authUser, true);
+            AuthLaravel::user()->status = 1;
+            AuthLaravel::user()->save();
             return redirect()->route('index');
         } else {
             return \view('errors.account-ban');

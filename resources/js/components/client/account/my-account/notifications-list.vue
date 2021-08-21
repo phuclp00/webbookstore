@@ -10,6 +10,10 @@
         ><b>{{ user.membership.type }}</b>
       </p>
       <p>
+        <span>Tổng số tiền mua hàng đã chi trả : </span
+        ><b>{{ total_used | currency("VND", 0, { symbolOnLeft: false }) }}</b>
+      </p>
+      <p>
         <span>
           Điểm hiện có :
           {{ user.points.length > 0 ? user.points[0].reward_points : 0 }} điểm
@@ -51,6 +55,7 @@ export default {
     return {
       allNotifications: [],
       unreadNotifications: [],
+      total_used: 0,
     };
   },
   mounted() {
@@ -70,6 +75,11 @@ export default {
     },
   },
   methods: {
+    total() {
+      axios.get("/my-account/total-used").then((response) => {
+        return (this.total_used = response.data.total_used);
+      });
+    },
     markAllRead() {
       axios
         .get("/my-account/mark-all-read/" + this.user.user_id)
@@ -102,6 +112,7 @@ export default {
     this.unreadNotifications = this.user.notifications.filter((data) => {
       return data.read_at == null;
     });
+    this.total();
   },
 };
 </script>

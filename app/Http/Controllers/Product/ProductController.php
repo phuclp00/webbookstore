@@ -92,7 +92,7 @@ class ProductController extends Controller
             DB::commit();
             event(new RatingProduct($book, $user));
             return \response([
-                'status' => "sucess",
+                'status' => "success",
                 'mess' => "Đăng bài đánh giá thành công"
             ]);
         } catch (\Throwable $th) {

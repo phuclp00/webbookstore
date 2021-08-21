@@ -315,7 +315,7 @@ export default {
       if (this.phone == null) {
         return this.$root.makeToast(
           "danger",
-          "Địa chỉ này vẫn chưa có sđt mặc định, vui lòng cập nhật số điện thoại của bạn trước khi đặt hàng!"
+          "Tài khoản này vẫn chưa có sđt mặc định, vui lòng cập nhật số điện thoại của bạn trước khi đặt hàng!"
         );
       }
       if (this.createAccount == "true") {

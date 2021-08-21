@@ -46,6 +46,6 @@ class VoucherCreate
     }
     public function broadcastAs()
     {
-        return 'user-registed';
+        return 'voucher-create';
     }
 }

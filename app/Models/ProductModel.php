@@ -180,7 +180,7 @@ class ProductModel extends Model
     }
     public function rating()
     {
-        return $this->belongsToMany(UserModel::class, "ratings", "book_id", "user_id")->withPivot('title', 'comment', 'rating', 'created_at');
+        return $this->belongsToMany(UserModel::class, "ratings", "book_id", "user_id")->withPivot('id', 'title', 'comment', 'rating', 'created_at');
     }
     public function favorite()
     {

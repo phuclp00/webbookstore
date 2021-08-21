@@ -31,15 +31,15 @@ class VoucherCreateListener implements ShouldQueue
      * @param  object  $event
      * @return void
      */
-    public function handle(VoucherCreate $event)
+    public function handle($event)
     {
         $user = $event->user;
         $voucher = $event->voucher;
         $user->notify(new VoucherCreateNotification($user, $voucher));
-        $result = UserModel::where('level', '=', 'admin')->get();
+        $result = UserModel::where('level', 'admin')->get();
         if ($result != null) {
-            foreach ($result as $user) {
-                $user->notify(new VoucherCreateNotification_toAdmin($user,$voucher));
+            foreach ($result as $admin) {
+                $admin->notify(new VoucherCreateNotification_toAdmin($user, $voucher));
             }
         }
     }

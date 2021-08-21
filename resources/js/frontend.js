@@ -102,7 +102,7 @@ const app = new Vue({
             });
         },
         datetime(date) {
-            return moment(date, "YYYY-MM-DD").format("DD/MM/YYYY");
+            return moment(date).format("DD/MM/YYYY");
         },
         timeago(date) {
             return moment(date).startOf("hours").fromNow();

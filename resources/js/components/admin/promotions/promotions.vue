@@ -23,12 +23,16 @@
           <td>{{ value.id }}</td>
           <td>{{ value.name }}</td>
           <td>{{ value.percent + " %" }}</td>
-          <td>
+          <td v-if="value.date_started">
             <span> {{ value.date_started }} </span>
-            <p v-if="value.date_started < moment()" class="bg-primary">
+            <p v-if="moment() > value.date_started" class="bg-primary">
               Started
             </p>
             <p v-else class="bg-info">Waiting</p>
+          </td>
+          <td v-else>
+            <span>00:00:00 00:00:00</span>
+            <p class="bg-danger">Unset</p>
           </td>
           <td>
             <span> {{ value.date_expired }} </span>
@@ -112,10 +116,10 @@ export default {
   },
   methods: {
     datetime(date) {
-      return moment(date, "YYYY-MM-DD").format("DD/MM/YYYY");
+      return moment(date).format("DD/MM/YYYY");
     },
     moment() {
-      return moment().format("YYYY-MM-DD H:m:s");
+      return moment().format("YYYY-MM-DD HH:mm:ss");
     },
     timeago(date) {
       return moment(date).startOf("hours").fromNow();

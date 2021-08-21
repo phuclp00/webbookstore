@@ -578,10 +578,10 @@ export default {
       return false;
     },
     amountState() {
-      return this.amount > 1 ? true : false;
+      return this.amount >= 0 ? true : false;
     },
     numberState() {
-      return this.number_of_uses > 1 ? true : false;
+      return this.number_of_uses > 0 ? true : false;
     },
     mindate() {
       const now = new Date();
@@ -591,7 +591,7 @@ export default {
   },
   methods: {
     datetime(date) {
-      return moment(date, "YYYY-MM-DD").format("DD/MM/YYYY");
+      return moment(date).format("DD/MM/YYYY");
     },
     timeago(date) {
       return moment(date).startOf("hours").fromNow();
@@ -681,7 +681,10 @@ export default {
         ];
       });
       this.phoneList = user.phone.filter((data) => {
-        return (data.created_at = this.datetime(data.created_at));
+        return [
+          (data.created_at = this.datetime(data.created_at)),
+          (data.modified_at = this.datetime(data.modified_at)),
+        ];
       });
       return this.$refs["address-phone-modal"].show();
     },

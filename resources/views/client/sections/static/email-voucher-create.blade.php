@@ -108,17 +108,16 @@
             @if ($voucher !=null)
             <tr>
                 <td style="padding-top:10px;text-align:center">
-                    <h4>GỬI BẠN MÃ GIẢM GIÁ {{$voucher->data->get('percent')}}% TRÊN TỔNG HÓA ĐƠN CHO
+                    <h4>GỬI BẠN MÃ GIẢM GIÁ {{$voucher[0]->data->get('percent')}}% TRÊN TỔNG HÓA ĐƠN CHO
                         KHÁCH HÀNG THÂN THIẾT</h4>
                 </td>
             </tr>
             <tr>
                 <td style="text-align:center">
-                    <h2>{{$voucher->code}}</h2>
+                    <h2>{{$voucher[0]->code}}</h2>
                 </td>
             </tr>
             @endif
-
             <!-- End payment method Section -->
         </tbody>
     </table>

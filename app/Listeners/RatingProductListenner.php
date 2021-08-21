@@ -34,8 +34,8 @@ class RatingProductListenner
         $admin = UserModel::where('level', 'admin')->get();
         $user->notify(new RatingSuccess($user, $product));
         if ($admin != null) {
-            foreach ($admin as $user) {
-                $user->notify(new RatingSuccessToAdmin($user, $product));
+            foreach ($admin as $account) {
+                $account->notify(new RatingSuccessToAdmin($user, $product));
             }
         }
     }

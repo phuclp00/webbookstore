@@ -53,7 +53,7 @@ class OrderCancelNotificationToAdmin extends Notification
     {
         return [
             'thread' => $this->order->id,
-            'data' => 'Order ' . $this->order->id . ' has been cancelled by' . $this->order->modified_by . '!'
+            'data' => 'Order ' . $this->order->id . ' has been cancelled by' . $this->order->deleted_by . '!'
         ];
     }
 

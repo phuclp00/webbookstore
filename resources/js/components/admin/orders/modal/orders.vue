@@ -297,6 +297,195 @@
                           </div>
                         </div>
                       </div>
+                      <div class="form-card m-5">
+                        <div class="col-sm-12">
+                          <div class="col-md-12 p-0">
+                            <h3 class="mb-4">Order Information:</h3>
+                            <div>
+                              <div v-if="data.order.deleted_at != null">
+                                <h4 class="text-danger">
+                                  Order has been cancelled/refunds by
+                                  {{ data.order.deleted_by }} at
+                                  {{ $parent.datetime(data.order.deleted_at) }}
+                                </h4>
+                                <button
+                                  class="btn btn-outline-primary"
+                                  @click="restore()"
+                                >
+                                  Restore This Order
+                                </button>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-6 form-group">
+                                <label for="uname" class="control-label"
+                                  >User Name:</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  required="required"
+                                  name="uname"
+                                  :value="data.user.name"
+                                  placeholder="Enter User Name"
+                                  :disabled="edit"
+                                />
+                              </div>
+                              <div class="col-md-6 form-group">
+                                <label class="control-label">Email:</label>
+                                <input
+                                  type="email"
+                                  class="form-control"
+                                  required="required"
+                                  name="emailid"
+                                  :value="data.user.email"
+                                  placeholder="Email ID"
+                                  :disabled="edit"
+                                />
+                              </div>
+                              <div class="col-md-6 form-group">
+                                <label class="control-label"
+                                  >Contact Number:</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  required="required"
+                                  name="cno"
+                                  :value="data.user.phone"
+                                  :disabled="edit"
+                                />
+                              </div>
+                              <div class="col-md-6 form-group">
+                                <label class="control-label">Address:</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  required="required"
+                                  :value="data.order.address.address_line_1"
+                                  :disabled="edit"
+                                />
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  required="required"
+                                  :value="
+                                    data.order.address.address_line_2 == null
+                                      ? ''
+                                      : data.order.address.address_line_2
+                                  "
+                                  :disabled="edit"
+                                />
+                              </div>
+                              <div class="col-md-6 form-group">
+                                <label class="control-label">District:</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  required="required"
+                                  :value="
+                                    data.order.address.get_districts == null
+                                      ? data.order.address.district
+                                      : data.order.address.get_districts.name
+                                  "
+                                  :disabled="edit"
+                                />
+                              </div>
+                              <div class="col-md-6 form-group">
+                                <label class="control-label">Wards:</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  required="required"
+                                  :value="
+                                    data.order.address.get_wards == null
+                                      ? data.order.address.wards
+                                      : data.order.address.get_wards.name
+                                  "
+                                  :disabled="edit"
+                                />
+                              </div>
+                              <div class="col-md-6 form-group">
+                                <label class="control-label">City:</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  required="required"
+                                  :value="
+                                    data.order.address.get_city == null
+                                      ? data.order.address.city
+                                      : data.order.address.get_city.name
+                                  "
+                                  :disabled="edit"
+                                />
+                              </div>
+                              <div class="col-md-6 form-group">
+                                <label class="control-label">Note:</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  required="required"
+                                  :value="data.order.note"
+                                  :disabled="edit"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-12">
+                          <div class="col-md-12 p-0">
+                            <h3 class="mb-4">Product List:</h3>
+                            <table class="table">
+                              <thead>
+                                <tr>
+                                  <th scope="col">STT</th>
+                                  <th scope="col">Book Name</th>
+                                  <th scope="col">Price</th>
+                                  <th scope="col">Total</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr
+                                  v-for="(item, key) in data.order.books"
+                                  :key="key"
+                                >
+                                  <th scope="row">{{ key + 1 }}</th>
+                                  <td>
+                                    <a :href="'/shop/' + item.book_name">{{
+                                      item.book_name
+                                    }}</a>
+                                  </td>
+                                  <td>
+                                    {{
+                                      item.price
+                                        | currency("VND", 0, {
+                                          symbolOnLeft: false,
+                                        })
+                                    }}
+                                  </td>
+                                  <td>{{ item.pivot.quantity }}</td>
+                                </tr>
+                              </tbody>
+                              <tfoot>
+                                <tr>
+                                  <th colspan="3" class="text-center">
+                                    Order Total:
+                                  </th>
+                                  <td>
+                                    {{
+                                      data.order.final_price
+                                        | currency("VND", 0, {
+                                          symbolOnLeft: false,
+                                        })
+                                    }}
+                                  </td>
+                                </tr>
+                              </tfoot>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
                     </fieldset>
                   </tab-content>
                   <!-- Slot Footer Scope -->

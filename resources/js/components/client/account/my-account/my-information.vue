@@ -60,6 +60,13 @@
                   @click="phone_default(index.text)"
                   >Đặt làm số điện thoại mặc định</b-link
                 >
+                <span>&nbsp;</span>
+                <b-link
+                  class="text-red"
+                  v-if="key > 0"
+                  @click="phone_delete(index.text)"
+                  >Xóa</b-link
+                >
               </li>
             </ul>
             <!-- Thay đổi số -->
@@ -218,6 +225,15 @@ export default {
     phone_edit(phone) {
       return [(this.current_phone = phone.text), (this.phone = phone.text)];
     },
+    phone_delete(number) {
+      axios.delete("/my-account/phone-delete=" + number).then((response) => {
+        this.$root.makeToast(response.data.status, response.data.mess);
+        if (response.data.status == "success") {
+          this.phonelist = [];
+          this.get_phone_list();
+        }
+      });
+    },
     phone_default(number) {
       axios
         .post("/my-account/phone-set-default", { number: number })
@@ -230,23 +246,36 @@ export default {
         });
     },
     apply() {
-      axios
-        .post("/my-account/account-update", {
-          token: this.user.refresh_token,
-          name: this.name,
-          email: this.email,
-          new_phone: this.new_phone,
-          phone: this.phone,
-          current_phone: this.current_phone,
-        })
-        .then((response) => {
-          this.$root.makeToast(response.data.status, response.data.mess);
-          if (response.data.status == "success") {
-            Vue.nextTick(() => {
-              window.location.reload();
-            });
-          }
-        });
+      if (
+        this.name ||
+        this.email ||
+        this.new_phone ||
+        this.phone ||
+        this.current_phone
+      ) {
+        axios
+          .post("/my-account/account-update", {
+            token: this.user.refresh_token,
+            name: this.name,
+            email: this.email,
+            new_phone: this.new_phone,
+            phone: this.phone,
+            current_phone: this.current_phone,
+          })
+          .then((response) => {
+            this.$root.makeToast(response.data.status, response.data.mess);
+            if (response.data.status == "success") {
+              Vue.nextTick(() => {
+                window.location.reload();
+              });
+            }
+          });
+      } else {
+        return this.$root.makeToast(
+          "danger",
+          "Các trường không được để trống !"
+        );
+      }
     },
     changepassword() {
       if (this.repeatpass == false) {

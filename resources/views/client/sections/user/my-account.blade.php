@@ -46,7 +46,7 @@
                             <!-- Single Tab Content Start -->
                             <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
                                 <notification-list
-                                    :user="{{Auth::user()->load('notifications','membership','points')}}">
+                                    :user="{{Auth::user()->load('notifications','membership','points','address.orders')}}">
                                 </notification-list>
                             </div>
                             <!-- Single Tab Content End -->
@@ -70,20 +70,22 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Code</th>
-                                                    <th>Giảm Giá</th>
+                                                    <th>Giảm Giá (%)</th>
                                                     <th>Giá Trị Đơn Hàng Tối Thiểu</th>
                                                     <th>Số Lần Sử Dụng</th>
                                                     <th>Ngày Hết Hạn</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <?php $i=1 ?>
                                                 @foreach (Auth::user()->vouchers as $value)
                                                 <tr>
-                                                    <td>{{$value->id}}</td>
+                                                    <td>{{$i++}}</td>
                                                     <td>{{$value->code}}</td>
                                                     <td>{{$value->data->get('percent')}}</td>
                                                     <td>{{$value->data->get('minium_total')}}</td>
-                                                    <td>{{$value->number_of_uses}}</td>
+                                                    <td>{{$value->number_of_uses >0?$value->number_of_uses:"Đã hết lượt sử dụng"}}
+                                                    </td>
                                                     <td>{{$value->expires_at < now()?"Đã Hết Hạn":$value->expires_at}}
                                                     </td>
                                                 </tr>
